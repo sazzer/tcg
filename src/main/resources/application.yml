@@ -1,0 +1,13 @@
+server:
+    port: 8080
+spring:
+    boot:
+        admin:
+            url: http://localhost:${server.port}/admin
+            context-path: /admin
+    jackson:
+        serialization:
+            indent_output: true
+            write_dates_as_timestamps: false
+            write_durations_as_timestamps: false
+        default-property-inclusion: non_null
