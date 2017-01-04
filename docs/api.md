@@ -40,6 +40,7 @@ Resources can also indicate that they are related to other, pre-existing resourc
 * Relationship payload data, if present
 * A self link for the related resource
 
+The related block is a JSON object where the key denotes the actual relationship from this resource.
 ```json
 {
   "type": "resource",
@@ -53,7 +54,8 @@ Resources can also indicate that they are related to other, pre-existing resourc
       "href": "http://localhost:8080/api/resource/graham"
     }
   },
-  "related": [{
+  "related": {
+    "rel1": {
       "type": "other",
       "id": "theOther",
       "links": {
@@ -61,7 +63,8 @@ Resources can also indicate that they are related to other, pre-existing resourc
           "href": "http://localhost:8080/api/other/theOther"
         }
       }
-  }, {
+    }, 
+    "rel2": {
       "type": "third",
       "id": "again",
       "data": {
@@ -72,7 +75,25 @@ Resources can also indicate that they are related to other, pre-existing resourc
           "href": "http://localhost:8080/api/third/again"
         }
       }
-  }]
+    },
+    "rel3": [{
+      "type": "multiple",
+      "id": "first",
+      "links": {
+        "self": {
+          "href": "http://localhost:8080/api/multiple/first"
+        }
+      }
+    }, {
+      "type": "multiple",
+      "id": "second",
+      "links": {
+        "self": {
+          "href": "http://localhost:8080/api/multiple/second"
+        }
+      }
+    }]
+  }
 }
 ```
 
@@ -92,7 +113,8 @@ When including a relationship to another resource, it is possible to include som
       "href": "http://localhost:8080/api/resource/graham"
     }
   },
-  "related": [{
+  "related": {
+    "rel1": {
       "type": "other",
       "id": "theOther",
       "links": {
@@ -100,7 +122,8 @@ When including a relationship to another resource, it is possible to include som
           "href": "http://localhost:8080/api/other/theOther"
         }
       }
-  }, {
+    }, 
+    "rel2": {
       "type": "third",
       "id": "again",
       "data": {
@@ -111,7 +134,8 @@ When including a relationship to another resource, it is possible to include som
           "href": "http://localhost:8080/api/third/again"
         }
       }
-  }],
+    }
+  },
   "included": {
     "http://localhost:8080/api/other/theOther": {
       "type": "other",
@@ -159,7 +183,8 @@ In this case, relationships are included on the individual resources but the inc
         "type": "image/png"
       }
     },
-    "related": [{
+    "related": {
+      "rel1": {
         "type": "other",
         "id": "theOther",
         "links": {
@@ -167,7 +192,8 @@ In this case, relationships are included on the individual resources but the inc
             "href": "http://localhost:8080/api/other/theOther"
           }
         }
-    }, {
+      }, 
+      "rel2": {
         "type": "third",
         "id": "again",
         "data": {
@@ -178,7 +204,8 @@ In this case, relationships are included on the individual resources but the inc
             "href": "http://localhost:8080/api/third/again"
           }
         }
-    }]
+      }
+    }
   }],
   "links": {
     "self": {
