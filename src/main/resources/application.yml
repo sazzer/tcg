@@ -10,4 +10,6 @@ spring:
             indent_output: true
             write_dates_as_timestamps: false
             write_durations_as_timestamps: false
+        deserialization:
+            accept_single_value_as_array: true
         default-property-inclusion: non_null

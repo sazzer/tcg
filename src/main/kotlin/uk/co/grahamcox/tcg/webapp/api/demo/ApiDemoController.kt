@@ -1,9 +1,8 @@
 package uk.co.grahamcox.tcg.webapp.api.demo
 
+import org.slf4j.LoggerFactory
 import org.springframework.http.MediaType
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import uk.co.grahamcox.tcg.webapp.api.*
 
@@ -13,6 +12,11 @@ import uk.co.grahamcox.tcg.webapp.api.*
 @RestController
 @RequestMapping("/api/demo")
 class ApiDemoController {
+    companion object {
+        /** The logger to use */
+        private val LOG = LoggerFactory.getLogger(ApiDemoController::class.java)
+    }
+
     @RequestMapping
     fun getPage() : ResourceCollection =
         ResourceCollection(
@@ -186,4 +190,9 @@ class ApiDemoController {
                             )
                     )
             )
+
+    @RequestMapping(method = arrayOf(RequestMethod.POST), consumes = arrayOf(MediaType.APPLICATION_JSON_VALUE))
+    fun create(@RequestBody input: InputResource<DemoData>) {
+        LOG.info("Input: {}", input)
+    }
 }
