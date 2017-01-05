@@ -1,6 +1,7 @@
 package uk.co.grahamcox.tcg.webapp.api.demo
 
 import org.slf4j.LoggerFactory
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
@@ -195,4 +196,18 @@ class ApiDemoController {
     fun create(@RequestBody input: InputResource<DemoData>) {
         LOG.info("Input: {}", input)
     }
+
+    @RequestMapping("/error")
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun error() = ErrorResponse(
+            error = "INVALID_REQUEST",
+            description = "The request contained invalid field values",
+            data = mapOf(
+                    "fields" to listOf(
+                            "foo",
+                            "bar",
+                            "baz"
+                    )
+            )
+    )
 }
