@@ -43,7 +43,9 @@ class EmbeddedNeo4j(
                 ShellSettings.remote_shell_port to "${shellPort}",
                 ShellSettings.remote_shell_read_only to "false",
                 boltConnector.enabled to "true",
-                boltConnector.address to "localhost:${boltPort}"
+                boltConnector.address to "localhost:${boltPort}",
+                boltConnector.encryption_level to GraphDatabaseSettings.BoltConnector.EncryptionLevel.DISABLED.name,
+                boltConnector.type to GraphDatabaseSettings.Connector.ConnectorType.BOLT.name
         ))
     }
 
