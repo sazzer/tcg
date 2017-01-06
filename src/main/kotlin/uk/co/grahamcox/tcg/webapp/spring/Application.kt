@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Import
 import uk.co.grahamcox.tcg.webapp.api.demo.ApiDemoController
 
 /**
@@ -13,9 +14,12 @@ import uk.co.grahamcox.tcg.webapp.api.demo.ApiDemoController
 @EnableAutoConfiguration
 @Configuration
 @EnableAdminServer
-internal open class Application {
+@Import(
+        Db::class
+)
+internal class Application {
     @Bean
-    open fun demoController() = ApiDemoController()
+    fun demoController() = ApiDemoController()
 }
 
 /**
