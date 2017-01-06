@@ -13,4 +13,4 @@ data class InputRelatedResource<out RID> @JsonCreator constructor(
         val type: String,
         val id: RID,
         val data: Map<String, Any>?
-) : Relationship
+)

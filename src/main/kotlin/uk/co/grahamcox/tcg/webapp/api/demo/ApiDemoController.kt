@@ -96,21 +96,19 @@ class ApiDemoController {
                         otherLinks = null
                 ),
                 included = mapOf(
-                        ServletUriComponentsBuilder.fromCurrentRequest().build().toUri() to IncludedResource(
-                                identity = ResourceIdentity(
-                                        type = "third",
-                                        id = "ThirdOne"
-                                ),
-                                data = mapOf(
-                                        "hello" to "world",
-                                        "foo" to "bar"
-                                ),
-                                links = ResourceLinks(
-                                        self = Link(
-                                                href = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri(),
-                                                type = null
+                        "third" to mapOf(
+                                "ThirdOne" to IncludedResource(
+                                        data = mapOf(
+                                                "hello" to "world",
+                                                "foo" to "bar"
                                         ),
-                                        otherLinks = null
+                                        links = ResourceLinks(
+                                                self = Link(
+                                                        href = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri(),
+                                                        type = null
+                                                ),
+                                                otherLinks = null
+                                        )
                                 )
                         )
                 )
@@ -172,21 +170,19 @@ class ApiDemoController {
                             )
                     ),
                     included = mapOf(
-                            ServletUriComponentsBuilder.fromCurrentRequest().build().toUri() to IncludedResource(
-                                    identity = ResourceIdentity(
-                                            type = "third",
-                                            id = "ThirdOne"
-                                    ),
-                                    data = mapOf(
-                                            "hello" to "world",
-                                            "foo" to "bar"
-                                    ),
-                                    links = ResourceLinks(
-                                            self = Link(
-                                                    href = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri(),
-                                                    type = null
+                            "third" to mapOf(
+                                    "ThirdOne" to IncludedResource(
+                                            data = mapOf(
+                                                    "hello" to "world",
+                                                    "foo" to "bar"
                                             ),
-                                            otherLinks = null
+                                            links = ResourceLinks(
+                                                    self = Link(
+                                                            href = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri(),
+                                                            type = null
+                                                    ),
+                                                    otherLinks = null
+                                            )
                                     )
                             )
                     )

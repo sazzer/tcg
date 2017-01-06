@@ -1,7 +1,5 @@
 package uk.co.grahamcox.tcg.webapp.api
 
-import java.net.URI
-
 /**
  * Representation of a collection of resources
  * @property pagination The pagination controls for this page of resources
@@ -13,5 +11,5 @@ data class ResourceCollection(
         val pagination: Pagination,
         val data: List<CollectedResource<*, *>>,
         val links: ResourceCollectionLinks,
-        val included: Map<URI, IncludedResource<*, *>>?
+        val included: Map<String, Map<String, IncludedResource<*>>>?
 )

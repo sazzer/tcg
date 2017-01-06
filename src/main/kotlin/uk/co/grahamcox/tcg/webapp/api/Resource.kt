@@ -18,5 +18,5 @@ data class Resource<out ID, out DATA>(
         val data: DATA,
         val links: ResourceLinks,
         val related: Map<String, Relationship>?,
-        val included: Map<URI, IncludedResource<*, *>>?
+        val included: Map<String, Map<String, IncludedResource<*>>>?
 )

@@ -98,7 +98,9 @@ The related block is a JSON object where the key denotes the actual relationship
 ```
 
 #### Relationships + Included Resource
-When including a relationship to another resource, it is possible to include some details of the related resource as well. This is done in a separate section so that if the same resource is linked to multiple times, it is only included in the document once. Included resources are keyed by the self link from the relationship, and contain the Type, ID and appropriate resource payload data. Versioning information is *not* included, so that it is not possible to use this version of the resource to mutate it. The resource payload data does not need to contain everything that the full resource would, and the structure need not be the same but ideally it should for consistency.
+When including a relationship to another resource, it is possible to include some details of the related resource as well. This is done in a separate section so that if the same resource is linked to multiple times, it is only included in the document once. 
+
+The Included object is keyed by the "type" of the resource, and this is then an object that is keyed by the "id" of the included resource. Underneath this is then the data of the included resource, and optionally any links for it. Relationships and versioning information are not returned for included resources. The resource payload data does not need to contain everything that the full resource would, and the structure need not be the same but ideally it should for consistency.
 
 ```json
 {
@@ -137,17 +139,15 @@ When including a relationship to another resource, it is possible to include som
     }
   },
   "included": {
-    "http://localhost:8080/api/other/theOther": {
-      "type": "other",
-      "id": "theOther",
-      "data": {
-        "name": "I am the other"
+    "other": {
+      "theOther": {
+        "data": {
+          "name": "I am the other"
+        }
       }
     },
-    "http://localhost:8080/api/third/again": {
-      "type": "third",
-      "id": "again",
-      "data": {
+    "third": {
+      "again": {
         "name": "I am the third resource"
       }
     }
@@ -225,17 +225,15 @@ In this case, relationships are included on the individual resources but the inc
     }
   },
   "included": {
-    "http://localhost:8080/api/other/theOther": {
-      "type": "other",
-      "id": "theOther",
-      "data": {
-        "name": "I am the other"
+    "other": {
+      "theOther": {
+        "data": {
+          "name": "I am the other"
+        }
       }
     },
-    "http://localhost:8080/api/third/again": {
-      "type": "third",
-      "id": "again",
-      "data": {
+    "third": {
+      "again": {
         "name": "I am the third resource"
       }
     }
