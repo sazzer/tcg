@@ -5,16 +5,16 @@ import org.neo4j.driver.v1.Driver
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.TestPropertySource
 import uk.co.grahamcox.tcg.neo4j.executeStatement
+import uk.co.grahamcox.tcg.webapp.cucumber.spring.CucumberTestConfiguration
 import uk.co.grahamcox.tcg.webapp.spring.Application
 
 /**
  * Steps to clean the database before the test runs
  */
-@ContextConfiguration(classes = arrayOf(TestConfiguration::class))
+@ContextConfiguration(classes = arrayOf(CucumberTestConfiguration::class))
 @SpringBootTest(classes = arrayOf(Application::class), webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations= arrayOf("classpath:test.yml"))
 class CleanDatabaseSteps {
