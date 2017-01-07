@@ -2,7 +2,7 @@ package uk.co.grahamcox.tcg.webapp.cucumber.steps
 
 import org.slf4j.LoggerFactory
 import org.springframework.boot.test.web.client.TestRestTemplate
-import java.net.URI
+import org.springframework.http.ResponseEntity
 
 /**
  * The mechanism to make HTTP requests to the server under test
@@ -14,12 +14,19 @@ class Requester(private val restTemplate: TestRestTemplate) {
         private val LOG = LoggerFactory.getLogger(Requester::class.java)
     }
 
+    /** The last response from the server */
+    private var lastResponseEntity: ResponseEntity<String>? = null
+
+    /** The last response, in a safe manner */
+    val lastResponse: ResponseEntity<String>
+        get() = lastResponseEntity ?: throw AssertionError("No last response has been received")
+
     /**
      * Make a GET request to the given URI
      * @param uri The URI
      */
     fun get(uri: String) {
-        val response = restTemplate.getForEntity(uri, String::class.java)
-        LOG.debug("Request to {} returned response {}", uri, response)
+        lastResponseEntity = restTemplate.getForEntity(uri, String::class.java)
+        LOG.debug("Request to {} returned response {}", uri, lastResponseEntity)
     }
 }
