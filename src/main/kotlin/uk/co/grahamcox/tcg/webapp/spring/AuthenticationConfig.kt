@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 import uk.co.grahamcox.tcg.authentication.AuthenticationProviderRegistry
+import uk.co.grahamcox.tcg.authentication.UuidNonceGenerator
 import uk.co.grahamcox.tcg.authentication.google.GoogleAuthenticationProvider
 import uk.co.grahamcox.tcg.webapp.authentication.AuthenticationController
 
@@ -24,4 +25,7 @@ class AuthenticationConfig {
                             "google" to google
                     )
             )
+
+    @Bean
+    fun nonceGenerator() = UuidNonceGenerator()
 }

@@ -3,6 +3,8 @@ package uk.co.grahamcox.tcg.webapp.spring
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import uk.co.grahamcox.tcg.authentication.NonceGenerator
+import uk.co.grahamcox.tcg.authentication.ServletRedirectGenerator
 import uk.co.grahamcox.tcg.authentication.google.GoogleAuthenticationProvider
 import uk.co.grahamcox.tcg.authentication.google.GoogleConfig
 import java.net.URI
@@ -27,5 +29,6 @@ class GoogleAuthenticationConfig {
             )
 
     @Bean
-    fun googleAuthenticationProvider() = GoogleAuthenticationProvider()
+    fun googleAuthenticationProvider(googleConfig: GoogleConfig, nonceGenerator: NonceGenerator) =
+            GoogleAuthenticationProvider(googleConfig, nonceGenerator, ServletRedirectGenerator("/api/authentication/google/redirect"))
 }
