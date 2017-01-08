@@ -1,0 +1,3 @@
+endpoints:
+  health:
+    time-to-live: 0
