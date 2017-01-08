@@ -16,7 +16,7 @@ import uk.co.grahamcox.tcg.webapp.api.demo.ApiDemoController
 @EnableAdminServer
 @Import(
         DbConfig::class,
-        GoogleAuthenticationConfig::class
+        AuthenticationConfig::class
 )
 internal class Application {
     @Bean
