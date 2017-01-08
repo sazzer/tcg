@@ -24,7 +24,12 @@ class HealthcheckSteps {
     fun checkHealthResponseOk() {
         val lastResponse = requester.lastResponse
         lastResponse.statusCode.should.equal(HttpStatus.OK)
-        val systemStatus = JsonPath.read<String>(lastResponse.body, "$.status")
-        systemStatus.should.equal("UP")
+        JsonPath.read<String>(lastResponse.body, "$.status").should.equal("UP")
+    }
+
+    @Then("^there are (\\d+) Neo4j Nodes in the database$")
+    fun checkHealthcheckNodeCount(nodeCount: Int) {
+        val lastResponse = requester.lastResponse
+        JsonPath.read<Int>(lastResponse.body, "$.neo4jHealthchecks.nodeCount").should.equal(nodeCount)
     }
 }
