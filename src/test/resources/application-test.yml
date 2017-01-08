@@ -1,3 +1,15 @@
 endpoints:
   health:
     time-to-live: 0
+spring:
+  application:
+    admin:
+      enabled: false
+  boot:
+    admin:
+      client:
+        enabled: false
+authentication:
+    google:
+        clientId: myGoogleClientId
+        clientSecret: myGoogleClientSecret
