@@ -13,7 +13,7 @@ import uk.co.grahamcox.tcg.neo4j.Neo4jHealthcheck
  * Spring configuration for the Neo4j database
  */
 @Configuration
-class Db {
+class DbConfig {
     /** The shell port */
     private val shellPort = 5555
     /** The Bolt port */

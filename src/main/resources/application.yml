@@ -13,3 +13,10 @@ spring:
         deserialization:
             accept_single_value_as_array: true
         default-property-inclusion: non_null
+authentication:
+    google:
+        clientId:
+        clientSecret:
+        authUrlBase: https://accounts.google.com/o/oauth2/v2/auth
+        tokenUrl: https://www.googleapis.com/oauth2/v4/token
+        userProfileUrl: https://www.googleapis.com/plus/v1/people/me
