@@ -3,6 +3,7 @@ package uk.co.grahamcox.tcg.webapp.spring
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import uk.co.grahamcox.tcg.authentication.google.GoogleAuthenticationProvider
 import uk.co.grahamcox.tcg.authentication.google.GoogleConfig
 import java.net.URI
 
@@ -24,4 +25,7 @@ class GoogleAuthenticationConfig {
                     tokenUrl = URI(tokenUrl),
                     userProfileUrl = URI(userProfileUrl)
             )
+
+    @Bean
+    fun googleAuthenticationProvider() = GoogleAuthenticationProvider()
 }
