@@ -1,22 +1,15 @@
 package uk.co.grahamcox.tcg.authentication.google
 
 import org.slf4j.LoggerFactory
-import org.springframework.web.util.UriComponentsBuilder
 import uk.co.grahamcox.tcg.authentication.AuthenticationProvider
-import uk.co.grahamcox.tcg.authentication.NonceGenerator
 import uk.co.grahamcox.tcg.authentication.RedirectDetails
-import uk.co.grahamcox.tcg.authentication.RedirectGenerator
 
 /**
  * Implementation of the Authentication Provider for use against Google
- * @property config The Google configuration
- * @property nonceGenerator The nonce generator to use
- * @property redirectGenerator The redirect generator to use
+ * @property redirectBuilder The builder for the Google Authentication Redirect details
  */
 class GoogleAuthenticationProvider(
-        private val config: GoogleConfig,
-        private val nonceGenerator: NonceGenerator,
-        private val redirectGenerator: RedirectGenerator
+        private val redirectBuilder: GoogleAuthenticationRedirectBuilder
 ) : AuthenticationProvider {
     companion object {
         /** The logger to use */
@@ -27,20 +20,10 @@ class GoogleAuthenticationProvider(
      * @return the details of the redirect to the provider
      */
     override fun start(): RedirectDetails {
-        val nonce = nonceGenerator.generate()
-        val redirect = redirectGenerator.generate()
+        val redirectDetails = redirectBuilder.buildRedirectDetails()
 
-        val uri = UriComponentsBuilder.fromUri(config.authUrlBase)
-                .queryParam("client_id", config.clientId)
-                .queryParam("response_type", "code")
-                .queryParam("scope", "openid email")
-                .queryParam("redirect_uri", redirect.toString())
-                .queryParam("state", nonce)
-                .build()
-                .toUri()
-
-        LOG.debug("Generated redirect URI: {}", uri)
-        return RedirectDetails(uri)
+        LOG.debug("Generated redirect URI: {}", redirectDetails)
+        return redirectDetails
     }
 
     /**

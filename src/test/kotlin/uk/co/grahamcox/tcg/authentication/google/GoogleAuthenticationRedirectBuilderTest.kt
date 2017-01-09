@@ -8,9 +8,9 @@ import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 
 /**
- * Unit tests for [GoogleAuthenticationProvider]
+ * Unit tests for [GoogleAuthenticationRedirectBuilder]
  */
-class GoogleAuthenticationProviderTest {
+class GoogleAuthenticationRedirectBuilderTest {
     private val googleConfig = GoogleConfig(
             clientId = "clientId",
             clientSecret = "clientSecret",
@@ -21,7 +21,7 @@ class GoogleAuthenticationProviderTest {
 
     @Test
     fun `generate redirect URI`() {
-        val testSubject = GoogleAuthenticationProvider(
+        val testSubject = GoogleAuthenticationRedirectBuilder(
                 config = googleConfig,
                 nonceGenerator = mock {
                     on { this.generate() } doReturn "nonce"
@@ -40,7 +40,7 @@ class GoogleAuthenticationProviderTest {
                 .build()
                 .toUri()
 
-        testSubject.start().uri.should.equal(expected)
+        testSubject.buildRedirectDetails().uri.should.equal(expected)
     }
 
 }

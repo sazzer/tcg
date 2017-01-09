@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
+import uk.co.grahamcox.tcg.authentication.AuthenticationProvider
 import uk.co.grahamcox.tcg.authentication.NonceGenerator
 import uk.co.grahamcox.tcg.authentication.ServletRedirectGenerator
 import uk.co.grahamcox.tcg.authentication.google.GoogleAuthenticationProvider
+import uk.co.grahamcox.tcg.authentication.google.GoogleAuthenticationRedirectBuilder
 import uk.co.grahamcox.tcg.authentication.google.GoogleConfig
 import uk.co.grahamcox.tcg.webapp.authentication.FakeGoogleController
 import java.net.URI
@@ -35,6 +37,14 @@ class GoogleAuthenticationConfig {
             )
 
     @Bean
-    fun googleAuthenticationProvider(googleConfig: GoogleConfig, nonceGenerator: NonceGenerator) =
-            GoogleAuthenticationProvider(googleConfig, nonceGenerator, ServletRedirectGenerator("/api/authentication/google/redirect"))
+    fun googleAuthenticationProvider(googleConfig: GoogleConfig, nonceGenerator: NonceGenerator): AuthenticationProvider {
+        val redirectGenerator = ServletRedirectGenerator("/api/authentication/google/redirect")
+        return GoogleAuthenticationProvider(
+                redirectBuilder = GoogleAuthenticationRedirectBuilder(
+                        config = googleConfig,
+                        nonceGenerator = nonceGenerator,
+                        redirectGenerator = redirectGenerator
+                )
+        )
+    }
 }
