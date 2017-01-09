@@ -1,0 +1,21 @@
+package uk.co.grahamcox.tcg.user
+
+/**
+ * DAO layer for accessing user records
+ */
+interface UserDao {
+    /**
+     * Retrieve a user by it's internal ID
+     * @param id The ID of the user
+     * @return the user, or null if no user with this internal ID is present
+     */
+    fun retrieveUserById(id: UserId) : UserModel?
+
+    /**
+     * Retrieve a user by it's ID in a third-party provider system
+     * @param provider The name of the provider
+     * @param providerId The ID of the user in the provider
+     * @return the user, or null if no user with this external ID is present
+     */
+    fun retrieveUserByProviderId(provider: String, providerId: String): UserModel?
+}
