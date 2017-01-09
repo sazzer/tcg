@@ -3,10 +3,12 @@ package uk.co.grahamcox.tcg.webapp.spring
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import uk.co.grahamcox.tcg.authentication.NonceGenerator
 import uk.co.grahamcox.tcg.authentication.ServletRedirectGenerator
 import uk.co.grahamcox.tcg.authentication.google.GoogleAuthenticationProvider
 import uk.co.grahamcox.tcg.authentication.google.GoogleConfig
+import uk.co.grahamcox.tcg.webapp.authentication.FakeGoogleController
 import java.net.URI
 
 /**
@@ -14,6 +16,10 @@ import java.net.URI
  */
 @Configuration
 class GoogleAuthenticationConfig {
+    @Bean
+    @Profile("test", "dev")
+    fun fakeGoogleService() = FakeGoogleController()
+
     @Bean
     fun googleConfig(@Value("\${authentication.google.clientId}") clientId: String,
                      @Value("\${authentication.google.clientSecret}") clientSecret: String,
