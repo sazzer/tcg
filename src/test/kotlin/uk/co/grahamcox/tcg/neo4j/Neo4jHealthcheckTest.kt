@@ -5,6 +5,8 @@ import com.nhaarman.mockito_kotlin.doThrow
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import com.winterbe.expekt.should
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
@@ -20,50 +22,35 @@ import org.springframework.boot.actuate.health.Status
  */
 @RunWith(MockitoJUnitRunner::class)
 class Neo4jHealthcheckTest {
-    /** The Neo4j Driver */
-    @Mock
-    private lateinit var driver: Driver
+    /** The embedded Neo4J */
+    @JvmField @Rule
+    val neo4jRule = EmbeddedNeo4jRule()
 
     /** The test subject */
-    @InjectMocks
     private lateinit var testSubject: Neo4jHealthcheck
+
+    /**
+     * Set up the test subject
+     */
+    @Before
+    fun setup() {
+        testSubject = Neo4jHealthcheck(neo4jRule.driver)
+    }
 
     @Test
     fun `database is up`() {
-        val result = mock<StatementResult> {
-            on { this.single() } doReturn InternalRecord(listOf("totalCount"), arrayOf(IntegerValue(0)))
-        }
-
-        val session = mock<Session> {
-            on { this.run("MATCH (n) RETURN COUNT(n) AS totalCount", kotlin.collections.mapOf()) } doReturn result
-        }
-
-        whenever(driver.session(AccessMode.READ)).thenReturn(session)
         testSubject.health().status.should.equal(Status.UP)
     }
 
     @Test
-    fun `database is down`() {
-        val session = mock<Session> {
-            on { this.run("MATCH (n) RETURN COUNT(n) AS totalCount", kotlin.collections.mapOf()) } doThrow IllegalStateException()
-        }
-
-        whenever(driver.session(AccessMode.READ)).thenReturn(session)
-        testSubject.health().status.should.equal(Status.DOWN)
+    fun `healthcheck returns number of nodes on empty database`() {
+        testSubject.health().details["nodeCount"].should.equal(0)
     }
 
-
     @Test
-    fun `healthcheck returns number of nodes`() {
-        val result = mock<StatementResult> {
-            on { this.single() } doReturn InternalRecord(listOf("totalCount"), arrayOf(IntegerValue(123)))
-        }
+    fun `healthcheck returns number of nodes on populatd database`() {
+        neo4jRule.driver.executeStatement("CREATE (n:ArbitraryNode)")
 
-        val session = mock<Session> {
-            on { this.run("MATCH (n) RETURN COUNT(n) AS totalCount", kotlin.collections.mapOf()) } doReturn result
-        }
-
-        whenever(driver.session(AccessMode.READ)).thenReturn(session)
-        testSubject.health().details["nodeCount"].should.equal(123)
+        testSubject.health().details["nodeCount"].should.equal(1)
     }
 }
