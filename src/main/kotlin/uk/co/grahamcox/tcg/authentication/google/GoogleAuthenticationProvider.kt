@@ -24,6 +24,7 @@ class GoogleAuthenticationProvider(
     }
     /**
      * Start authentication for this provider
+     * @return the details of the redirect to the provider
      */
     override fun start(): RedirectDetails {
         val nonce = nonceGenerator.generate()
@@ -40,5 +41,13 @@ class GoogleAuthenticationProvider(
 
         LOG.debug("Generated redirect URI: {}", uri)
         return RedirectDetails(uri)
+    }
+
+    /**
+     * Handle the callback from the provider after authentication has finished
+     * @param params The parameters from the provider
+     */
+    override fun handleCallback(params: Map<String, Any>) {
+        LOG.info("Callback parameters: {}", params)
     }
 }
