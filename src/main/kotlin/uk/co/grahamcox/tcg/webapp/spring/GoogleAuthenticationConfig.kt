@@ -8,10 +8,7 @@ import org.springframework.web.client.RestTemplate
 import uk.co.grahamcox.tcg.authentication.AuthenticationProvider
 import uk.co.grahamcox.tcg.authentication.NonceGenerator
 import uk.co.grahamcox.tcg.authentication.ServletRedirectGenerator
-import uk.co.grahamcox.tcg.authentication.google.GoogleAccessTokenRetriever
-import uk.co.grahamcox.tcg.authentication.google.GoogleAuthenticationProvider
-import uk.co.grahamcox.tcg.authentication.google.GoogleAuthenticationRedirectBuilder
-import uk.co.grahamcox.tcg.authentication.google.GoogleConfig
+import uk.co.grahamcox.tcg.authentication.google.*
 import uk.co.grahamcox.tcg.webapp.authentication.FakeGoogleController
 import java.net.URI
 
@@ -41,6 +38,7 @@ class GoogleAuthenticationConfig {
     @Bean
     fun googleAuthenticationProvider(googleConfig: GoogleConfig, nonceGenerator: NonceGenerator): AuthenticationProvider {
         val redirectGenerator = ServletRedirectGenerator("/api/authentication/google/redirect")
+        val restTemplate = RestTemplate()
         return GoogleAuthenticationProvider(
                 redirectBuilder = GoogleAuthenticationRedirectBuilder(
                         config = googleConfig,
@@ -50,7 +48,11 @@ class GoogleAuthenticationConfig {
                 accessTokenRetriever = GoogleAccessTokenRetriever(
                         config = googleConfig,
                         redirectGenerator = redirectGenerator,
-                        restTemplate = RestTemplate()
+                        restTemplate = restTemplate
+                ),
+                userProfileRetriever = UserProfileRetriever(
+                        config = googleConfig,
+                        restTemplate = restTemplate
                 )
         )
     }

@@ -10,7 +10,8 @@ import uk.co.grahamcox.tcg.authentication.RedirectDetails
  */
 class GoogleAuthenticationProvider(
         private val redirectBuilder: GoogleAuthenticationRedirectBuilder,
-        private val accessTokenRetriever: GoogleAccessTokenRetriever
+        private val accessTokenRetriever: GoogleAccessTokenRetriever,
+        private val userProfileRetriever: UserProfileRetriever
 ) : AuthenticationProvider {
     companion object {
         /** The logger to use */
@@ -33,6 +34,7 @@ class GoogleAuthenticationProvider(
      */
     override fun handleCallback(params: Map<String, Any>) {
         LOG.info("Callback parameters: {}", params)
-        accessTokenRetriever.retrieveAccessToken(params["code"]!!.toString())
+        val accessToken = accessTokenRetriever.retrieveAccessToken(params["code"]!!.toString())
+        userProfileRetriever.retrieveUserProfile(accessToken.accessToken)
     }
 }

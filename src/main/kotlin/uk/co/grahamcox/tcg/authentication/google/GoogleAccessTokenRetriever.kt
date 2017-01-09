@@ -25,7 +25,7 @@ class GoogleAccessTokenRetriever(
      * @param authCode The code to swap for the access token
      * @return the access token
      */
-    fun retrieveAccessToken(authCode: String): ResponseEntity<AccessTokenResponse>? {
+    fun retrieveAccessToken(authCode: String): AccessTokenResponse {
         LOG.debug("Getting access token for authorization code {}", authCode)
         val params = mapOf(
                 "code" to authCode,
@@ -48,6 +48,6 @@ class GoogleAccessTokenRetriever(
         )
 
         LOG.debug("Received token response: {}", tokenResponse)
-        return tokenResponse
+        return tokenResponse.body
     }
 }
