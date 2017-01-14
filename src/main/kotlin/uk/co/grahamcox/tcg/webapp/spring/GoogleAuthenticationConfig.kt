@@ -57,7 +57,10 @@ class GoogleAuthenticationConfig {
                         config = googleConfig,
                         restTemplate = restTemplate
                 ),
-                userRetriever = userRetriever
+                userLoader = UserLoader(
+                        userRetriever = userRetriever
+                )
+
         )
     }
 }
