@@ -3,6 +3,7 @@ package uk.co.grahamcox.tcg.authentication.google
 import org.slf4j.LoggerFactory
 import org.springframework.http.*
 import org.springframework.util.LinkedMultiValueMap
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import uk.co.grahamcox.tcg.authentication.RedirectGenerator
 
@@ -37,17 +38,22 @@ class GoogleAccessTokenRetriever(
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
 
-        val tokenResponse = restTemplate.exchange(
-                RequestEntity(
-                        LinkedMultiValueMap(params.mapValues { listOf(it.value) }),
-                        headers,
-                        HttpMethod.POST,
-                        config.tokenUrl
-                ),
-                AccessTokenResponse::class.java
-        )
+        try {
+            val tokenResponse = restTemplate.exchange(
+                    RequestEntity(
+                            LinkedMultiValueMap(params.mapValues { listOf(it.value) }),
+                            headers,
+                            HttpMethod.POST,
+                            config.tokenUrl
+                    ),
+                    AccessTokenResponse::class.java
+            )
 
-        LOG.debug("Received token response: {}", tokenResponse)
-        return tokenResponse.body
+            LOG.debug("Received token response: {}", tokenResponse)
+            return tokenResponse.body
+        } catch (e: HttpClientErrorException) {
+            LOG.warn("Failed to retrieve Access Token", e)
+            throw AccessTokenRetrievalException()
+        }
     }
 }

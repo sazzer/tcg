@@ -4,6 +4,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.RequestEntity
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 
 /**
@@ -30,16 +31,21 @@ class UserProfileRetriever(
         val headers = HttpHeaders()
         headers.add("Authorization", "Bearer ${accessToken}")
 
-        val userProfileResponse = restTemplate.exchange(
-                RequestEntity(
-                        null,
-                        headers,
-                        HttpMethod.GET,
-                        config.userProfileUrl
-                ),
-                UserProfile::class.java
-        )
-        LOG.info("Retrieved user profile details: {}", userProfileResponse)
-        return userProfileResponse.body
+        try {
+            val userProfileResponse = restTemplate.exchange(
+                    RequestEntity(
+                            null,
+                            headers,
+                            HttpMethod.GET,
+                            config.userProfileUrl
+                    ),
+                    UserProfile::class.java
+            )
+            LOG.info("Retrieved user profile details: {}", userProfileResponse)
+            return userProfileResponse.body
+        } catch (e: HttpClientErrorException) {
+            LOG.warn("Failed to retrieve User Profile", e)
+            throw UserProfileRetrievalException()
+        }
     }
 }

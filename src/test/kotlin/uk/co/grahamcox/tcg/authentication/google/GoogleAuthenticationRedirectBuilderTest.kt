@@ -11,18 +11,11 @@ import java.net.URI
  * Unit tests for [GoogleAuthenticationRedirectBuilder]
  */
 class GoogleAuthenticationRedirectBuilderTest {
-    private val googleConfig = GoogleConfig(
-            clientId = "clientId",
-            clientSecret = "clientSecret",
-            authUrlBase = URI("https://accounts.google.com/o/oauth2/v2/auth"),
-            tokenUrl = URI("https://www.googleapis.com/oauth2/v4/token"),
-            userProfileUrl = URI("https://www.googleapis.com/plus/v1/people/me")
-    )
 
     @Test
     fun `generate redirect URI`() {
         val testSubject = GoogleAuthenticationRedirectBuilder(
-                config = googleConfig,
+                config = TestData.googleConfig,
                 nonceGenerator = mock {
                     on { this.generate() } doReturn "nonce"
                 },
