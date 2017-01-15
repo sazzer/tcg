@@ -2,7 +2,10 @@ package uk.co.grahamcox.tcg.authentication.token
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.auth0.jwt.exceptions.InvalidClaimException
+import com.auth0.jwt.exceptions.SignatureVerificationException
 import org.slf4j.LoggerFactory
+import uk.co.grahamcox.tcg.user.UserId
 import java.time.Clock
 import java.time.Period
 import java.util.*
@@ -20,6 +23,9 @@ class JwtAccessTokenEncoder(private val jwtSecret: String,
         /** The logger to use */
         private val LOG = LoggerFactory.getLogger(JwtAccessTokenEncoder::class.java)
     }
+
+    /** The signing algorithm to use */
+    private val algorithm = Algorithm.HMAC512(jwtSecret)
     /**
      * Encode the given Access Token into a String
      * @param accessToken The access token to encode
@@ -37,7 +43,7 @@ class JwtAccessTokenEncoder(private val jwtSecret: String,
                 .withNotBefore(Date.from(now))
                 .withIssuedAt(Date.from(now))
                 .withJWTId(accessToken.tokenId.id)
-                .sign(Algorithm.HMAC512(jwtSecret))
+                .sign(algorithm)
 
         LOG.debug("Encoded access token {} into string {}", accessToken, signedToken)
         return signedToken
@@ -49,6 +55,28 @@ class JwtAccessTokenEncoder(private val jwtSecret: String,
      * @return the decoded access token
      */
     override fun decodeAccessToken(accessToken: String): AccessToken {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val decoded = try {
+            JWT.require(algorithm)
+                    .withIssuer(JwtAccessTokenEncoder::class.qualifiedName)
+                    .withAudience(JwtAccessTokenEncoder::class.qualifiedName)
+                    .build()
+                    .verify(accessToken)
+        } catch (e: SignatureVerificationException) {
+            LOG.warn("Access token signature verification failed", e)
+            throw InvalidAccessTokenException("Invalid access token")
+        } catch (e: InvalidClaimException) {
+            LOG.warn("Mandatory claims were missing or invalid", e)
+            throw InvalidAccessTokenException("Invalid access token")
+        }
+
+        LOG.debug("Decoded access token {} into {}", accessToken, decoded.claims)
+
+        val tokenId = decoded.id ?: throw InvalidAccessTokenException("Missing JWT ID")
+        val userId = decoded.subject ?: throw InvalidAccessTokenException("Missing Subject")
+
+        return AccessToken(
+                tokenId = TokenId(tokenId),
+                userId = UserId(userId)
+        )
     }
 }

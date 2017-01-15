@@ -13,13 +13,16 @@ import java.util.*
  */
 class JwtAccessTokenEncoderTest {
     /** The "current time" */
-    private val now = OffsetDateTime.of(2017, 1, 15, 20, 30, 0, 0, ZoneOffset.UTC).toInstant()
+    private val now = OffsetDateTime.now().withNano(0).toInstant()
     /** The clock to use */
     private val clock = Clock.fixed(now, ZoneId.of("UTC"))
 
+    /** The signing secret */
+    private val secret = "thisIsMySecret"
+
     /** The test subject */
     private val testSubject = JwtAccessTokenEncoder(
-            "thisIsMySecret",
+            secret,
             clock,
             Period.parse("P1D")
     )
@@ -43,7 +46,6 @@ class JwtAccessTokenEncoderTest {
         decoded.notBefore.should.equal(Date.from(now))
     }
 
-
     @Test
     fun `access token is correctly signed`() {
         val encoded = testSubject.encodeAccessToken(AccessToken(
@@ -51,8 +53,142 @@ class JwtAccessTokenEncoderTest {
                 userId = UserId("thisIsTheUser")
         ))
 
-        JWT.require(Algorithm.HMAC512("thisIsMySecret"))
+        JWT.require(Algorithm.HMAC512(secret))
                 .build()
                 .verify(encoded)
+    }
+
+    @Test
+    fun `decode valid access token`() {
+        val encoded = JWT.create()
+                .withIssuer(JwtAccessTokenEncoder::class.qualifiedName)
+                .withAudience(JwtAccessTokenEncoder::class.qualifiedName)
+                .withSubject("someUserId")
+                .withExpiresAt(Date.from(now.plus(Period.ofDays(1))))
+                .withNotBefore(Date.from(now))
+                .withIssuedAt(Date.from(now))
+                .withJWTId("someTokenId")
+                .sign(Algorithm.HMAC512(secret))
+
+        val accessToken = testSubject.decodeAccessToken(encoded)
+        accessToken.userId.should.equal(UserId("someUserId"))
+        accessToken.tokenId.should.equal(TokenId("someTokenId"))
+    }
+
+    @Test(expected = InvalidAccessTokenException::class)
+    fun `decode with wrong signing key`() {
+        val encoded = JWT.create()
+                .withIssuer(JwtAccessTokenEncoder::class.qualifiedName)
+                .withAudience(JwtAccessTokenEncoder::class.qualifiedName)
+                .withSubject("someUserId")
+                .withExpiresAt(Date.from(now.plus(Period.ofDays(1))))
+                .withNotBefore(Date.from(now))
+                .withIssuedAt(Date.from(now))
+                .withJWTId("someTokenId")
+                .sign(Algorithm.HMAC512("wrongKey"))
+
+        testSubject.decodeAccessToken(encoded)
+    }
+
+    @Test(expected = InvalidAccessTokenException::class)
+    fun `decode with missing token ID`() {
+        val encoded = JWT.create()
+                .withIssuer(JwtAccessTokenEncoder::class.qualifiedName)
+                .withAudience(JwtAccessTokenEncoder::class.qualifiedName)
+                .withSubject("someUserId")
+                .withExpiresAt(Date.from(now.plus(Period.ofDays(1))))
+                .withNotBefore(Date.from(now))
+                .withIssuedAt(Date.from(now))
+                .sign(Algorithm.HMAC512(secret))
+
+        testSubject.decodeAccessToken(encoded)
+    }
+
+    @Test(expected = InvalidAccessTokenException::class)
+    fun `decode with missing user ID`() {
+        val encoded = JWT.create()
+                .withIssuer(JwtAccessTokenEncoder::class.qualifiedName)
+                .withAudience(JwtAccessTokenEncoder::class.qualifiedName)
+                .withExpiresAt(Date.from(now.plus(Period.ofDays(1))))
+                .withNotBefore(Date.from(now))
+                .withIssuedAt(Date.from(now))
+                .withJWTId("someTokenId")
+                .sign(Algorithm.HMAC512(secret))
+
+        testSubject.decodeAccessToken(encoded)
+    }
+
+    @Test(expected = InvalidAccessTokenException::class)
+    fun `decode with missing issuer`() {
+        val encoded = JWT.create()
+                .withAudience(JwtAccessTokenEncoder::class.qualifiedName)
+                .withSubject("someUserId")
+                .withExpiresAt(Date.from(now.plus(Period.ofDays(1))))
+                .withNotBefore(Date.from(now))
+                .withIssuedAt(Date.from(now))
+                .withJWTId("someTokenId")
+                .sign(Algorithm.HMAC512(secret))
+
+        testSubject.decodeAccessToken(encoded)
+    }
+
+    @Test(expected = InvalidAccessTokenException::class)
+    fun `decode with wrong issuer`() {
+        val encoded = JWT.create()
+                .withIssuer("somethingWrong")
+                .withAudience(JwtAccessTokenEncoder::class.qualifiedName)
+                .withSubject("someUserId")
+                .withExpiresAt(Date.from(now.plus(Period.ofDays(1))))
+                .withNotBefore(Date.from(now))
+                .withIssuedAt(Date.from(now))
+                .withJWTId("someTokenId")
+                .sign(Algorithm.HMAC512(secret))
+
+        testSubject.decodeAccessToken(encoded)
+    }
+
+    @Test(expected = InvalidAccessTokenException::class)
+    fun `decode with missing audience`() {
+        val encoded = JWT.create()
+                .withIssuer(JwtAccessTokenEncoder::class.qualifiedName)
+                .withSubject("someUserId")
+                .withExpiresAt(Date.from(now.plus(Period.ofDays(1))))
+                .withNotBefore(Date.from(now))
+                .withIssuedAt(Date.from(now))
+                .withJWTId("someTokenId")
+                .sign(Algorithm.HMAC512(secret))
+
+        testSubject.decodeAccessToken(encoded)
+    }
+
+    @Test(expected = InvalidAccessTokenException::class)
+    fun `decode with wrong audience`() {
+        val encoded = JWT.create()
+                .withIssuer(JwtAccessTokenEncoder::class.qualifiedName)
+                .withAudience("somethingWrong")
+                .withSubject("someUserId")
+                .withExpiresAt(Date.from(now.plus(Period.ofDays(1))))
+                .withNotBefore(Date.from(now))
+                .withIssuedAt(Date.from(now))
+                .withJWTId("someTokenId")
+                .sign(Algorithm.HMAC512(secret))
+
+        testSubject.decodeAccessToken(encoded)
+    }
+
+
+    @Test(expected = InvalidAccessTokenException::class)
+    fun `decode with expired token`() {
+        val encoded = JWT.create()
+                .withIssuer(JwtAccessTokenEncoder::class.qualifiedName)
+                .withAudience(JwtAccessTokenEncoder::class.qualifiedName)
+                .withSubject("someUserId")
+                .withExpiresAt(Date.from(now.minusSeconds(1)))
+                .withNotBefore(Date.from(now))
+                .withIssuedAt(Date.from(now))
+                .withJWTId("someTokenId")
+                .sign(Algorithm.HMAC512(secret))
+
+        testSubject.decodeAccessToken(encoded)
     }
 }
