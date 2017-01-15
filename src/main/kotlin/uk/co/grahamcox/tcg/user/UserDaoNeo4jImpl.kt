@@ -5,16 +5,22 @@ import org.neo4j.driver.v1.types.Node
 import org.slf4j.LoggerFactory
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.neo4j.executeStatement
+import java.time.Clock
 import java.time.Instant
+import java.util.*
 
 /**
  * Implementation of the [UserDao] interface in terms of Neo4J
+ * @property driver The Neo4J Driver
+ * @property clock The clock to use for updating times
  */
-class UserDaoNeo4jImpl(private val driver: Driver) : UserDao {
+class UserDaoNeo4jImpl(private val driver: Driver,
+                       private val clock: Clock) : UserDao {
     companion object {
         /** The logger to use */
         private val LOG = LoggerFactory.getLogger(UserDaoNeo4jImpl::class.java)
     }
+
     /**
      * Retrieve a user by it's internal ID
      * @param id The ID of the user
@@ -45,6 +51,32 @@ class UserDaoNeo4jImpl(private val driver: Driver) : UserDao {
                 ))
     }
 
+    /**
+     * Create a new user record with the given user data
+     * @param user The user data to persist
+     * @return the persisted user model
+     */
+    override fun createUser(user: UserData): UserModel {
+        LOG.debug("Creating user with data {}", user)
+        return loadUserWithQuery(
+                "CREATE (u:User {id:{id}, version:{version}, created:{created}, updated: {updated}, name: {name}, email:{email}}) RETURN u",
+                mapOf(
+                        "id" to UUID.randomUUID().toString(),
+                        "version" to UUID.randomUUID().toString(),
+                        "created" to clock.instant().toEpochMilli(),
+                        "updated" to clock.instant().toEpochMilli(),
+                        "name" to user.name,
+                        "email" to user.email
+                )
+        ) ?: throw IllegalStateException("Failed to create user")
+    }
+
+    /**
+     * Helper to load the user returned by the given query
+     * @param query The query to execute
+     * @param parameters The parameters to the query
+     * @return the user, if any was found
+     */
     private fun loadUserWithQuery(query: String, parameters: Map<String, Any>): UserModel? {
         val userResult = driver.executeStatement(query, parameters)
         val user: UserModel? = when (userResult.hasNext()) {
@@ -55,6 +87,7 @@ class UserDaoNeo4jImpl(private val driver: Driver) : UserDao {
 
         return user
     }
+
     /**
      * Parse a given user node as a User model
      * @param node The node to parse

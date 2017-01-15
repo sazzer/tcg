@@ -4,6 +4,7 @@ import uk.co.grahamcox.tcg.model.UnknownResourceException
 
 /**
  * Standard implementation of the User Retriever
+ * @property dao The User DAO to work with
  */
 class UserRetrieverImpl(private val dao: UserDao) : UserRetriever {
     /**

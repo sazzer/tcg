@@ -18,4 +18,11 @@ interface UserDao {
      * @return the user, or null if no user with this external ID is present
      */
     fun retrieveUserByProviderId(provider: String, providerId: String): UserModel?
+
+    /**
+     * Create a new user record with the given user data
+     * @param user The user data to persist
+     * @return the persisted user model
+     */
+    fun createUser(user: UserData) : UserModel
 }

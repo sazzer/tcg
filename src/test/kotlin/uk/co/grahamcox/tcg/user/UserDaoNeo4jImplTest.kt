@@ -1,5 +1,6 @@
 package uk.co.grahamcox.tcg.user
 
+import com.nhaarman.mockito_kotlin.mock
 import com.winterbe.expekt.should
 import org.junit.Before
 import org.junit.Rule
@@ -8,7 +9,7 @@ import org.neo4j.driver.v1.AccessMode
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.neo4j.EmbeddedNeo4jRule
 import uk.co.grahamcox.tcg.neo4j.execute
-import java.time.Instant
+import java.time.*
 
 /**
  * Unit tests for [UserDaoNeo4jImpl]
@@ -18,6 +19,12 @@ class UserDaoNeo4jImplTest {
     @JvmField @Rule
     val neo4jRule = EmbeddedNeo4jRule()
 
+    /** the current time */
+    private val currentTime = OffsetDateTime.of(2017, 1, 15, 11, 52, 0, 0, ZoneOffset.UTC).toInstant()
+
+    /** The clock to use */
+    private val clock = Clock.fixed(currentTime, ZoneId.of("UTC"))
+
     /** The test subject */
     private lateinit var testSubject: UserDaoNeo4jImpl
 
@@ -26,7 +33,7 @@ class UserDaoNeo4jImplTest {
      */
     @Before
     fun setup() {
-        testSubject = UserDaoNeo4jImpl(driver = neo4jRule.driver)
+        testSubject = UserDaoNeo4jImpl(driver = neo4jRule.driver, clock = clock)
     }
 
     @Test
@@ -79,5 +86,29 @@ class UserDaoNeo4jImplTest {
                         email = "graham@grahamcox.co.uk"
                 )
         ))
+    }
+
+    @Test
+    fun `create new user`() {
+        val createUserResponse = testSubject.createUser(UserData(
+                name = "Graham Cox",
+                email = "graham@grahamcox.co.uk"
+        ))
+
+        val nodeCount = neo4jRule.driver.execute { session ->
+            session.run("""MATCH (n) RETURN COUNT(n) AS totalCount""")
+        }
+        nodeCount.single().get("totalCount").asInt().should.equal(1)
+
+        val userRecord = neo4jRule.driver.execute { session ->
+            session.run("""MATCH (u:User {id: {id}}) RETURN u""", mapOf("id" to createUserResponse.identity.id.id))
+        }
+        val user = userRecord.single().get("u")
+        user.get("id").asString().should.equal(createUserResponse.identity.id.id)
+        user.get("version").asString().should.equal(createUserResponse.identity.version)
+        user.get("created").asLong().should.equal(currentTime.toEpochMilli())
+        user.get("updated").asLong().should.equal(currentTime.toEpochMilli())
+        user.get("name").asString().should.equal("Graham Cox")
+        user.get("email").asString().should.equal("graham@grahamcox.co.uk")
     }
 }
