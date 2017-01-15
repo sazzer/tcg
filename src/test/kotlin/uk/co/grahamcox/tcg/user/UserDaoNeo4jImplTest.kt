@@ -111,4 +111,28 @@ class UserDaoNeo4jImplTest {
         user.get("name").asString().should.equal("Graham Cox")
         user.get("email").asString().should.equal("graham@grahamcox.co.uk")
     }
+
+    @Test
+    fun `create new user without email`() {
+        val createUserResponse = testSubject.createUser(UserData(
+                name = "Graham Cox",
+                email = null
+        ))
+
+        val nodeCount = neo4jRule.driver.execute { session ->
+            session.run("""MATCH (n) RETURN COUNT(n) AS totalCount""")
+        }
+        nodeCount.single().get("totalCount").asInt().should.equal(1)
+
+        val userRecord = neo4jRule.driver.execute { session ->
+            session.run("""MATCH (u:User {id: {id}}) RETURN u""", mapOf("id" to createUserResponse.identity.id.id))
+        }
+        val user = userRecord.single().get("u")
+        user.get("id").asString().should.equal(createUserResponse.identity.id.id)
+        user.get("version").asString().should.equal(createUserResponse.identity.version)
+        user.get("created").asLong().should.equal(currentTime.toEpochMilli())
+        user.get("updated").asLong().should.equal(currentTime.toEpochMilli())
+        user.get("name").asString().should.equal("Graham Cox")
+        user.get("email").isNull.should.be.`true`
+    }
 }

@@ -47,6 +47,9 @@ class UserLoaderTest {
         val testSubject = UserLoader(
                 userRetriever = mock {
                     on { this.retrieveUserByProviderId("google", "abc123") } doReturn userModel
+                },
+                userModifier = mock {
+
                 }
         )
 

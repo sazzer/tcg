@@ -1,14 +1,18 @@
 package uk.co.grahamcox.tcg.authentication.google
 
 import org.slf4j.LoggerFactory
+import uk.co.grahamcox.tcg.user.UserData
 import uk.co.grahamcox.tcg.user.UserModel
+import uk.co.grahamcox.tcg.user.UserModifier
 import uk.co.grahamcox.tcg.user.UserRetriever
 
 /**
  * Helper to load the TCG user from the Google User Profile
  * @property userRetriever The User Retriever to use
+ * @property userModifier The User Modifier to use
  */
-class UserLoader(private val userRetriever: UserRetriever) {
+class UserLoader(private val userRetriever: UserRetriever,
+                 private val userModifier: UserModifier) {
     companion object {
         /** The logger to use */
         private val LOG = LoggerFactory.getLogger(UserLoader::class.java)
@@ -21,10 +25,15 @@ class UserLoader(private val userRetriever: UserRetriever) {
      */
     fun loadUserFromProfile(userProfile: UserProfile): UserModel? {
         val userModel = userRetriever.retrieveUserByProviderId("google", userProfile.id)
-        if (userModel == null) {
+        return if (userModel == null) {
             LOG.info("Unknown user has logged in. Creating user record")
+            userModifier.createUser(UserData(
+                    name = userProfile.displayName,
+                    email = userProfile.emails.firstOrNull()?.value
+            ))
         } else {
             LOG.debug("User {} has logged in", userModel)
+            userModel
         }
         return userModel
     }

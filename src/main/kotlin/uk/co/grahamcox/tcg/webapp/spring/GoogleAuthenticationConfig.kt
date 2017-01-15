@@ -9,6 +9,7 @@ import uk.co.grahamcox.tcg.authentication.AuthenticationProvider
 import uk.co.grahamcox.tcg.authentication.NonceGenerator
 import uk.co.grahamcox.tcg.authentication.ServletRedirectGenerator
 import uk.co.grahamcox.tcg.authentication.google.*
+import uk.co.grahamcox.tcg.user.UserModifier
 import uk.co.grahamcox.tcg.user.UserRetriever
 import uk.co.grahamcox.tcg.webapp.authentication.FakeGoogleController
 import java.net.URI
@@ -39,7 +40,8 @@ class GoogleAuthenticationConfig {
     @Bean
     fun googleAuthenticationProvider(googleConfig: GoogleConfig,
                                      nonceGenerator: NonceGenerator,
-                                     userRetriever: UserRetriever): AuthenticationProvider {
+                                     userRetriever: UserRetriever,
+                                     userModifier: UserModifier): AuthenticationProvider {
         val redirectGenerator = ServletRedirectGenerator("/api/authentication/google/redirect")
         val restTemplate = RestTemplate()
         return GoogleAuthenticationProvider(
@@ -58,7 +60,8 @@ class GoogleAuthenticationConfig {
                         restTemplate = restTemplate
                 ),
                 userLoader = UserLoader(
-                        userRetriever = userRetriever
+                        userRetriever = userRetriever,
+                        userModifier = userModifier
                 )
 
         )

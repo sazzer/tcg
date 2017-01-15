@@ -77,7 +77,7 @@ class UserDaoNeo4jImpl(private val driver: Driver,
      * @param parameters The parameters to the query
      * @return the user, if any was found
      */
-    private fun loadUserWithQuery(query: String, parameters: Map<String, Any>): UserModel? {
+    private fun loadUserWithQuery(query: String, parameters: Map<String, Any?>): UserModel? {
         val userResult = driver.executeStatement(query, parameters)
         val user: UserModel? = when (userResult.hasNext()) {
             true -> parseUserNode(userResult.single().get("u").asNode())

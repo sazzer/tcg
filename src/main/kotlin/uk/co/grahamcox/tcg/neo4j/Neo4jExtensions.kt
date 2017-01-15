@@ -32,7 +32,7 @@ fun <T> Driver.execute(accessMode: AccessMode = AccessMode.READ, block: (session
  * @return the result of the statement
  */
 fun Driver.executeStatement(statement: String,
-                            parameters: Map<String, Any> = mapOf(),
+                            parameters: Map<String, Any?> = mapOf(),
                             accessMode: AccessMode = AccessMode.READ): StatementResult {
     return this.execute(accessMode) { session ->
         val statementResult = session.run(statement, parameters)
