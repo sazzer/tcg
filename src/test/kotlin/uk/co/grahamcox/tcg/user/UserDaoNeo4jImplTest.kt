@@ -135,4 +135,65 @@ class UserDaoNeo4jImplTest {
         user.get("name").asString().should.equal("Graham Cox")
         user.get("email").isNull.should.be.`true`
     }
+
+    @Test
+    fun `link user to unknown provider`() {
+        neo4jRule.driver.execute(AccessMode.WRITE) { session ->
+            session.run("""CREATE (u:User {id: "ECEE75F3-4037-4B1F-891A-C5B06546A0BC", version: "0394E84E-A3F6-4F8D-BA44-3BA845328FCE", created: 1483983699000, updated: 1483983699000, name: "Graham", email: "graham@grahamcox.co.uk"})""")
+        }
+
+        testSubject.linkUserToProvider(UserModel(
+                identity = Identity(
+                        id = UserId("ECEE75F3-4037-4B1F-891A-C5B06546A0BC"),
+                        version = "0394E84E-A3F6-4F8D-BA44-3BA845328FCE",
+                        created = Instant.ofEpochMilli(1483983699000),
+                        updated = Instant.ofEpochMilli(1483983699000)
+                ),
+                data = UserData(
+                        name = "Graham",
+                        email = "graham@grahamcox.co.uk"
+                )
+        ), "google", "123456")
+
+        val providerCount = neo4jRule.driver.execute { session ->
+            session.run("""MATCH (p:AuthenticationProvider) RETURN COUNT(p) as providerCount""")
+        }
+        providerCount.single().get("providerCount").asInt().should.equal(1)
+
+        val relationshipCount = neo4jRule.driver.execute { session ->
+            session.run("""MATCH (u:User {id: "ECEE75F3-4037-4B1F-891A-C5B06546A0BC"}) -[r:PROVIDER {id:"123456"}]-> (p:AuthenticationProvider {id:"google"}) RETURN COUNT(r) as relationshipCount""")
+        }
+        relationshipCount.single().get("relationshipCount").asInt().should.equal(1)
+    }
+
+    @Test
+    fun `link user to known provider`() {
+        neo4jRule.driver.execute(AccessMode.WRITE) { session ->
+            session.run("""CREATE (p:AuthenticationProvider {id:"google"})""")
+            session.run("""CREATE (u:User {id: "ECEE75F3-4037-4B1F-891A-C5B06546A0BC", version: "0394E84E-A3F6-4F8D-BA44-3BA845328FCE", created: 1483983699000, updated: 1483983699000, name: "Graham", email: "graham@grahamcox.co.uk"})""")
+        }
+
+        testSubject.linkUserToProvider(UserModel(
+                identity = Identity(
+                        id = UserId("ECEE75F3-4037-4B1F-891A-C5B06546A0BC"),
+                        version = "0394E84E-A3F6-4F8D-BA44-3BA845328FCE",
+                        created = Instant.ofEpochMilli(1483983699000),
+                        updated = Instant.ofEpochMilli(1483983699000)
+                ),
+                data = UserData(
+                        name = "Graham",
+                        email = "graham@grahamcox.co.uk"
+                )
+        ), "google", "123456")
+
+        val providerCount = neo4jRule.driver.execute { session ->
+            session.run("""MATCH (p:AuthenticationProvider) RETURN COUNT(p) as providerCount""")
+        }
+        providerCount.single().get("providerCount").asInt().should.equal(1)
+
+        val relationshipCount = neo4jRule.driver.execute { session ->
+            session.run("""MATCH (u:User {id: "ECEE75F3-4037-4B1F-891A-C5B06546A0BC"}) -[r:PROVIDER {id:"123456"}]-> (p:AuthenticationProvider {id:"google"}) RETURN COUNT(r) as relationshipCount""")
+        }
+        relationshipCount.single().get("relationshipCount").asInt().should.equal(1)
+    }
 }

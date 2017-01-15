@@ -72,6 +72,24 @@ class UserDaoNeo4jImpl(private val driver: Driver,
     }
 
     /**
+     * Link the given user to the given Authentication Provider using the given Provider ID
+     * @param user The User to link
+     * @param provider The provider to link it to
+     * @param providerId The ID of the User at the Provider
+     */
+    override fun linkUserToProvider(user: UserModel, provider: String, providerId: String) {
+        LOG.debug("Linking user {} to provider {} with provider ID {}", user, provider, providerId)
+        driver.executeStatement("MERGE (p:AuthenticationProvider {id:{id}})", mapOf("id" to provider))
+        driver.executeStatement("MATCH (u:User {id:{id}, version:{version}}), (p:AuthenticationProvider {id:{provider}}) CREATE (u)-[:PROVIDER {id:{providerId}}]->(p)",
+                mapOf(
+                        "id" to user.identity.id.id,
+                        "version" to user.identity.version,
+                        "provider" to provider,
+                        "providerId" to providerId
+                ))
+    }
+
+    /**
      * Helper to load the user returned by the given query
      * @param query The query to execute
      * @param parameters The parameters to the query
