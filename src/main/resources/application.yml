@@ -20,3 +20,5 @@ authentication:
         authUrlBase: https://accounts.google.com/o/oauth2/v2/auth
         tokenUrl: https://www.googleapis.com/oauth2/v4/token
         userProfileUrl: https://www.googleapis.com/plus/v1/people/me
+    accessToken:
+        signingKey: replaceThisWithARealKey
