@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
-import uk.co.grahamcox.tcg.webapp.api.demo.ApiDemoController
 import java.time.Clock
 
 /**
@@ -24,9 +23,6 @@ import java.time.Clock
 internal class Application {
     @Bean
     fun clock() = Clock.systemUTC()
-
-    @Bean
-    fun demoController() = ApiDemoController()
 }
 
 /**
