@@ -3,10 +3,7 @@ package uk.co.grahamcox.tcg.webapp.authentication
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.view.RedirectView
 import uk.co.grahamcox.tcg.authentication.AuthenticationProviderRegistry
 import uk.co.grahamcox.tcg.authentication.token.AccessTokenEncoder
@@ -24,6 +21,14 @@ class AuthenticationController(
         private val authenticationProviderRegistry: AuthenticationProviderRegistry,
         private val accessTokenGenerator: AccessTokenGenerator,
         private val accessTokenEncoder: AccessTokenEncoder) {
+
+    /**
+     * Handle when the Authentication Provider is unknown
+     */
+    @ExceptionHandler(UnknownProviderException::class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    fun unknownProvider() {}
+    
     /**
      * Start authentication with a particular provider
      * @param provider The provider to start authentication with
@@ -31,12 +36,10 @@ class AuthenticationController(
      */
     @RequestMapping("/{provider}/start")
     fun start(@PathVariable provider: String): Any {
-        val authenticationProvider = authenticationProviderRegistry.getProvider(provider)
-        return if (authenticationProvider != null) {
-            RedirectView(authenticationProvider.start().uri.toString())
-        } else {
-            ResponseEntity<Void>(HttpStatus.NOT_FOUND)
-        }
+        val authenticationProvider =
+                authenticationProviderRegistry.getProvider(provider) ?: throw UnknownProviderException()
+
+        return RedirectView(authenticationProvider.start().uri.toString())
     }
 
     /**
@@ -48,15 +51,11 @@ class AuthenticationController(
     @RequestMapping("/{provider}/redirect")
     @ResponseBody
     fun callback(@PathVariable provider: String, @RequestParam params: Map<String, Any>): Any {
-        val authenticationProvider = authenticationProviderRegistry.getProvider(provider)
+        val authenticationProvider =
+                authenticationProviderRegistry.getProvider(provider) ?: throw UnknownProviderException()
 
-        return if (authenticationProvider != null) {
-            val user = authenticationProvider.handleCallback(params)
-            val accessToken = accessTokenGenerator.generateAccessToken(user)
-            accessTokenEncoder.encodeAccessToken(accessToken)
-
-        } else {
-            ResponseEntity<Void>(HttpStatus.NOT_FOUND)
-        }
+        val user = authenticationProvider.handleCallback(params)
+        val accessToken = accessTokenGenerator.generateAccessToken(user)
+        return accessTokenEncoder.encodeAccessToken(accessToken)
     }
 }
