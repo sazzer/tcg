@@ -26,7 +26,7 @@ class UserLoader(private val userRetriever: UserRetriever,
      * @param userProfile The Google User Profile
      * @return the user
      */
-    fun loadUserFromProfile(userProfile: UserProfile): UserModel? {
+    fun loadUserFromProfile(userProfile: UserProfile): UserModel {
         val userModel = userRetriever.retrieveUserByProviderId(GOOGLE_AUTHENTICATION_PROVIDER_NAME, userProfile.id)
         return if (userModel == null) {
             LOG.info("Unknown user has logged in. Creating user record")

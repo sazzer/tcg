@@ -22,3 +22,4 @@ authentication:
         userProfileUrl: https://www.googleapis.com/plus/v1/people/me
     accessToken:
         signingKey: replaceThisWithARealKey
+        expiry: PT1H

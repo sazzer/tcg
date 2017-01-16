@@ -9,7 +9,7 @@ interface AccessTokenEncoder {
      * @param accessToken The access token to encode
      * @return the encoded access token
      */
-    fun encodeAccessToken(accessToken: AccessToken): String
+    fun encodeAccessToken(accessToken: AccessToken): EncodedAccessToken
 
     /**
      * Decode the given Access Token from a String

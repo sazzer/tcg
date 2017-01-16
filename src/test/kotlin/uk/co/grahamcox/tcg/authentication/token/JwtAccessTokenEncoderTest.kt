@@ -34,9 +34,9 @@ class JwtAccessTokenEncoderTest {
                 userId = UserId("thisIsTheUser")
         ))
 
-        encoded.should.not.be.empty
+        encoded.expires.should.equal(now.plus(Period.ofDays(1)))
 
-        val decoded = JWT.decode(encoded)
+        val decoded = JWT.decode(encoded.accessToken)
         decoded.id.should.equal("thisIsTheToken")
         decoded.audience.should.equal(listOf("uk.co.grahamcox.tcg.authentication.token.JwtAccessTokenEncoder"))
         decoded.issuer.should.equal("uk.co.grahamcox.tcg.authentication.token.JwtAccessTokenEncoder")
@@ -55,7 +55,7 @@ class JwtAccessTokenEncoderTest {
 
         JWT.require(Algorithm.HMAC512(secret))
                 .build()
-                .verify(encoded)
+                .verify(encoded.accessToken)
     }
 
     @Test

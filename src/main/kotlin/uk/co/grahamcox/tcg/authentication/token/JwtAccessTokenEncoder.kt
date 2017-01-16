@@ -7,7 +7,7 @@ import com.auth0.jwt.exceptions.SignatureVerificationException
 import org.slf4j.LoggerFactory
 import uk.co.grahamcox.tcg.user.UserId
 import java.time.Clock
-import java.time.Period
+import java.time.temporal.TemporalAmount
 import java.util.*
 
 /**
@@ -18,7 +18,7 @@ import java.util.*
  */
 class JwtAccessTokenEncoder(private val jwtSecret: String,
                             private val clock: Clock,
-                            private val expiry: Period) : AccessTokenEncoder {
+                            private val expiry: TemporalAmount) : AccessTokenEncoder {
     companion object {
         /** The logger to use */
         private val LOG = LoggerFactory.getLogger(JwtAccessTokenEncoder::class.java)
@@ -31,7 +31,7 @@ class JwtAccessTokenEncoder(private val jwtSecret: String,
      * @param accessToken The access token to encode
      * @return the encoded access token
      */
-    override fun encodeAccessToken(accessToken: AccessToken): String {
+    override fun encodeAccessToken(accessToken: AccessToken): EncodedAccessToken {
         val now = clock.instant()
         val expires = now.plus(expiry)
 
@@ -46,7 +46,10 @@ class JwtAccessTokenEncoder(private val jwtSecret: String,
                 .sign(algorithm)
 
         LOG.debug("Encoded access token {} into string {}", accessToken, signedToken)
-        return signedToken
+        return EncodedAccessToken(
+                accessToken = signedToken,
+                expires = expires
+        )
     }
 
     /**

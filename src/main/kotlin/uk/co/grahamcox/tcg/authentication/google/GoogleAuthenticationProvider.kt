@@ -3,6 +3,7 @@ package uk.co.grahamcox.tcg.authentication.google
 import org.slf4j.LoggerFactory
 import uk.co.grahamcox.tcg.authentication.AuthenticationProvider
 import uk.co.grahamcox.tcg.authentication.RedirectDetails
+import uk.co.grahamcox.tcg.user.UserModel
 
 /**
  * Implementation of the Authentication Provider for use against Google
@@ -35,13 +36,15 @@ class GoogleAuthenticationProvider(
     /**
      * Handle the callback from the provider after authentication has finished
      * @param params The parameters from the provider
+     * @return the logged in user
      */
-    override fun handleCallback(params: Map<String, Any>) {
+    override fun handleCallback(params: Map<String, Any>): UserModel {
         LOG.info("Callback parameters: {}", params)
         val accessToken = accessTokenRetriever.retrieveAccessToken(params["code"]!!.toString())
         val userProfile = userProfileRetriever.retrieveUserProfile(accessToken.accessToken)
         val userModel = userLoader.loadUserFromProfile(userProfile)
 
         LOG.debug("User {} has logged in", userModel)
+        return userModel
     }
 }

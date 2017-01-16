@@ -1,5 +1,7 @@
 package uk.co.grahamcox.tcg.authentication
 
+import uk.co.grahamcox.tcg.user.UserModel
+
 /**
  * Interface describing an Authentication Provider
  */
@@ -13,6 +15,7 @@ interface AuthenticationProvider {
     /**
      * Handle the callback from the provider after authentication has finished
      * @param params The parameters from the provider
+     * @return the logged in user
      */
-    fun handleCallback(params: Map<String, Any>)
+    fun handleCallback(params: Map<String, Any>): UserModel
 }
