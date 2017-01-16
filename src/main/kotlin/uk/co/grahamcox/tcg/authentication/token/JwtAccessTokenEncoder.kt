@@ -3,6 +3,7 @@ package uk.co.grahamcox.tcg.authentication.token
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.InvalidClaimException
+import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.exceptions.SignatureVerificationException
 import org.slf4j.LoggerFactory
 import uk.co.grahamcox.tcg.user.UserId
@@ -66,10 +67,13 @@ class JwtAccessTokenEncoder(private val jwtSecret: String,
                     .verify(accessToken)
         } catch (e: SignatureVerificationException) {
             LOG.warn("Access token signature verification failed", e)
-            throw InvalidAccessTokenException("Invalid access token")
+            throw InvalidAccessTokenException("Invalid access token signature")
         } catch (e: InvalidClaimException) {
             LOG.warn("Mandatory claims were missing or invalid", e)
             throw InvalidAccessTokenException("Invalid access token")
+        } catch (e: JWTDecodeException) {
+            LOG.warn("Malformed access token", e)
+            throw InvalidAccessTokenException("Malformed access token")
         }
 
         LOG.debug("Decoded access token {} into {}", accessToken, decoded.claims)

@@ -91,6 +91,11 @@ class JwtAccessTokenEncoderTest {
     }
 
     @Test(expected = InvalidAccessTokenException::class)
+    fun `decode malformed access token`() {
+        testSubject.decodeAccessToken("I'm Not a JWT")
+    }
+
+    @Test(expected = InvalidAccessTokenException::class)
     fun `decode with missing token ID`() {
         val encoded = JWT.create()
                 .withIssuer(JwtAccessTokenEncoder::class.qualifiedName)

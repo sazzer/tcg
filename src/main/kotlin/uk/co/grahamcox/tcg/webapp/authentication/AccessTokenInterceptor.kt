@@ -1,17 +1,21 @@
 package uk.co.grahamcox.tcg.webapp.authentication
 
 import org.slf4j.LoggerFactory
+import org.springframework.http.HttpStatus
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.ModelAndView
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter
+import uk.co.grahamcox.tcg.authentication.token.AccessTokenEncoder
+import uk.co.grahamcox.tcg.authentication.token.InvalidAccessTokenException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 /**
  * Handler Interceptor to decode the Access Token from the request - if there is one - and make
  * it available
+ * @property accessTokenEncoder The means to decode the access token
  */
-class AccessTokenInterceptor : HandlerInterceptorAdapter() {
+class AccessTokenInterceptor(private val accessTokenEncoder: AccessTokenEncoder) : HandlerInterceptorAdapter() {
     companion object {
         /** The logger to use */
         private val LOG = LoggerFactory.getLogger(AccessTokenInterceptor::class.java)
@@ -30,14 +34,29 @@ class AccessTokenInterceptor : HandlerInterceptorAdapter() {
      * @return True if processing is to continue. False if not
      */
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any?): Boolean {
-        if (handler != null && handler is HandlerMethod && handler.beanType != FakeGoogleController::class.java) {
+        val response = if (handler != null && handler is HandlerMethod && handler.beanType != FakeGoogleController::class.java) {
             val authorizationHeader = request.getHeader("Authorization") ?: ""
             if (authorizationHeader.startsWith(HEADER_PREFIX)) {
                 val token = authorizationHeader.substring(HEADER_PREFIX.length)
-                LOG.info("Request with bearer token {} for handler {}", token, handler)
+                LOG.debug("Request with bearer token {} for handler {}", token, handler)
+                try {
+                    val accessToken = accessTokenEncoder.decodeAccessToken(token)
+                    LOG.debug("Received valid access token: {}", accessToken)
+                    true
+                } catch (e: InvalidAccessTokenException) {
+                    response.sendError(HttpStatus.FORBIDDEN.value(), "Invalid Access Token")
+                    false
+                }
+            } else {
+                LOG.trace("Authorization header not present or not a Bearer token: {}", authorizationHeader)
+                true
             }
+        } else {
+            LOG.trace("Not checking access tokens for this handler: {}", handler)
+            true
         }
-        return true;
+
+        return response
     }
 
     override fun postHandle(request: HttpServletRequest?, response: HttpServletResponse?, handler: Any?, modelAndView: ModelAndView?) {

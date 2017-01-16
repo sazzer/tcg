@@ -49,5 +49,5 @@ class AuthenticationConfig {
     fun nonceGenerator() = UuidNonceGenerator()
 
     @Bean
-    fun accessTokenInterceptor() = AccessTokenInterceptor()
+    fun accessTokenInterceptor(accessTokenEncoder: AccessTokenEncoder) = AccessTokenInterceptor(accessTokenEncoder)
 }
