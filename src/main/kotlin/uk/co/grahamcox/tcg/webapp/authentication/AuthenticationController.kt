@@ -1,13 +1,15 @@
 package uk.co.grahamcox.tcg.webapp.authentication
 
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.ModelAndView
 import org.springframework.web.servlet.view.RedirectView
 import uk.co.grahamcox.tcg.authentication.AuthenticationProviderRegistry
 import uk.co.grahamcox.tcg.authentication.token.AccessTokenEncoder
 import uk.co.grahamcox.tcg.authentication.token.AccessTokenGenerator
+import uk.co.grahamcox.tcg.authentication.token.EncodedAccessToken
 
 /**
  * Controller with which we can manage authentication
@@ -28,7 +30,7 @@ class AuthenticationController(
     @ExceptionHandler(UnknownProviderException::class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     fun unknownProvider() {}
-    
+
     /**
      * Start authentication with a particular provider
      * @param provider The provider to start authentication with
@@ -48,14 +50,26 @@ class AuthenticationController(
      * @param params The query parameters from the provider
      * @return An access token, or a 404 Not Found if the provider isn't one we support.
      */
-    @RequestMapping("/{provider}/redirect")
+    @RequestMapping("/{provider}/redirect", produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     @ResponseBody
-    fun callback(@PathVariable provider: String, @RequestParam params: Map<String, Any>): Any {
+    fun callbackAsJson(@PathVariable provider: String, @RequestParam params: Map<String, Any>): EncodedAccessToken {
         val authenticationProvider =
                 authenticationProviderRegistry.getProvider(provider) ?: throw UnknownProviderException()
 
         val user = authenticationProvider.handleCallback(params)
         val accessToken = accessTokenGenerator.generateAccessToken(user)
         return accessTokenEncoder.encodeAccessToken(accessToken)
+    }
+
+    /**
+     * Handle the redirect back to us from the external provider
+     * @param provider The provider we are handling this for
+     * @param params The query parameters from the provider
+     * @return An access token, or a 404 Not Found if the provider isn't one we support.
+     */
+    @RequestMapping("/{provider}/redirect", produces = arrayOf(MediaType.TEXT_HTML_VALUE))
+    fun callbackAsHtml(@PathVariable provider: String, @RequestParam params: Map<String, Any>): ModelAndView {
+        val accessToken = callbackAsJson(provider, params)
+        return ModelAndView("accessToken", mapOf("accessToken" to accessToken))
     }
 }
