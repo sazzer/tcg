@@ -10,7 +10,7 @@ import uk.co.grahamcox.tcg.webapp.authentication.AccessTokenInterceptor
  * Configuration for the underlying Spring WebMVC
  */
 @Configuration
-class WebMvcConfig : WebMvcConfigurerAdapter() {
+open class WebMvcConfig : WebMvcConfigurerAdapter() {
     /** The Access Token Interceptor */
     @Autowired
     private lateinit var accessTokenInterceptor: AccessTokenInterceptor

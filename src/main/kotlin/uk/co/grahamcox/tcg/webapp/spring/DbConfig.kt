@@ -13,7 +13,7 @@ import uk.co.grahamcox.tcg.neo4j.Neo4jHealthcheck
  * Spring configuration for the Neo4j database
  */
 @Configuration
-class DbConfig {
+open class DbConfig {
     /** The shell port */
     private val shellPort = 5555
     /** The Bolt port */
@@ -23,14 +23,14 @@ class DbConfig {
      * Start up an embedded Neo4j Database
      */
     @Bean("neo4jDatabase")
-    fun neo4jDatabase() = EmbeddedNeo4j(shellPort, boltPort)
+    open fun neo4jDatabase() = EmbeddedNeo4j(shellPort, boltPort)
 
     /**
      * The Neo4J Client
      */
     @Bean("neo4jClient")
     @DependsOn("neo4jDatabase")
-    fun neo4jClient(): Driver {
+    open fun neo4jClient(): Driver {
         val config = Config.build().withEncryptionLevel(Config.EncryptionLevel.NONE)
         return GraphDatabase.driver("bolt://localhost:${boltPort}", config.toConfig())
     }
@@ -39,5 +39,5 @@ class DbConfig {
      * The Neo4j Healthchecks
      */
     @Bean
-    fun neo4jHealthchecks(@Autowired driver: Driver) = Neo4jHealthcheck(driver)
+    open fun neo4jHealthchecks(@Autowired driver: Driver) = Neo4jHealthcheck(driver)
 }

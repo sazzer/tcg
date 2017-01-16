@@ -18,13 +18,13 @@ import java.net.URI
  * Spring Configuration for Google Authentication
  */
 @Configuration
-class GoogleAuthenticationConfig {
+open class GoogleAuthenticationConfig {
     @Bean
     @Profile("test", "dev")
-    fun fakeGoogleService() = FakeGoogleController()
+    open fun fakeGoogleService() = FakeGoogleController()
 
     @Bean
-    fun googleConfig(@Value("\${authentication.google.clientId}") clientId: String,
+    open fun googleConfig(@Value("\${authentication.google.clientId}") clientId: String,
                      @Value("\${authentication.google.clientSecret}") clientSecret: String,
                      @Value("\${authentication.google.authUrlBase}") authUrlBase: String,
                      @Value("\${authentication.google.tokenUrl}") tokenUrl: String,
@@ -38,7 +38,7 @@ class GoogleAuthenticationConfig {
             )
 
     @Bean
-    fun googleAuthenticationProvider(googleConfig: GoogleConfig,
+    open fun googleAuthenticationProvider(googleConfig: GoogleConfig,
                                      nonceGenerator: NonceGenerator,
                                      userRetriever: UserRetriever,
                                      userModifier: UserModifier): AuthenticationProvider {

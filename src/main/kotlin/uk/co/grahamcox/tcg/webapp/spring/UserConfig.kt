@@ -13,13 +13,13 @@ import java.time.Clock
  * Configuration for working with users
  */
 @Configuration
-class UserConfig {
+open class UserConfig {
     @Bean
-    fun userDao(driver: Driver, clock: Clock) = UserDaoNeo4jImpl(driver, clock)
+    open fun userDao(driver: Driver, clock: Clock) = UserDaoNeo4jImpl(driver, clock)
 
     @Bean
-    fun userRetriever(userDao: UserDao) = UserRetrieverImpl(userDao)
+    open fun userRetriever(userDao: UserDao) = UserRetrieverImpl(userDao)
 
     @Bean
-    fun userModifier(userDao: UserDao) = UserModifierImpl(userDao)
+    open fun userModifier(userDao: UserDao) = UserModifierImpl(userDao)
 }

@@ -1,4 +1,4 @@
-package uk.co.grahamcox.tcg.webapp.cucumber.steps
+package uk.co.grahamcox.tcg.webapp.acceptance
 
 import org.slf4j.LoggerFactory
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -24,9 +24,11 @@ class Requester(private val restTemplate: TestRestTemplate) {
     /**
      * Make a GET request to the given URI
      * @param uri The URI
+     * @return the last response
      */
-    fun get(uri: String) {
+    fun get(uri: String): ResponseEntity<String> {
         lastResponseEntity = restTemplate.getForEntity(uri, String::class.java)
         LOG.debug("Request to {} returned response {}", uri, lastResponseEntity)
+        return lastResponseEntity!!
     }
 }

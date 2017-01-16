@@ -20,9 +20,9 @@ import java.time.Clock
         UserConfig::class,
         AuthenticationConfig::class
 )
-internal class Application {
+open internal class Application {
     @Bean
-    fun clock() = Clock.systemUTC()
+    open fun clock() = Clock.systemUTC()
 }
 
 /**

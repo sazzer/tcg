@@ -20,9 +20,9 @@ import java.time.Duration
  */
 @Configuration
 @Import(GoogleAuthenticationConfig::class)
-class AuthenticationConfig {
+open class AuthenticationConfig {
     @Bean
-    fun accessTokenEncoder(clock: Clock,
+    open fun accessTokenEncoder(clock: Clock,
                            @Value("\${authentication.accessToken.signingKey}") jwtSecret: String,
                            @Value("\${authentication.accessToken.expiry}") expiry: String) = JwtAccessTokenEncoder(
             jwtSecret = jwtSecret,
@@ -30,7 +30,7 @@ class AuthenticationConfig {
             expiry = Duration.parse(expiry))
 
     @Bean
-    fun authenticationController(authenticationProviderRegistry: AuthenticationProviderRegistry,
+    open fun authenticationController(authenticationProviderRegistry: AuthenticationProviderRegistry,
                                  accessTokenEncoder: AccessTokenEncoder) =
             AuthenticationController(
                     authenticationProviderRegistry = authenticationProviderRegistry,
@@ -38,7 +38,7 @@ class AuthenticationConfig {
                     accessTokenEncoder = accessTokenEncoder)
 
     @Bean
-    fun authenticationProviderRegistry(google: GoogleAuthenticationProvider) =
+    open fun authenticationProviderRegistry(google: GoogleAuthenticationProvider) =
             AuthenticationProviderRegistry(
                     mapOf(
                             "google" to google
@@ -46,8 +46,8 @@ class AuthenticationConfig {
             )
 
     @Bean
-    fun nonceGenerator() = UuidNonceGenerator()
+    open fun nonceGenerator() = UuidNonceGenerator()
 
     @Bean
-    fun accessTokenInterceptor(accessTokenEncoder: AccessTokenEncoder) = AccessTokenInterceptor(accessTokenEncoder)
+    open fun accessTokenInterceptor(accessTokenEncoder: AccessTokenEncoder) = AccessTokenInterceptor(accessTokenEncoder)
 }
