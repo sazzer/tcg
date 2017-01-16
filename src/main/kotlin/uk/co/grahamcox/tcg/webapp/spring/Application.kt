@@ -16,6 +16,7 @@ import java.time.Clock
 @Configuration
 @EnableAdminServer
 @Import(
+        WebMvcConfig::class,
         DbConfig::class,
         UserConfig::class,
         AuthenticationConfig::class

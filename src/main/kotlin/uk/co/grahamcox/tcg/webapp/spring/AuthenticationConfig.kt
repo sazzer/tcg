@@ -10,6 +10,7 @@ import uk.co.grahamcox.tcg.authentication.google.GoogleAuthenticationProvider
 import uk.co.grahamcox.tcg.authentication.token.AccessTokenEncoder
 import uk.co.grahamcox.tcg.authentication.token.AccessTokenGeneratorImpl
 import uk.co.grahamcox.tcg.authentication.token.JwtAccessTokenEncoder
+import uk.co.grahamcox.tcg.webapp.authentication.AccessTokenInterceptor
 import uk.co.grahamcox.tcg.webapp.authentication.AuthenticationController
 import java.time.Clock
 import java.time.Duration
@@ -46,4 +47,7 @@ class AuthenticationConfig {
 
     @Bean
     fun nonceGenerator() = UuidNonceGenerator()
+
+    @Bean
+    fun accessTokenInterceptor() = AccessTokenInterceptor()
 }
