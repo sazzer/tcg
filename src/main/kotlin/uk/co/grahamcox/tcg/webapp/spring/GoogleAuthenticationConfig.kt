@@ -25,10 +25,10 @@ open class GoogleAuthenticationConfig {
 
     @Bean
     open fun googleConfig(@Value("\${authentication.google.clientId}") clientId: String,
-                     @Value("\${authentication.google.clientSecret}") clientSecret: String,
-                     @Value("\${authentication.google.authUrlBase}") authUrlBase: String,
-                     @Value("\${authentication.google.tokenUrl}") tokenUrl: String,
-                     @Value("\${authentication.google.userProfileUrl}") userProfileUrl: String) =
+                          @Value("\${authentication.google.clientSecret}") clientSecret: String,
+                          @Value("\${authentication.google.authUrlBase}") authUrlBase: String,
+                          @Value("\${authentication.google.tokenUrl}") tokenUrl: String,
+                          @Value("\${authentication.google.userProfileUrl}") userProfileUrl: String) =
             GoogleConfig(
                     clientId = clientId,
                     clientSecret = clientSecret,
@@ -39,11 +39,11 @@ open class GoogleAuthenticationConfig {
 
     @Bean
     open fun googleAuthenticationProvider(googleConfig: GoogleConfig,
-                                     nonceGenerator: NonceGenerator,
-                                     userRetriever: UserRetriever,
-                                     userModifier: UserModifier): AuthenticationProvider {
+                                          nonceGenerator: NonceGenerator,
+                                          userRetriever: UserRetriever,
+                                          userModifier: UserModifier,
+                                          restTemplate: RestTemplate): AuthenticationProvider {
         val redirectGenerator = ServletRedirectGenerator("/api/authentication/google/redirect")
-        val restTemplate = RestTemplate()
         return GoogleAuthenticationProvider(
                 redirectBuilder = GoogleAuthenticationRedirectBuilder(
                         config = googleConfig,

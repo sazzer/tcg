@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
+import org.springframework.web.client.RestTemplate
 import java.time.Clock
 
 /**
@@ -23,6 +24,9 @@ import java.time.Clock
 open internal class Application {
     @Bean
     open fun clock() = Clock.systemUTC()
+
+    @Bean
+    open fun restTemplate() = RestTemplate()
 }
 
 /**
