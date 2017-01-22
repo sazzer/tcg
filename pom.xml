@@ -36,7 +36,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- Dependency Versions -->
-        <version.jackson>2.8.5</version.jackson>
+        <version.jackson>2.8.6</version.jackson>
         <version.jdk>1.8</version.jdk>
         <version.junit>4.12</version.junit>
         <version.kotlin>1.1-M04</version.kotlin>
@@ -51,7 +51,7 @@
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>1.1.8</version>
+                <version>1.1.9</version>
             </dependency>
             <dependency>
                 <groupId>com.auth0</groupId>
@@ -91,7 +91,7 @@
             <dependency>
                 <groupId>com.nhaarman</groupId>
                 <artifactId>mockito-kotlin</artifactId>
-                <version>1.1.0</version>
+                <version>1.2.0</version>
             </dependency>
             <dependency>
                 <groupId>com.winterbe</groupId>
@@ -173,7 +173,7 @@
             <dependency>
                 <groupId>org.neo4j.driver</groupId>
                 <artifactId>neo4j-java-driver</artifactId>
-                <version>1.1.0</version>
+                <version>1.1.1</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
