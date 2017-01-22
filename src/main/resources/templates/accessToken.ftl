@@ -5,6 +5,7 @@
 </head>
 <body>
 <div class="accessToken">Access Token: ${accessToken.accessToken}</div>
+<div class="userId">User ID: ${accessToken.userId}</div>
 <div class="expires">Expires At: ${accessToken.expires}</div>
 <script type="text/javascript">
 

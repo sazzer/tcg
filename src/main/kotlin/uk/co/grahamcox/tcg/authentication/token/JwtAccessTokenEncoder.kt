@@ -49,6 +49,7 @@ class JwtAccessTokenEncoder(private val jwtSecret: String,
         LOG.debug("Encoded access token {} into string {}", accessToken, signedToken)
         return EncodedAccessToken(
                 accessToken = signedToken,
+                userId = accessToken.userId.id,
                 expires = expires
         )
     }

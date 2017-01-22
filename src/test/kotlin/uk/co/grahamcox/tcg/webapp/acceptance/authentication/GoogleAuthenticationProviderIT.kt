@@ -62,6 +62,7 @@ class GoogleAuthenticationProviderIT : AcceptanceTestBase() {
         )).let { response ->
             response.statusCode.should.equal(HttpStatus.OK)
             JsonPath.read<String>(response.body, "$.accessToken").should.not.be.empty
+            JsonPath.read<String>(response.body, "$.userId").should.not.be.empty
             JsonPath.read<String>(response.body, "$.expires").should.not.be.empty
         }
     }

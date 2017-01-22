@@ -35,6 +35,7 @@ class JwtAccessTokenEncoderTest {
         ))
 
         encoded.expires.should.equal(now.plus(Period.ofDays(1)))
+        encoded.userId.should.equal("thisIsTheUser")
 
         val decoded = JWT.decode(encoded.accessToken)
         decoded.id.should.equal("thisIsTheToken")
