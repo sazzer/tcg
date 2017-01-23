@@ -39,6 +39,10 @@ class GoogleAuthenticationProviderIT : AcceptanceTestBase() {
     @Autowired
     private lateinit var neo4j: Driver
 
+    /** The User Seeder */
+    @Autowired
+    private lateinit var userSeeder: UserSeeder
+
     @Test
     fun `start authentication with Google`() {
         requester.get("/api/authentication/google/start").let { response ->
@@ -76,6 +80,30 @@ class GoogleAuthenticationProviderIT : AcceptanceTestBase() {
                 val userRecord = statementResponse.single().get("u").asNode()
                 userRecord.get("name").asString().should.equal("Graham Cox")
                 userRecord.get("email").asString().should.equal("graham@grahamcox.co.uk")
+            }
+        }
+    }
+
+    @Test
+    fun `Handle callback after authentication of known user with Google`() {
+        userSeeder.createUser("Test User", "test@example.com", mapOf("google" to "1234567890"))
+        expectAccessTokenRequest("abc123", "thisIsMyAccessToken")
+        expectUserProfileRequest("thisIsMyAccessToken", "1234567890")
+
+        requester.get("/api/authentication/google/redirect", mapOf(
+                "state" to "theState",
+                "code" to "abc123"
+        )).let { response ->
+            response.statusCode.should.equal(HttpStatus.OK)
+            JsonPath.read<String>(response.body, "$.accessToken").should.not.be.empty
+            val userId = JsonPath.read<String>(response.body, "$.userId")
+            userId.should.not.be.empty
+            JsonPath.read<String>(response.body, "$.expires").should.not.be.empty
+
+            neo4j.executeStatement("MATCH (u:User {id:{id}}) RETURN u", mapOf("id" to userId)).let { statementResponse ->
+                val userRecord = statementResponse.single().get("u").asNode()
+                userRecord.get("name").asString().should.equal("Test User")
+                userRecord.get("email").asString().should.equal("test@example.com")
             }
         }
     }

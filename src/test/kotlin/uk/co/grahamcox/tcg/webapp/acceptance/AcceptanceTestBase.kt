@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener
 import org.springframework.test.context.web.ServletTestExecutionListener
+import org.springframework.test.web.client.MockRestServiceServer
 import uk.co.grahamcox.tcg.neo4j.executeStatement
 import uk.co.grahamcox.tcg.webapp.spring.Application
 
@@ -42,6 +43,16 @@ open class AcceptanceTestBase {
     @Autowired
     private lateinit var driver: Driver
 
+    /** The Mock Server to use */
+    @Autowired
+    private lateinit var mockServer: MockRestServiceServer
+
+    /** Reset the Mock Server before each test */
+    @Before
+    fun resetMockServer() {
+        mockServer.reset()
+    }
+    
     /**
      * Reset the database before each test
      */
