@@ -11,6 +11,7 @@ import uk.co.grahamcox.tcg.authentication.token.AccessTokenEncoder
 import uk.co.grahamcox.tcg.authentication.token.AccessTokenGeneratorImpl
 import uk.co.grahamcox.tcg.authentication.token.JwtAccessTokenEncoder
 import uk.co.grahamcox.tcg.webapp.authentication.AccessTokenInterceptor
+import uk.co.grahamcox.tcg.webapp.authentication.AccessTokenStore
 import uk.co.grahamcox.tcg.webapp.authentication.AuthenticationController
 import java.time.Clock
 import java.time.Duration
@@ -49,5 +50,9 @@ open class AuthenticationConfig {
     open fun nonceGenerator() = UuidNonceGenerator()
 
     @Bean
-    open fun accessTokenInterceptor(accessTokenEncoder: AccessTokenEncoder) = AccessTokenInterceptor(accessTokenEncoder)
+    open fun accessTokenStore() = AccessTokenStore()
+
+    @Bean
+    open fun accessTokenInterceptor(accessTokenEncoder: AccessTokenEncoder,
+                                    accessTokenStore: AccessTokenStore) = AccessTokenInterceptor(accessTokenEncoder, accessTokenStore)
 }

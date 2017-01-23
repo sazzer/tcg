@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.ModelAndView
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter
+import uk.co.grahamcox.tcg.authentication.token.AccessToken
 import uk.co.grahamcox.tcg.authentication.token.AccessTokenEncoder
 import uk.co.grahamcox.tcg.authentication.token.InvalidAccessTokenException
 import javax.servlet.http.HttpServletRequest
@@ -15,10 +16,13 @@ import javax.servlet.http.HttpServletResponse
  * it available
  * @property accessTokenEncoder The means to decode the access token
  */
-class AccessTokenInterceptor(private val accessTokenEncoder: AccessTokenEncoder) : HandlerInterceptorAdapter() {
+class AccessTokenInterceptor(private val accessTokenEncoder: AccessTokenEncoder,
+                             private val accessTokenStore: AccessTokenStore) :
+        HandlerInterceptorAdapter() {
     companion object {
         /** The logger to use */
         private val LOG = LoggerFactory.getLogger(AccessTokenInterceptor::class.java)
+        /** The prefix to the Authorization header to look for */
         private val HEADER_PREFIX = "Bearer "
     }
 
@@ -34,7 +38,8 @@ class AccessTokenInterceptor(private val accessTokenEncoder: AccessTokenEncoder)
      * @return True if processing is to continue. False if not
      */
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any?): Boolean {
-        val response = if (handler != null && handler is HandlerMethod && handler.beanType != FakeGoogleController::class.java) {
+        accessTokenStore.remove()
+        return if (handler != null && handler is HandlerMethod && handler.beanType != FakeGoogleController::class.java) {
             val authorizationHeader = request.getHeader("Authorization") ?: ""
             if (authorizationHeader.startsWith(HEADER_PREFIX)) {
                 val token = authorizationHeader.substring(HEADER_PREFIX.length)
@@ -42,6 +47,7 @@ class AccessTokenInterceptor(private val accessTokenEncoder: AccessTokenEncoder)
                 try {
                     val accessToken = accessTokenEncoder.decodeAccessToken(token)
                     LOG.debug("Received valid access token: {}", accessToken)
+                    accessTokenStore.set(accessToken)
                     true
                 } catch (e: InvalidAccessTokenException) {
                     response.sendError(HttpStatus.FORBIDDEN.value(), "Invalid Access Token")
@@ -55,11 +61,9 @@ class AccessTokenInterceptor(private val accessTokenEncoder: AccessTokenEncoder)
             LOG.trace("Not checking access tokens for this handler: {}", handler)
             true
         }
-
-        return response
     }
 
     override fun postHandle(request: HttpServletRequest?, response: HttpServletResponse?, handler: Any?, modelAndView: ModelAndView?) {
-        LOG.info("PostHandle")
+        accessTokenStore.remove()
     }
 }
