@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Resource Identity",
+  "description": "Resource Identity",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The ID of the resource"
+    },
+    "version": {
+      "type": "string",
+      "description": "A unique versioning identifier for the resource"
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date and time the resource was first created"
+    },
+    "updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date and time the resource was last updated"
+    }
+  },
+  "required": [
+    "id",
+    "version",
+    "created",
+    "updated"
+  ],
+  "additionalProperties": false
+}
