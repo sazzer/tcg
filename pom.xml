@@ -36,6 +36,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- Dependency Versions -->
+        <version.cucumber>1.2.5</version.cucumber>
         <version.jackson>2.8.6</version.jackson>
         <version.jdk>1.8</version.jdk>
         <version.junit>4.12</version.junit>
@@ -112,6 +113,21 @@
                 <groupId>de.codecentric</groupId>
                 <artifactId>spring-boot-admin-starter-client</artifactId>
                 <version>${version.springBootAdmin}</version>
+            </dependency>
+            <dependency>
+                <groupId>info.cukes</groupId>
+                <artifactId>cucumber-java</artifactId>
+                <version>${version.cucumber}</version>
+            </dependency>
+            <dependency>
+                <groupId>info.cukes</groupId>
+                <artifactId>cucumber-junit</artifactId>
+                <version>${version.cucumber}</version>
+            </dependency>
+            <dependency>
+                <groupId>info.cukes</groupId>
+                <artifactId>cucumber-spring</artifactId>
+                <version>${version.cucumber}</version>
             </dependency>
             <dependency>
                 <groupId>javax.servlet</groupId>
@@ -358,6 +374,21 @@
         <dependency>
             <groupId>com.winterbe</groupId>
             <artifactId>expekt</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>cucumber-spring</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
