@@ -3,7 +3,6 @@ package uk.co.grahamcox.tcg.webapp.acceptance.authentication
 import com.jayway.jsonpath.JsonPath
 import com.winterbe.expekt.should
 import org.junit.Test
-import org.neo4j.driver.v1.Driver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.embedded.LocalServerPort
 import org.springframework.http.HttpMethod
@@ -14,8 +13,6 @@ import org.springframework.test.web.client.match.MockRestRequestMatchers
 import org.springframework.test.web.client.response.MockRestResponseCreators
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.util.UriComponentsBuilder
-import uk.co.grahamcox.tcg.authentication.google.TestData
-import uk.co.grahamcox.tcg.neo4j.executeStatement
 import uk.co.grahamcox.tcg.webapp.acceptance.AcceptanceTestBase
 import uk.co.grahamcox.tcg.webapp.acceptance.Requester
 
@@ -35,13 +32,13 @@ class GoogleAuthenticationProviderIT : AcceptanceTestBase() {
     @LocalServerPort
     private lateinit var serverPort: Integer
 
-    /** The Neo4J connection to use */
-    @Autowired
-    private lateinit var neo4j: Driver
-
     /** The User Seeder */
     @Autowired
     private lateinit var userSeeder: UserSeeder
+
+    /** The User Matcher */
+    @Autowired
+    private lateinit var userMatcher: UserMatcher
 
     @Test
     fun `start authentication with Google`() {
@@ -75,12 +72,7 @@ class GoogleAuthenticationProviderIT : AcceptanceTestBase() {
             val userId = JsonPath.read<String>(response.body, "$.userId")
             userId.should.not.be.empty
             JsonPath.read<String>(response.body, "$.expires").should.not.be.empty
-
-            neo4j.executeStatement("MATCH (u:User {id:{id}}) RETURN u", mapOf("id" to userId)).let { statementResponse ->
-                val userRecord = statementResponse.single().get("u").asNode()
-                userRecord.get("name").asString().should.equal("Graham Cox")
-                userRecord.get("email").asString().should.equal("graham@grahamcox.co.uk")
-            }
+            userMatcher.matchUser(userId, "Graham Cox", "graham@grahamcox.co.uk")
         }
     }
 
@@ -99,12 +91,7 @@ class GoogleAuthenticationProviderIT : AcceptanceTestBase() {
             val userId = JsonPath.read<String>(response.body, "$.userId")
             userId.should.not.be.empty
             JsonPath.read<String>(response.body, "$.expires").should.not.be.empty
-
-            neo4j.executeStatement("MATCH (u:User {id:{id}}) RETURN u", mapOf("id" to userId)).let { statementResponse ->
-                val userRecord = statementResponse.single().get("u").asNode()
-                userRecord.get("name").asString().should.equal("Test User")
-                userRecord.get("email").asString().should.equal("test@example.com")
-            }
+            userMatcher.matchUser(userId, "Test User", "test@example.com")
         }
     }
 

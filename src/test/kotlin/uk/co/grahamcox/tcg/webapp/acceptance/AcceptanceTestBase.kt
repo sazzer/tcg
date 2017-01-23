@@ -52,7 +52,7 @@ open class AcceptanceTestBase {
     fun resetMockServer() {
         mockServer.reset()
     }
-    
+
     /**
      * Reset the database before each test
      */

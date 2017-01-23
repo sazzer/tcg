@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.web.client.RestTemplate
+import uk.co.grahamcox.tcg.webapp.acceptance.authentication.UserMatcher
 import uk.co.grahamcox.tcg.webapp.acceptance.authentication.UserSeeder
 
 /**
@@ -23,4 +24,7 @@ open class AcceptanceTestConfiguration {
 
     @Bean
     open fun userSeeder(driver: Driver) = UserSeeder(driver)
+
+    @Bean
+    open fun userMatcher(driver: Driver) = UserMatcher(driver)
 }
