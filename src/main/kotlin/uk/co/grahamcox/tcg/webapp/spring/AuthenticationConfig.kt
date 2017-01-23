@@ -10,6 +10,7 @@ import uk.co.grahamcox.tcg.authentication.google.GoogleAuthenticationProvider
 import uk.co.grahamcox.tcg.authentication.token.AccessTokenEncoder
 import uk.co.grahamcox.tcg.authentication.token.AccessTokenGeneratorImpl
 import uk.co.grahamcox.tcg.authentication.token.JwtAccessTokenEncoder
+import uk.co.grahamcox.tcg.webapp.authentication.AccessTokenHandlerArgumentResolver
 import uk.co.grahamcox.tcg.webapp.authentication.AccessTokenInterceptor
 import uk.co.grahamcox.tcg.webapp.authentication.AccessTokenStore
 import uk.co.grahamcox.tcg.webapp.authentication.AuthenticationController
@@ -55,4 +56,7 @@ open class AuthenticationConfig {
     @Bean
     open fun accessTokenInterceptor(accessTokenEncoder: AccessTokenEncoder,
                                     accessTokenStore: AccessTokenStore) = AccessTokenInterceptor(accessTokenEncoder, accessTokenStore)
+
+    @Bean
+    open fun accessTokenHandlerArgumentResolver(accessTokenStore: AccessTokenStore) = AccessTokenHandlerArgumentResolver(accessTokenStore)
 }

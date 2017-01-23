@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.ModelAndView
 import org.springframework.web.servlet.view.RedirectView
 import uk.co.grahamcox.tcg.authentication.AuthenticationProviderRegistry
+import uk.co.grahamcox.tcg.authentication.token.AccessToken
 import uk.co.grahamcox.tcg.authentication.token.AccessTokenEncoder
 import uk.co.grahamcox.tcg.authentication.token.AccessTokenGenerator
 import uk.co.grahamcox.tcg.authentication.token.EncodedAccessToken
@@ -72,4 +73,12 @@ class AuthenticationController(
         val accessToken = callbackAsJson(provider, params)
         return ModelAndView("accessToken", mapOf("accessToken" to accessToken))
     }
+
+    /**
+     * Handler to get the details of the access token that we are using, if any
+     * @return the access token
+     */
+    @RequestMapping("/accessToken")
+    @ResponseBody
+    fun getCurrentAccessToken(accessToken: AccessToken?) : AccessToken? = accessToken
 }
