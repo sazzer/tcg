@@ -447,7 +447,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.6.0</version>
+                    <version>3.6.1</version>
                     <configuration>
                         <source>${version.jdk}</source>
                         <target>${version.jdk}</target>
@@ -523,7 +523,7 @@
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.7.7.201606060606</version>
+                    <version>0.7.8</version>
                     <executions>
                         <execution>
                             <goals>
@@ -563,7 +563,7 @@
                 <plugin>
                     <groupId>org.jsonschema2pojo</groupId>
                     <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-                    <version>0.4.23</version>
+                    <version>0.4.29</version>
                     <configuration>
                         <sourceDirectory>${basedir}/src/main/schemas</sourceDirectory>
                         <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
