@@ -7,6 +7,7 @@ import uk.co.grahamcox.tcg.user.UserDao
 import uk.co.grahamcox.tcg.user.UserDaoNeo4jImpl
 import uk.co.grahamcox.tcg.user.UserModifierImpl
 import uk.co.grahamcox.tcg.user.UserRetrieverImpl
+import uk.co.grahamcox.tcg.webapp.users.UserController
 import java.time.Clock
 
 /**
@@ -22,4 +23,7 @@ open class UserConfig {
 
     @Bean
     open fun userModifier(userDao: UserDao) = UserModifierImpl(userDao)
+
+    @Bean
+    open fun userController() = UserController()
 }
