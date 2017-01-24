@@ -6,6 +6,7 @@ import org.springframework.web.context.request.NativeWebRequest
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
 import uk.co.grahamcox.tcg.authentication.token.AccessToken
+import kotlin.reflect.jvm.kotlinFunction
 
 /**
  * Handler Method Argument Resolver to provide the Access Token for the current request, if there is one
@@ -44,5 +45,13 @@ class AccessTokenHandlerArgumentResolver(private val accessTokenHolder: AccessTo
     override fun resolveArgument(parameter: MethodParameter,
                                  mavContainer: ModelAndViewContainer,
                                  webRequest: NativeWebRequest,
-                                 binderFactory: WebDataBinderFactory) = accessTokenHolder.retrieveAccessToken()
+                                 binderFactory: WebDataBinderFactory) : AccessToken? {
+        val parameterIndex = parameter.parameterIndex
+        val nullable = parameter.method.kotlinFunction!!.parameters[parameterIndex + 1].type.isMarkedNullable
+        val accessToken = accessTokenHolder.retrieveAccessToken()
+        if (!nullable && accessToken == null) {
+            throw MissingAccessTokenException()
+        }
+        return accessToken
+    }
 }

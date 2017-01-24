@@ -5,7 +5,9 @@ import org.springframework.web.bind.support.WebDataBinderFactory
 import org.springframework.web.context.request.NativeWebRequest
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
+import uk.co.grahamcox.tcg.authentication.token.AccessToken
 import uk.co.grahamcox.tcg.user.UserId
+import kotlin.reflect.jvm.kotlinFunction
 
 /**
  * Handler Method Argument Resolver to provide the User ID for the current request, if there is one
@@ -44,6 +46,13 @@ class UserIdHandlerArgumentResolver(private val accessTokenHolder: AccessTokenHo
     override fun resolveArgument(parameter: MethodParameter,
                                  mavContainer: ModelAndViewContainer,
                                  webRequest: NativeWebRequest,
-                                 binderFactory: WebDataBinderFactory) =
-            accessTokenHolder.retrieveAccessToken()?.userId
+                                 binderFactory: WebDataBinderFactory) : UserId? {
+        val parameterIndex = parameter.parameterIndex
+        val nullable = parameter.method.kotlinFunction!!.parameters[parameterIndex + 1].type.isMarkedNullable
+        val accessToken = accessTokenHolder.retrieveAccessToken()
+        if (!nullable && accessToken == null) {
+            throw MissingAccessTokenException()
+        }
+        return accessToken?.userId
+    }
 }
