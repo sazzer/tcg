@@ -2,6 +2,7 @@ package uk.co.grahamcox.tcg.webapp.authentication
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.ModelAndView
@@ -80,5 +81,9 @@ class AuthenticationController(
      */
     @RequestMapping("/accessToken")
     @ResponseBody
-    fun getCurrentAccessToken(accessToken: AccessToken?) : AccessToken? = accessToken
+    fun getCurrentAccessToken(accessToken: AccessToken?) =
+            when (accessToken) {
+                null -> ResponseEntity.notFound().build()
+                else -> ResponseEntity.ok(accessToken)
+            }
 }

@@ -1,4 +1,3 @@
-@wip
 Feature: Authentication against Google
 
   Scenario: Start authentication with Google
@@ -7,7 +6,7 @@ Feature: Authentication against Google
     And I get a redirect to URL "https://accounts.google.com/o/oauth2/v2/auth" with parameters:
       | client_id     | myGoogleClientId                                                  |
       | response_type | code                                                              |
-      | scope         | openid email                                                      |
+      | scope         | openid%20email                                                    |
       | redirect_uri  | http://localhost:${serverPort}/api/authentication/google/redirect |
 
   Scenario: Handle callback after authentication of a new user
@@ -20,6 +19,7 @@ Feature: Authentication against Google
       | state | theState |
       | code  | abc123   |
     Then I get an "OK" response
+    And I get an Access Token response
     And the database contains a user for this User ID with details:
       | Name               | Graham Cox             |
       | Email              | graham@grahamcox.co.uk |
