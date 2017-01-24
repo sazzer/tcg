@@ -7,6 +7,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import uk.co.grahamcox.tcg.webapp.authentication.AccessTokenHandlerArgumentResolver
 import uk.co.grahamcox.tcg.webapp.authentication.AccessTokenInterceptor
+import uk.co.grahamcox.tcg.webapp.authentication.UserIdHandlerArgumentResolver
 
 /**
  * Configuration for the underlying Spring WebMVC
@@ -20,6 +21,10 @@ open class WebMvcConfig : WebMvcConfigurerAdapter() {
     /** The Access Token Argument Resolver */
     @Autowired
     private lateinit var accessTokenHandlerArgumentResolver: AccessTokenHandlerArgumentResolver
+
+    /** The User ID Argument Resolver */
+    @Autowired
+    private lateinit var userIdHandlerArgumentResolver: UserIdHandlerArgumentResolver
 
     /**
      * Add our custom interceptors to the registry
@@ -36,5 +41,6 @@ open class WebMvcConfig : WebMvcConfigurerAdapter() {
      */
     override fun addArgumentResolvers(argumentResolvers: MutableList<HandlerMethodArgumentResolver>) {
         argumentResolvers.add(accessTokenHandlerArgumentResolver)
+        argumentResolvers.add(userIdHandlerArgumentResolver)
     }
 }

@@ -12,6 +12,7 @@ import uk.co.grahamcox.tcg.authentication.token.AccessToken
 import uk.co.grahamcox.tcg.authentication.token.AccessTokenEncoder
 import uk.co.grahamcox.tcg.authentication.token.AccessTokenGenerator
 import uk.co.grahamcox.tcg.authentication.token.EncodedAccessToken
+import uk.co.grahamcox.tcg.user.UserId
 
 /**
  * Controller with which we can manage authentication
@@ -85,5 +86,17 @@ class AuthenticationController(
             when (accessToken) {
                 null -> ResponseEntity.notFound().build()
                 else -> ResponseEntity.ok(accessToken)
+            }
+
+    /**
+     * Handler to get the details of the User ID from the Access Token that we are using, if any
+     * @return the User ID
+     */
+    @RequestMapping("/userId")
+    @ResponseBody
+    fun getCurrentUserId(userId: UserId?) =
+            when (userId) {
+                null -> ResponseEntity.notFound().build()
+                else -> ResponseEntity.ok(userId.id)
             }
 }

@@ -10,10 +10,7 @@ import uk.co.grahamcox.tcg.authentication.google.GoogleAuthenticationProvider
 import uk.co.grahamcox.tcg.authentication.token.AccessTokenEncoder
 import uk.co.grahamcox.tcg.authentication.token.AccessTokenGeneratorImpl
 import uk.co.grahamcox.tcg.authentication.token.JwtAccessTokenEncoder
-import uk.co.grahamcox.tcg.webapp.authentication.AccessTokenHandlerArgumentResolver
-import uk.co.grahamcox.tcg.webapp.authentication.AccessTokenInterceptor
-import uk.co.grahamcox.tcg.webapp.authentication.AccessTokenStore
-import uk.co.grahamcox.tcg.webapp.authentication.AuthenticationController
+import uk.co.grahamcox.tcg.webapp.authentication.*
 import java.time.Clock
 import java.time.Duration
 
@@ -59,4 +56,7 @@ open class AuthenticationConfig {
 
     @Bean
     open fun accessTokenHandlerArgumentResolver(accessTokenStore: AccessTokenStore) = AccessTokenHandlerArgumentResolver(accessTokenStore)
+
+    @Bean
+    open fun userIdHandlerArgumentResolver(accessTokenStore: AccessTokenStore) = UserIdHandlerArgumentResolver(accessTokenStore)
 }
