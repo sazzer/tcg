@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Statistic",
+  "description": "Statistic",
+  "type": "object",
+  "properties": {
+    "identity": {
+      "$ref": "../identity.json"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the statistic"
+    },
+    "description": {
+      "type": "string",
+      "description": "A description of the statistic"
+    }
+  },
+  "required": [
+    "name",
+    "description"
+  ],
+  "additionalProperties": false
+}
