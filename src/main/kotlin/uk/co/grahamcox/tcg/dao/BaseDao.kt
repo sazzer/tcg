@@ -4,7 +4,7 @@ import uk.co.grahamcox.tcg.model.Id
 import uk.co.grahamcox.tcg.model.Model
 
 /**
- * Base interface from which all DAOs extend
+ * Base interface from which all DAOs that read data extend
  * @param ID The type to use for the ID
  * @param DATA The type to use for the model data
  */

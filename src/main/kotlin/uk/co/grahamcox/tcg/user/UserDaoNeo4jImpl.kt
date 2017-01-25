@@ -57,7 +57,7 @@ class UserDaoNeo4jImpl(private val driver: Driver,
      * @param user The user data to persist
      * @return the persisted user model
      */
-    override fun createUser(user: UserData): Model<UserId, UserData> {
+    override fun create(user: UserData): Model<UserId, UserData> {
         LOG.debug("Creating user with data {}", user)
         return loadUserWithQuery(
                 "CREATE (u:User {id:{id}, version:{version}, created:{created}, updated: {updated}, name: {name}, email:{email}}) RETURN u",
@@ -113,7 +113,7 @@ class UserDaoNeo4jImpl(private val driver: Driver,
      * @return the user model
      */
     private fun parseUserNode(node: Node) : Model<UserId, UserData> {
-        return Model<UserId, UserData>(
+        return Model(
                 identity = Identity(
                         id = UserId(node.get("id").asString()),
                         version = node.get("version").asString(),

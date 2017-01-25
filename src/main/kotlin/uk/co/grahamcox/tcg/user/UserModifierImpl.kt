@@ -12,7 +12,7 @@ class UserModifierImpl(private val dao: UserDao) : UserModifier {
      * @param user The user data to persist
      * @return the persisted user model
      */
-    override fun createUser(user: UserData) = dao.createUser(user)
+    override fun createUser(user: UserData) = dao.create(user)
 
     /**
      * Create a new user record with the given user data, and link it to a Provider

@@ -90,7 +90,7 @@ class UserDaoNeo4jImplTest {
 
     @Test
     fun `create new user`() {
-        val createUserResponse = testSubject.createUser(UserData(
+        val createUserResponse = testSubject.create(UserData(
                 name = "Graham Cox",
                 email = "graham@grahamcox.co.uk"
         ))
@@ -114,7 +114,7 @@ class UserDaoNeo4jImplTest {
 
     @Test
     fun `create new user without email`() {
-        val createUserResponse = testSubject.createUser(UserData(
+        val createUserResponse = testSubject.create(UserData(
                 name = "Graham Cox",
                 email = null
         ))

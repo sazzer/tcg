@@ -45,27 +45,27 @@ class UserModifierImplTest {
 
     @Test
     fun `create new user`() {
-        whenever(dao.createUser(userData)).thenReturn(userModel)
+        whenever(dao.create(userData)).thenReturn(userModel)
 
         testSubject.createUser(userData).should.equal(userModel)
-        Mockito.verify(dao, times(1)).createUser(userData)
+        Mockito.verify(dao, times(1)).create(userData)
         Mockito.verify(dao, times(0)).linkUserToProvider(userModel, "google", "123456")
     }
 
     @Test
     fun `link user to provider`() {
         testSubject.linkUserToProvider(userModel, "google", "123456")
-        Mockito.verify(dao, times(0)).createUser(userData)
+        Mockito.verify(dao, times(0)).create(userData)
         Mockito.verify(dao, times(1)).linkUserToProvider(userModel, "google", "123456")
 
     }
 
     @Test
     fun `create new user and link to provider`() {
-        whenever(dao.createUser(userData)).thenReturn(userModel)
+        whenever(dao.create(userData)).thenReturn(userModel)
 
         testSubject.createUser(userData, "google", "123456").should.equal(userModel)
-        Mockito.verify(dao, times(1)).createUser(userData)
+        Mockito.verify(dao, times(1)).create(userData)
         Mockito.verify(dao, times(1)).linkUserToProvider(userModel, "google", "123456")
 
     }
