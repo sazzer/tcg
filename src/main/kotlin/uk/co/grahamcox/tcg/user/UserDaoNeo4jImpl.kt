@@ -1,14 +1,14 @@
 package uk.co.grahamcox.tcg.user
 
 import org.neo4j.driver.v1.Driver
-import org.neo4j.driver.v1.types.Node
+import org.neo4j.driver.v1.StatementResult
 import org.slf4j.LoggerFactory
+import uk.co.grahamcox.tcg.dao.BaseNeo4jDao
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.neo4j.executeStatement
 import java.time.Clock
 import java.time.Instant
-import java.util.*
 
 /**
  * Implementation of the [UserDao] interface in terms of Neo4J
@@ -16,26 +16,56 @@ import java.util.*
  * @property clock The clock to use for updating times
  */
 class UserDaoNeo4jImpl(private val driver: Driver,
-                       private val clock: Clock) : UserDao {
+                       private val clock: Clock) : UserDao, BaseNeo4jDao<UserId, UserData>(driver, clock) {
     companion object {
         /** The logger to use */
         private val LOG = LoggerFactory.getLogger(UserDaoNeo4jImpl::class.java)
     }
 
+    /** Query to use to get a single record by ID */
+    override val getByIdQuery: String =
+            "MATCH (u:User {id:{id}}) RETURN u"
+
+    /** Query to use to create a new record */
+    override val createQuery: String =
+            "CREATE (u:User {id:{id}, version:{version}, created:{created}, updated: {updated}, name: {name}, email:{email}}) RETURN u"
+
     /**
-     * Retrieve a record by it's internal ID
-     * @param id The ID of the record
-     * @return the record, or null if no record with this internal ID is present
+     * Helper to build the parameters required to create a new node. These are the inputs to the [createQuery]
+     * @param data The data to build the parameters from
+     * @return the parameters
      */
-    override fun getById(id: UserId): Model<UserId, UserData>? {
-        LOG.debug("Loading user with ID {}", id)
-        return loadUserWithQuery(
-                "MATCH (u:User {id:{id}}) RETURN u;",
-                mapOf(
-                        "id" to id.id
-                ))
+    override fun buildCreateParameters(data: UserData): Map<String, *> = mapOf(
+            "name" to data.name,
+            "email" to data.email
+    )
+
+    /**
+     * Parse the given statement result into a single record
+     * Note that the statement result has to be provided because there might be multiple rows returned representing a
+     * single record
+     * @param result the statement result to parse
+     * @return the model parsed from the result
+     */
+    override fun parseResult(result: StatementResult): Model<UserId, UserData> {
+        val node = result.single().get("u").asNode()
+
+        return Model(
+                identity = Identity(
+                        id = UserId(node.get("id").asString()),
+                        version = node.get("version").asString(),
+                        created = Instant.ofEpochMilli(node.get("created").asLong()),
+                        updated = Instant.ofEpochMilli(node.get("updated").asLong())
+                ),
+                data = UserData(
+                        name = node.get("name").asString(),
+                        email = node.get("email").asString()
+                )
+        )
     }
 
+    // New methods for this particular DAO
+    
     /**
      * Retrieve a user by it's ID in a third-party provider system
      * @param provider The name of the provider
@@ -44,32 +74,12 @@ class UserDaoNeo4jImpl(private val driver: Driver,
      */
     override fun retrieveUserByProviderId(provider: String, providerId: String): Model<UserId, UserData>? {
         LOG.debug("Loading user with ID {} at provider {}", providerId, provider)
-        return loadUserWithQuery(
+        return loadWithQuery(
                 "MATCH (p:AuthenticationProvider {id:{provider}})<-[:PROVIDER {id:{providerId}}]-(u:User) RETURN u;",
                 mapOf(
                         "provider" to provider,
                         "providerId" to providerId
                 ))
-    }
-
-    /**
-     * Create a new user record with the given user data
-     * @param user The user data to persist
-     * @return the persisted user model
-     */
-    override fun create(user: UserData): Model<UserId, UserData> {
-        LOG.debug("Creating user with data {}", user)
-        return loadUserWithQuery(
-                "CREATE (u:User {id:{id}, version:{version}, created:{created}, updated: {updated}, name: {name}, email:{email}}) RETURN u",
-                mapOf(
-                        "id" to UUID.randomUUID().toString(),
-                        "version" to UUID.randomUUID().toString(),
-                        "created" to clock.instant().toEpochMilli(),
-                        "updated" to clock.instant().toEpochMilli(),
-                        "name" to user.name,
-                        "email" to user.email
-                )
-        ) ?: throw IllegalStateException("Failed to create user")
     }
 
     /**
@@ -88,42 +98,5 @@ class UserDaoNeo4jImpl(private val driver: Driver,
                         "provider" to provider,
                         "providerId" to providerId
                 ))
-    }
-
-    /**
-     * Helper to load the user returned by the given query
-     * @param query The query to execute
-     * @param parameters The parameters to the query
-     * @return the user, if any was found
-     */
-    private fun loadUserWithQuery(query: String, parameters: Map<String, Any?>): Model<UserId, UserData>? {
-        val userResult = driver.executeStatement(query, parameters)
-        val user: Model<UserId, UserData>? = when (userResult.hasNext()) {
-            true -> parseUserNode(userResult.single().get("u").asNode())
-            false -> null
-        }
-        LOG.debug("Found user: {}", user)
-
-        return user
-    }
-
-    /**
-     * Parse a given user node as a User model
-     * @param node The node to parse
-     * @return the user model
-     */
-    private fun parseUserNode(node: Node) : Model<UserId, UserData> {
-        return Model(
-                identity = Identity(
-                        id = UserId(node.get("id").asString()),
-                        version = node.get("version").asString(),
-                        created = Instant.ofEpochMilli(node.get("created").asLong()),
-                        updated = Instant.ofEpochMilli(node.get("updated").asLong())
-                ),
-                data = UserData(
-                        name = node.get("name").asString(),
-                        email = node.get("email").asString()
-                )
-        )
     }
 }

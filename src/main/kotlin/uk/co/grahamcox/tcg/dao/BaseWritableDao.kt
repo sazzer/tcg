@@ -12,8 +12,8 @@ interface BaseWritableDao<out ID : Id, DATA> {
 
     /**
      * Create a new record with the given data
-     * @param user The data to persist
+     * @param data The data to persist
      * @return the persisted record
      */
-    fun create(user: DATA) : Model<ID, DATA>
+    fun create(data: DATA) : Model<ID, DATA>
 }
