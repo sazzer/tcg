@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.web.client.RestTemplate
 import uk.co.grahamcox.tcg.webapp.cucumber.Requester
-import uk.co.grahamcox.tcg.webapp.cucumber.users.UserMatcher
+import uk.co.grahamcox.tcg.webapp.cucumber.users.UserDatabaseMatcher
+import uk.co.grahamcox.tcg.webapp.cucumber.users.UserResponseMatcher
 import uk.co.grahamcox.tcg.webapp.cucumber.users.UserSeeder
 
 /**
@@ -25,7 +26,11 @@ open class CucumberTestConfiguration {
 
     /** The matcher to use for matching user record details */
     @Bean
-    open fun userMatcher(neo4j: Driver) = UserMatcher(neo4j)
+    open fun userDatabaseMatcher(neo4j: Driver) = UserDatabaseMatcher(neo4j)
+
+    /** The matcher to use for matching user record details */
+    @Bean
+    open fun userResponseMatcher(requester: Requester) = UserResponseMatcher(requester)
 
     /** The seeder to use for creating user record details */
     @Bean

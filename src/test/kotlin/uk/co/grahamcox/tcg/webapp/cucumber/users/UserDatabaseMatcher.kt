@@ -1,24 +1,23 @@
 package uk.co.grahamcox.tcg.webapp.cucumber.users
 
 import com.winterbe.expekt.should
+import org.apache.commons.jxpath.JXPathContext
 import org.neo4j.driver.v1.Driver
+import org.neo4j.driver.v1.Value
 import uk.co.grahamcox.tcg.neo4j.executeStatement
 
 /**
  * Helper to match the user in the database with the expected values
  * @property driver The Neo4J driver to use
  */
-class UserMatcher(private val driver: Driver) {
+class UserDatabaseMatcher(private val driver: Driver) {
     companion object {
-        /** Mapping of the provided inputs to the fieids on the User node */
+        /** Mapping of the provided inputs to the fields on the User data returned */
         private val USER_FIELD_MAPPING = mapOf(
-                "User ID" to "id",
-                "Name" to "name",
-                "Email" to "email"
-        )
-        /** Mapping of the provided inputs to the fieids on the relationship to the Provider */
-        private val PROVIDER_FIELD_MAPPING = mapOf(
-                "Google Provider ID" to "id"
+                "User ID" to "u/id",
+                "Name" to "u/name",
+                "Email" to "u/email",
+                "Google Provider ID" to "r/id"
         )
     }
     /**
@@ -32,19 +31,18 @@ class UserMatcher(private val driver: Driver) {
                         "provider" to "google"
                 )).let { statementResponse ->
             val response = statementResponse.single()
-            val user = response.get("u").asNode()
-            val providerLink = response.get("r").asRelationship()
+
+            val responseData = response.fields()
+                    .map { it.key() to it.value() }
+                    .toMap()
+                    .mapValues { it.value.asMap() }
+
+            val jxPathContext = JXPathContext.newContext(responseData)
 
             userData.filterKeys { USER_FIELD_MAPPING.containsKey(it) }
                     .mapKeys { USER_FIELD_MAPPING[it.key] }
                     .forEach { field, value ->
-                        user.get(field).asString().should.equal(value)
-                    }
-
-            userData.filterKeys { PROVIDER_FIELD_MAPPING.containsKey(it) }
-                    .mapKeys { PROVIDER_FIELD_MAPPING[it.key] }
-                    .forEach { field, value ->
-                        providerLink.get(field).asString().should.equal(value)
+                        jxPathContext.getValue(field).should.equal(value)
                     }
         }
     }
