@@ -4,6 +4,7 @@ import org.neo4j.driver.v1.Driver
 import org.neo4j.driver.v1.types.Node
 import org.slf4j.LoggerFactory
 import uk.co.grahamcox.tcg.model.Identity
+import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.neo4j.executeStatement
 import java.time.Clock
 import java.time.Instant
@@ -22,11 +23,11 @@ class UserDaoNeo4jImpl(private val driver: Driver,
     }
 
     /**
-     * Retrieve a user by it's internal ID
-     * @param id The ID of the user
-     * @return the user, or null if no user with this internal ID is present
+     * Retrieve a record by it's internal ID
+     * @param id The ID of the record
+     * @return the record, or null if no record with this internal ID is present
      */
-    override fun retrieveUserById(id: UserId): UserModel? {
+    override fun getById(id: UserId): Model<UserId, UserData>? {
         LOG.debug("Loading user with ID {}", id)
         return loadUserWithQuery(
                 "MATCH (u:User {id:{id}}) RETURN u;",
@@ -41,7 +42,7 @@ class UserDaoNeo4jImpl(private val driver: Driver,
      * @param providerId The ID of the user in the provider
      * @return the user, or null if no user with this external ID is present
      */
-    override fun retrieveUserByProviderId(provider: String, providerId: String): UserModel? {
+    override fun retrieveUserByProviderId(provider: String, providerId: String): Model<UserId, UserData>? {
         LOG.debug("Loading user with ID {} at provider {}", providerId, provider)
         return loadUserWithQuery(
                 "MATCH (p:AuthenticationProvider {id:{provider}})<-[:PROVIDER {id:{providerId}}]-(u:User) RETURN u;",
@@ -56,7 +57,7 @@ class UserDaoNeo4jImpl(private val driver: Driver,
      * @param user The user data to persist
      * @return the persisted user model
      */
-    override fun createUser(user: UserData): UserModel {
+    override fun createUser(user: UserData): Model<UserId, UserData> {
         LOG.debug("Creating user with data {}", user)
         return loadUserWithQuery(
                 "CREATE (u:User {id:{id}, version:{version}, created:{created}, updated: {updated}, name: {name}, email:{email}}) RETURN u",
@@ -77,7 +78,7 @@ class UserDaoNeo4jImpl(private val driver: Driver,
      * @param provider The provider to link it to
      * @param providerId The ID of the User at the Provider
      */
-    override fun linkUserToProvider(user: UserModel, provider: String, providerId: String) {
+    override fun linkUserToProvider(user: Model<UserId, UserData>, provider: String, providerId: String) {
         LOG.debug("Linking user {} to provider {} with provider ID {}", user, provider, providerId)
         driver.executeStatement("MERGE (p:AuthenticationProvider {id:{id}})", mapOf("id" to provider))
         driver.executeStatement("MATCH (u:User {id:{id}, version:{version}}), (p:AuthenticationProvider {id:{provider}}) CREATE (u)-[:PROVIDER {id:{providerId}}]->(p)",
@@ -95,9 +96,9 @@ class UserDaoNeo4jImpl(private val driver: Driver,
      * @param parameters The parameters to the query
      * @return the user, if any was found
      */
-    private fun loadUserWithQuery(query: String, parameters: Map<String, Any?>): UserModel? {
+    private fun loadUserWithQuery(query: String, parameters: Map<String, Any?>): Model<UserId, UserData>? {
         val userResult = driver.executeStatement(query, parameters)
-        val user: UserModel? = when (userResult.hasNext()) {
+        val user: Model<UserId, UserData>? = when (userResult.hasNext()) {
             true -> parseUserNode(userResult.single().get("u").asNode())
             false -> null
         }
@@ -111,8 +112,8 @@ class UserDaoNeo4jImpl(private val driver: Driver,
      * @param node The node to parse
      * @return the user model
      */
-    private fun parseUserNode(node: Node) : UserModel {
-        return UserModel(
+    private fun parseUserNode(node: Node) : Model<UserId, UserData> {
+        return Model<UserId, UserData>(
                 identity = Identity(
                         id = UserId(node.get("id").asString()),
                         version = node.get("version").asString(),

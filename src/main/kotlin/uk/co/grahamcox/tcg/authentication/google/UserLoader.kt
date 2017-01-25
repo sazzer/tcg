@@ -1,8 +1,9 @@
 package uk.co.grahamcox.tcg.authentication.google
 
 import org.slf4j.LoggerFactory
+import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.user.UserData
-import uk.co.grahamcox.tcg.user.UserModel
+import uk.co.grahamcox.tcg.user.UserId
 import uk.co.grahamcox.tcg.user.UserModifier
 import uk.co.grahamcox.tcg.user.UserRetriever
 
@@ -26,7 +27,7 @@ class UserLoader(private val userRetriever: UserRetriever,
      * @param userProfile The Google User Profile
      * @return the user
      */
-    fun loadUserFromProfile(userProfile: UserProfile): UserModel {
+    fun loadUserFromProfile(userProfile: UserProfile): Model<UserId, UserData> {
         val userModel = userRetriever.retrieveUserByProviderId(GOOGLE_AUTHENTICATION_PROVIDER_NAME, userProfile.id)
         return if (userModel == null) {
             LOG.info("Unknown user has logged in. Creating user record")

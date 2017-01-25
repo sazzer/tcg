@@ -33,7 +33,7 @@ class UserRetrieverImplTest {
     fun `retrieve known by ID`() {
         val testSubject = UserRetrieverImpl(
                 dao = mock {
-                    on { this.retrieveUserById(userId) } doReturn userModel
+                    on { this.getById(userId) } doReturn userModel
                 }
         )
 
@@ -42,10 +42,10 @@ class UserRetrieverImplTest {
 
     @Test(expected = UnknownResourceException::class)
     fun `retrieve unknown by ID`() {
-        val result: UserModel? = null
+        val result: Model<UserId, UserData>? = null
         val testSubject = UserRetrieverImpl(
                 dao = mock {
-                    on { this.retrieveUserById(userId) } doReturn result
+                    on { this.getById(userId) } doReturn result
                 }
         )
 
@@ -65,7 +65,7 @@ class UserRetrieverImplTest {
 
     @Test
     fun `retrieve unknown by Provider ID`() {
-        val result: UserModel? = null
+        val result: Model<UserId, UserData>? = null
         val testSubject = UserRetrieverImpl(
                 dao = mock {
                     on { this.retrieveUserByProviderId("google", "abc") } doReturn result

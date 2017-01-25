@@ -13,7 +13,7 @@ interface UserRetriever {
      * @return the user
      * @throws UnknownResourceException if the user doesn't exist
      */
-    fun retrieveUserById(id: UserId) : UserModel
+    fun retrieveUserById(id: UserId) : Model<UserId, UserData>
 
     /**
      * Retrieve a user by it's ID in a third-party provider system
@@ -21,5 +21,5 @@ interface UserRetriever {
      * @param providerId The ID of the user in the provider
      * @return the user, or null if no user with this external ID is present
      */
-    fun retrieveUserByProviderId(provider: String, providerId: String): UserModel?
+    fun retrieveUserByProviderId(provider: String, providerId: String): Model<UserId, UserData>?
 }

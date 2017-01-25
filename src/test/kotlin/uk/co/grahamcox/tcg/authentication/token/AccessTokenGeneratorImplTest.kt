@@ -3,9 +3,9 @@ package uk.co.grahamcox.tcg.authentication.token
 import com.winterbe.expekt.should
 import org.junit.Test
 import uk.co.grahamcox.tcg.model.Identity
+import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.user.UserData
 import uk.co.grahamcox.tcg.user.UserId
-import uk.co.grahamcox.tcg.user.UserModel
 import java.time.Instant
 
 /**
@@ -15,7 +15,7 @@ class AccessTokenGeneratorImplTest {
     @Test
     fun `generate access token`() {
         val testSubject = AccessTokenGeneratorImpl()
-        val user = UserModel(
+        val user = Model(
                 identity = Identity(
                         id = UserId("ECEE75F3-4037-4B1F-891A-C5B06546A0BC"),
                         version = "0394E84E-A3F6-4F8D-BA44-3BA845328FCE",

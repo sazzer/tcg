@@ -3,7 +3,9 @@ package uk.co.grahamcox.tcg.authentication.google
 import org.slf4j.LoggerFactory
 import uk.co.grahamcox.tcg.authentication.AuthenticationProvider
 import uk.co.grahamcox.tcg.authentication.RedirectDetails
-import uk.co.grahamcox.tcg.user.UserModel
+import uk.co.grahamcox.tcg.model.Model
+import uk.co.grahamcox.tcg.user.UserData
+import uk.co.grahamcox.tcg.user.UserId
 
 /**
  * Implementation of the Authentication Provider for use against Google
@@ -38,7 +40,7 @@ class GoogleAuthenticationProvider(
      * @param params The parameters from the provider
      * @return the logged in user
      */
-    override fun handleCallback(params: Map<String, Any>): UserModel {
+    override fun handleCallback(params: Map<String, Any>): Model<UserId, UserData> {
         LOG.info("Callback parameters: {}", params)
         val accessToken = accessTokenRetriever.retrieveAccessToken(params["code"]!!.toString())
         val userProfile = userProfileRetriever.retrieveUserProfile(accessToken.accessToken)

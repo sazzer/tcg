@@ -1,5 +1,7 @@
 package uk.co.grahamcox.tcg.user
 
+import uk.co.grahamcox.tcg.model.Model
+
 /**
  * Standard implementation of the User Modifier
  * @property dao The User DAO to work with
@@ -19,7 +21,7 @@ class UserModifierImpl(private val dao: UserDao) : UserModifier {
      * @param providerId The ID of the User at the Provider
      * @return the persisted user model
      */
-    override fun createUser(user: UserData, provider: String, providerId: String): UserModel {
+    override fun createUser(user: UserData, provider: String, providerId: String): Model<UserId, UserData> {
         val userModel = createUser(user)
         linkUserToProvider(userModel, provider, providerId)
         return userModel
@@ -31,7 +33,7 @@ class UserModifierImpl(private val dao: UserDao) : UserModifier {
      * @param provider The provider to link it to
      * @param providerId The ID of the User at the Provider
      */
-    override fun linkUserToProvider(user: UserModel, provider: String, providerId: String) {
+    override fun linkUserToProvider(user: Model<UserId, UserData>, provider: String, providerId: String) {
         dao.linkUserToProvider(user, provider, providerId)
     }
 }

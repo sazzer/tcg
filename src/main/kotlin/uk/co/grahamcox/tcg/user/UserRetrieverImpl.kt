@@ -13,7 +13,7 @@ class UserRetrieverImpl(private val dao: UserDao) : UserRetriever {
      * @return the user
      * @throws UnknownResourceException if the user doesn't exist
      */
-    override fun retrieveUserById(id: UserId) = dao.retrieveUserById(id) ?: throw UnknownResourceException(id)
+    override fun retrieveUserById(id: UserId) = dao.getById(id) ?: throw UnknownResourceException(id)
 
     /**
      * Retrieve a user by it's ID in a third-party provider system

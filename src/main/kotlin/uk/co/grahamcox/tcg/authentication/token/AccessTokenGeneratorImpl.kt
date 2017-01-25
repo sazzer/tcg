@@ -1,6 +1,8 @@
 package uk.co.grahamcox.tcg.authentication.token
 
-import uk.co.grahamcox.tcg.user.UserModel
+import uk.co.grahamcox.tcg.model.Model
+import uk.co.grahamcox.tcg.user.UserData
+import uk.co.grahamcox.tcg.user.UserId
 import java.util.*
 
 /**
@@ -12,7 +14,7 @@ class AccessTokenGeneratorImpl : AccessTokenGenerator {
      * @param user the user the access token is for
      * @return the access token
      */
-    override fun generateAccessToken(user: UserModel) = AccessToken(
+    override fun generateAccessToken(user: Model<UserId, UserData>) = AccessToken(
             tokenId = TokenId(UUID.randomUUID().toString()),
             userId = user.identity.id
     )
