@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="clock" class="java.time.Clock" factory-method="systemUTC" />
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate" />
+
+    <import resource="db.xml" />
+    <import resource="authentication/authentication.xml" />
+    <import resource="users.xml" />
+</beans>

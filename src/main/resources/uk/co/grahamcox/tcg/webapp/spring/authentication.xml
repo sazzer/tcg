@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="accessTokenEncoder" class="uk.co.grahamcox.tcg.authentication.token.JwtAccessTokenEncoder">
+        <constructor-arg name="clock" ref="clock" />
+        <constructor-arg name="jwtSecret" value="${authentication.accessToken.signingKey}" />
+        <constructor-arg name="expiry">
+            <bean class="java.time.Duration" factory-method="parse">
+                <constructor-arg name="text" value="${authentication.accessToken.expiry}" />
+            </bean>
+        </constructor-arg>
+    </bean>
+    <bean id="accessTokenStore" class="uk.co.grahamcox.tcg.webapp.authentication.AccessTokenStore" />
+
+    <bean class="uk.co.grahamcox.tcg.webapp.authentication.AuthenticationController">
+        <constructor-arg name="accessTokenEncoder" ref="accessTokenEncoder" />
+        <constructor-arg name="accessTokenGenerator">
+            <bean class="uk.co.grahamcox.tcg.authentication.token.AccessTokenGeneratorImpl" />
+        </constructor-arg>
+        <constructor-arg name="authenticationProviderRegistry" ref="authenticationProviderRegistry" />
+    </bean>
+    <beans profile="dev,test">
+        <bean class="uk.co.grahamcox.tcg.webapp.authentication.FakeGoogleController" />
+    </beans>
+
+</beans>

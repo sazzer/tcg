@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="userDao" class="uk.co.grahamcox.tcg.user.UserDaoNeo4jImpl">
+        <constructor-arg name="clock" ref="clock" />
+        <constructor-arg name="driver" ref="neo4jClient" />
+    </bean>
+
+    <bean id="userRetriever" class="uk.co.grahamcox.tcg.user.UserRetrieverImpl">
+        <constructor-arg name="dao" ref="userDao" />
+    </bean>
+
+    <bean id="userModifier" class="uk.co.grahamcox.tcg.user.UserModifierImpl">
+        <constructor-arg name="dao" ref="userDao" />
+    </bean>
+</beans>

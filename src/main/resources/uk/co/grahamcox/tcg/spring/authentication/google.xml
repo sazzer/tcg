@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="googleConfig" class="uk.co.grahamcox.tcg.authentication.google.GoogleConfig">
+        <constructor-arg name="clientId" value="${authentication.google.clientId}" />
+        <constructor-arg name="clientSecret" value="${authentication.google.clientSecret}" />
+        <constructor-arg name="authUrlBase" value="${authentication.google.authUrlBase}" />
+        <constructor-arg name="tokenUrl" value="${authentication.google.tokenUrl}" />
+        <constructor-arg name="userProfileUrl" value="${authentication.google.userProfileUrl}" />
+    </bean>
+
+    <bean id="googleRedirectGenerator" class="uk.co.grahamcox.tcg.authentication.ServletRedirectGenerator">
+        <constructor-arg name="path" value="/api/authentication/google/redirect" />
+    </bean>
+
+    <bean id="googleAuthenticationProvider" class="uk.co.grahamcox.tcg.authentication.google.GoogleAuthenticationProvider">
+        <constructor-arg name="redirectBuilder">
+            <bean class="uk.co.grahamcox.tcg.authentication.google.GoogleAuthenticationRedirectBuilder">
+                <constructor-arg name="config" ref="googleConfig" />
+                <constructor-arg name="nonceGenerator" ref="nonceGenerator" />
+                <constructor-arg name="redirectGenerator" ref="googleRedirectGenerator" />
+            </bean>
+        </constructor-arg>
+        <constructor-arg name="accessTokenRetriever">
+            <bean class="uk.co.grahamcox.tcg.authentication.google.GoogleAccessTokenRetriever">
+                <constructor-arg name="config" ref="googleConfig" />
+                <constructor-arg name="redirectGenerator" ref="googleRedirectGenerator" />
+                <constructor-arg name="restTemplate" ref="restTemplate" />
+            </bean>
+        </constructor-arg>
+        <constructor-arg name="userProfileRetriever">
+            <bean class="uk.co.grahamcox.tcg.authentication.google.UserProfileRetriever">
+                <constructor-arg name="config" ref="googleConfig" />
+                <constructor-arg name="restTemplate" ref="restTemplate" />
+            </bean>
+        </constructor-arg>
+        <constructor-arg name="userLoader">
+            <bean class="uk.co.grahamcox.tcg.authentication.google.UserLoader">
+                <constructor-arg name="userRetriever" ref="userRetriever" />
+                <constructor-arg name="userModifier" ref="userModifier" />
+            </bean>
+        </constructor-arg>
+    </bean>
+</beans>

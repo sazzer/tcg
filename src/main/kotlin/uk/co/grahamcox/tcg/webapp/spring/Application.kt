@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
+import org.springframework.context.annotation.ImportResource
 import org.springframework.web.client.RestTemplate
 import java.time.Clock
 
@@ -15,19 +16,11 @@ import java.time.Clock
 @EnableAutoConfiguration
 @Configuration
 @EnableAdminServer
-@Import(
-        WebMvcConfig::class,
-        DbConfig::class,
-        UserConfig::class,
-        AuthenticationConfig::class
+@ImportResource(
+        "classpath:/uk/co/grahamcox/tcg/spring/context.xml",
+        "classpath:/uk/co/grahamcox/tcg/webapp/spring/context.xml"
 )
-open internal class Application {
-    @Bean
-    open fun clock() = Clock.systemUTC()
-
-    @Bean
-    open fun restTemplate() = RestTemplate()
-}
+open internal class Application
 
 /**
  * Run the application
