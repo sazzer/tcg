@@ -22,7 +22,7 @@ class UserController(private val userRetriever: UserRetriever) {
      */
     @RequestMapping("/me")
     fun getCurrentUser(userId: UserId): UserModel {
-        val user = userRetriever.retrieveUserById(userId)
+        val user = userRetriever.retrieveById(userId)
 
         return UserModel()
                 .withName(user.data.name)

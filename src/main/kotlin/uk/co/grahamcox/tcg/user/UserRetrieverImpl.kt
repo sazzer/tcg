@@ -1,20 +1,12 @@
 package uk.co.grahamcox.tcg.user
 
-import uk.co.grahamcox.tcg.model.UnknownResourceException
+import uk.co.grahamcox.tcg.model.DaoRetriever
 
 /**
  * Standard implementation of the User Retriever
  * @property dao The User DAO to work with
  */
-class UserRetrieverImpl(private val dao: UserDao) : UserRetriever {
-    /**
-     * Retrieve a user by it's internal ID
-     * @param id The ID of the user
-     * @return the user
-     * @throws UnknownResourceException if the user doesn't exist
-     */
-    override fun retrieveUserById(id: UserId) = dao.getById(id) ?: throw UnknownResourceException(id)
-
+class UserRetrieverImpl(private val dao: UserDao) : UserRetriever, DaoRetriever<UserId, UserData>(dao) {
     /**
      * Retrieve a user by it's ID in a third-party provider system
      * @param provider The name of the provider

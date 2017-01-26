@@ -1,18 +1,17 @@
-package uk.co.grahamcox.tcg.user
+package uk.co.grahamcox.tcg.model
 
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.winterbe.expekt.should
 import org.junit.Test
-import uk.co.grahamcox.tcg.model.Identity
-import uk.co.grahamcox.tcg.model.Model
-import uk.co.grahamcox.tcg.model.UnknownResourceException
+import uk.co.grahamcox.tcg.user.UserData
+import uk.co.grahamcox.tcg.user.UserId
 import java.time.Instant
 
 /**
- * Unit tests for [UserRetrieverImpl]
+ * Unit tests for [DaoRetriever]
  */
-class UserRetrieverImplTest {
+class DaoRetrieverTest {
     /** The ID of the user */
     private val userId = UserId("abc")
     /** The actual user */
@@ -31,7 +30,7 @@ class UserRetrieverImplTest {
 
     @Test
     fun `retrieve known by ID`() {
-        val testSubject = UserRetrieverImpl(
+        val testSubject = DaoRetriever<UserId, UserData>(
                 dao = mock {
                     on { this.getById(userId) } doReturn userModel
                 }
@@ -43,35 +42,12 @@ class UserRetrieverImplTest {
     @Test(expected = UnknownResourceException::class)
     fun `retrieve unknown by ID`() {
         val result: Model<UserId, UserData>? = null
-        val testSubject = UserRetrieverImpl(
+        val testSubject = DaoRetriever<UserId, UserData>(
                 dao = mock {
                     on { this.getById(userId) } doReturn result
                 }
         )
 
         testSubject.retrieveById(userId)
-    }
-
-    @Test
-    fun `retrieve known by Provider ID`() {
-        val testSubject = UserRetrieverImpl(
-                dao = mock {
-                    on { this.retrieveUserByProviderId("google", "abc") } doReturn userModel
-                }
-        )
-
-        testSubject.retrieveUserByProviderId("google", "abc").should.equal(userModel)
-    }
-
-    @Test
-    fun `retrieve unknown by Provider ID`() {
-        val result: Model<UserId, UserData>? = null
-        val testSubject = UserRetrieverImpl(
-                dao = mock {
-                    on { this.retrieveUserByProviderId("google", "abc") } doReturn result
-                }
-        )
-
-        testSubject.retrieveUserByProviderId("google", "abc").should.be.`null`
     }
 }

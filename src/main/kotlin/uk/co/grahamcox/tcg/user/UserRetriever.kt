@@ -1,20 +1,13 @@
 package uk.co.grahamcox.tcg.user
 
 import uk.co.grahamcox.tcg.model.Model
+import uk.co.grahamcox.tcg.model.Retriever
 import uk.co.grahamcox.tcg.model.UnknownResourceException
 
 /**
  * Mechanism to retrieve a user
  */
-interface UserRetriever {
-    /**
-     * Retrieve a user by it's internal ID
-     * @param id The ID of the user
-     * @return the user
-     * @throws UnknownResourceException if the user doesn't exist
-     */
-    fun retrieveUserById(id: UserId) : Model<UserId, UserData>
-
+interface UserRetriever : Retriever<UserId, UserData> {
     /**
      * Retrieve a user by it's ID in a third-party provider system
      * @param provider The name of the provider
