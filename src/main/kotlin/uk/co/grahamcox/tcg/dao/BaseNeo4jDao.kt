@@ -24,7 +24,9 @@ abstract class BaseNeo4jDao<ID : Id, DATA>(
     protected abstract val getByIdQuery: String
 
     /** Query to use to create a new record */
-    protected abstract val createQuery: String
+    protected open val createQuery: String
+        get() = TODO("not implemented")
+
     /**
      * Create a new record with the given data
      * @param data The data to persist
@@ -71,7 +73,9 @@ abstract class BaseNeo4jDao<ID : Id, DATA>(
      * @param data The data to build the parameters from
      * @return the parameters
      */
-    protected abstract fun buildCreateParameters(data: DATA): Map<String, *>
+    protected open fun buildCreateParameters(data: DATA): Map<String, *> {
+        TODO("not implemented")
+    }
 
     /**
      * Helper to build the default set of parameters needed for identifying a record

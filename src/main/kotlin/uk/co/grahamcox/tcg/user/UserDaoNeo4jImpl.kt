@@ -65,7 +65,7 @@ class UserDaoNeo4jImpl(private val driver: Driver,
     }
 
     // New methods for this particular DAO
-    
+
     /**
      * Retrieve a user by it's ID in a third-party provider system
      * @param provider The name of the provider
