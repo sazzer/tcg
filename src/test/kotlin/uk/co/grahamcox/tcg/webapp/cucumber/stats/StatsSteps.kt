@@ -24,8 +24,8 @@ class StatsSteps {
     private lateinit var statSeeder: StatSeeder
 
     @Given("""^I have a Statistic with details:$""")
-    fun seedUser(userDetails: Map<String, String>) {
-        statSeeder.seed(userDetails)
+    fun seedStat(statDetails: Map<String, String>) {
+        statSeeder.seed(statDetails)
     }
 
     @When("""^I retrieve the stat "(.+)"""")

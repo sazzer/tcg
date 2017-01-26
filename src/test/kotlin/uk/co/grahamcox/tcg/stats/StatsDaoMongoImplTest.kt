@@ -55,7 +55,7 @@ class StatsDaoMongoImplTest {
                         .append("name", "Strength")
                         .append("description", "Makes you strong")
         )
-        
+
         testSubject.getById(StatId("ECEE75F3-4037-4B1F-891A-C5B06546A0BC")).should.equal(Model(
                 identity = Identity(
                         id = StatId("ECEE75F3-4037-4B1F-891A-C5B06546A0BC"),

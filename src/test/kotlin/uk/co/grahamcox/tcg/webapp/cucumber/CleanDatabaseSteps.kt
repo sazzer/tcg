@@ -1,5 +1,6 @@
 package uk.co.grahamcox.tcg.webapp.cucumber
 
+import com.mongodb.client.MongoDatabase
 import cucumber.api.java.Before
 import org.neo4j.driver.v1.AccessMode
 import org.neo4j.driver.v1.Driver
@@ -27,12 +28,27 @@ class CleanDatabaseSteps {
     @Autowired
     private lateinit var driver: Driver
 
+    /** The MongoDB Database */
+    @Autowired
+    private lateinit var database: MongoDatabase
+
     /**
-     * Clean the database
+     * Clean the MongoDB database
      */
     @Before
-    fun cleanDatabase() {
+    fun cleanNeo4jDatabase() {
         driver.executeStatement("MATCH (n) OPTIONAL MATCH (n)-[r]-() WITH n,r DELETE n,r", mapOf(), AccessMode.WRITE)
         LOG.debug("Deleted all nodes and relationships")
+    }
+
+    /**
+     * Clean the MongoDB database
+     */
+    @Before
+    fun cleanMongoDatabase() {
+        database.listCollectionNames().forEach { c ->
+            LOG.debug("Dropping collection: {}", c)
+            database.getCollection(c).drop()
+        }
     }
 }

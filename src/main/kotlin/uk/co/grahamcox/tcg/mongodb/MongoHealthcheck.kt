@@ -14,7 +14,7 @@ class MongoHealthcheck(private val db: MongoDatabase) : AbstractHealthIndicator(
      * @param builder The builder to report health status and details to
      */
     override fun doHealthCheck(builder: Health.Builder) {
-        val collectionNames = db.listCollectionNames().toList()
+        val collectionNames = db.listCollectionNames().toList().sorted()
         builder.up()
                 .withDetail("collectionNames", collectionNames)
                 .withDetail("collectionCount", collectionNames.size)

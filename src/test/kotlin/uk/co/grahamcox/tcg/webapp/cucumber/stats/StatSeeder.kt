@@ -1,18 +1,15 @@
 package uk.co.grahamcox.tcg.webapp.cucumber.stats
 
-import org.neo4j.driver.v1.Driver
-import uk.co.grahamcox.tcg.webapp.cucumber.seeder.Neo4jSeeder
+import com.mongodb.client.MongoDatabase
+import uk.co.grahamcox.tcg.webapp.cucumber.seeder.MongoSeeder
 
 /**
  * Seeder for seeding Stats records
  */
-class StatSeeder(driver: Driver) : Neo4jSeeder(driver) {
-    /** The query to execute for the seeding */
-    override val createQuery =
-            "CREATE (u:Stat {id:{id}, version:{version}, created:{created}, updated: {updated}, name: {name}, description:{description}}) RETURN u"
+class StatSeeder(database: MongoDatabase) : MongoSeeder(database, "stat") {
     /** The mapping between Cucumber fields and query binds */
     override val fieldMapping = mapOf(
-            "ID" to "id",
+            "ID" to "_id",
             "Name" to "name",
             "Description" to "description"
     )
