@@ -4,10 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import uk.co.grahamcox.tcg.user.UserId
 import uk.co.grahamcox.tcg.user.UserRetriever
-import uk.co.grahamcox.tcg.webapp.api.IdentityModel
-import uk.co.grahamcox.tcg.webapp.api.users.UserModel
-import java.time.Instant
-import java.util.*
+import uk.co.grahamcox.tcg.webapp.IdentityModel
 
 /**
  * Controller for accessing user data

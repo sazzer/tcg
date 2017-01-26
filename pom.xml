@@ -668,7 +668,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <targetPackage>uk.co.grahamcox.tcg.webapp.api</targetPackage>
+                            <targetPackage>uk.co.grahamcox.tcg.webapp</targetPackage>
                             <classNameSuffix>Model</classNameSuffix>
                         </configuration>
                     </execution>
