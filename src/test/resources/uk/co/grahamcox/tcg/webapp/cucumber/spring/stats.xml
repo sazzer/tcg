@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="statResponseMatcher" class="uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher">
+        <constructor-arg name="requester" ref="requester" />
+        <constructor-arg name="fieldMapping">
+            <map>
+                <entry key="ID" value="identity/id" />
+                <entry key="Name" value="name" />
+                <entry key="Description" value="description" />
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="statsSeeder" class="uk.co.grahamcox.tcg.webapp.cucumber.stats.StatSeeder">
+        <constructor-arg name="driver" ref="neo4jClient" />
+    </bean>
+</beans>

@@ -23,6 +23,9 @@
         </mvc:argument-resolvers>
     </mvc:annotation-driven>
 
+    <bean class="uk.co.grahamcox.tcg.webapp.UnknownResourceHandler" />
+
     <import resource="authentication.xml" />
     <import resource="users.xml" />
+    <import resource="stats.xml" />
 </beans>

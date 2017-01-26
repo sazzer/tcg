@@ -8,4 +8,5 @@
     <import resource="db.xml" />
     <import resource="authentication/authentication.xml" />
     <import resource="users.xml" />
+    <import resource="stats.xml" />
 </beans>

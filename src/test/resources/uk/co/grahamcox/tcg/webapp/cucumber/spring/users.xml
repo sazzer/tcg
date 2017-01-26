@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="userDatabaseMatcher" class="uk.co.grahamcox.tcg.webapp.cucumber.users.UserDatabaseMatcher">
+        <constructor-arg name="driver" ref="neo4jClient" />
+    </bean>
+
+    <bean id="userResponseMatcher" class="uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher">
+        <constructor-arg name="requester" ref="requester" />
+        <constructor-arg name="fieldMapping">
+            <map>
+                <entry key="User ID" value="identity/id" />
+                <entry key="Name" value="name" />
+                <entry key="Email" value="email" />
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="userSeeder" class="uk.co.grahamcox.tcg.webapp.cucumber.users.UserSeeder">
+        <constructor-arg name="neo4j" ref="neo4jClient" />
+    </bean>
+</beans>
