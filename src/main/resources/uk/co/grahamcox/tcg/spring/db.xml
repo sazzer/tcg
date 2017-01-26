@@ -18,4 +18,6 @@
     <bean id="neo4jHealthchecks" class="uk.co.grahamcox.tcg.neo4j.Neo4jHealthcheck">
         <constructor-arg name="driver" ref="neo4jClient" />
     </bean>
+
+    <bean id="mongoDbDatabase" class="uk.co.grahamcox.tcg.mongodb.EmbeddedMongoDB" destroy-method="shutdown" />
 </beans>
