@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="requester" class="uk.co.grahamcox.tcg.webapp.cucumber.RequesterFactoryBean" />
+
+    <bean id="mockServer" class="org.springframework.test.web.client.MockRestServiceServer" factory-method="createServer">
+        <constructor-arg name="restTemplate" ref="restTemplate" />
+    </bean>
+
+    <bean id="userDatabaseMatcher" class="uk.co.grahamcox.tcg.webapp.cucumber.users.UserDatabaseMatcher">
+        <constructor-arg name="driver" ref="neo4jClient" />
+    </bean>
+
+    <bean id="userResponseMatcher" class="uk.co.grahamcox.tcg.webapp.cucumber.users.UserResponseMatcher">
+        <constructor-arg name="requester" ref="requester" />
+    </bean>
+
+    <bean id="userSeeder" class="uk.co.grahamcox.tcg.webapp.cucumber.users.UserSeeder">
+        <constructor-arg name="neo4j" ref="neo4jClient" />
+    </bean>
+</beans>

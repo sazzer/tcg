@@ -9,13 +9,12 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import uk.co.grahamcox.tcg.neo4j.executeStatement
-import uk.co.grahamcox.tcg.webapp.cucumber.spring.CucumberTestConfiguration
 import uk.co.grahamcox.tcg.webapp.spring.Application
 
 /**
  * Steps to clean the database before the test runs
  */
-@ContextConfiguration(classes = arrayOf(CucumberTestConfiguration::class))
+@ContextConfiguration("classpath:/uk/co/grahamcox/tcg/webapp/cucumber/spring/context.xml")
 @SpringBootTest(classes = arrayOf(Application::class), webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 class CleanDatabaseSteps {
