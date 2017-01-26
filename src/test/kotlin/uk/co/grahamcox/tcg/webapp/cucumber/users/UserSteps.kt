@@ -4,7 +4,9 @@ import cucumber.api.java.en.Given
 import cucumber.api.java.en.Then
 import cucumber.api.java.en.When
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import uk.co.grahamcox.tcg.webapp.cucumber.Requester
+import uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher
 
 /**
  * Cucumber steps for working with user records
@@ -20,7 +22,8 @@ class UserSteps {
 
     /** The user response matcher to use */
     @Autowired
-    private lateinit var userResponseMatcher: UserResponseMatcher
+    @Qualifier("userResponseMatcher")
+    private lateinit var userResponseMatcher: ResponseMatcher
 
     /** The user seeder to use */
     @Autowired
@@ -45,6 +48,6 @@ class UserSteps {
 
     @Then("""^I received user details:$""")
     fun checkUserResponseMatches(expected: Map<String, String>) {
-        userResponseMatcher.matchUser(expected)
+        userResponseMatcher.match(expected)
     }
 }

@@ -12,8 +12,15 @@
         <constructor-arg name="driver" ref="neo4jClient" />
     </bean>
 
-    <bean id="userResponseMatcher" class="uk.co.grahamcox.tcg.webapp.cucumber.users.UserResponseMatcher">
+    <bean id="userResponseMatcher" class="uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher">
         <constructor-arg name="requester" ref="requester" />
+        <constructor-arg name="fieldMapping">
+            <map>
+                <entry key="User ID" value="identity/id" />
+                <entry key="Name" value="name" />
+                <entry key="Email" value="email" />
+            </map>
+        </constructor-arg>
     </bean>
 
     <bean id="userSeeder" class="uk.co.grahamcox.tcg.webapp.cucumber.users.UserSeeder">
