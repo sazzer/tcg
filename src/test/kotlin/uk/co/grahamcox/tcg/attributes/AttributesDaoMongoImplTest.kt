@@ -12,9 +12,9 @@ import java.time.*
 import java.util.*
 
 /**
- * Unit tests for [StatsDaoMongoImpl]
+ * Unit tests for [AttributesDaoMongoImpl]
  */
-class StatsDaoMongoImplTest {
+class AttributesDaoMongoImplTest {
 
     /** The embedded MongoDB */
     @JvmField @Rule
@@ -27,18 +27,18 @@ class StatsDaoMongoImplTest {
     private val clock = Clock.fixed(currentTime, ZoneId.of("UTC"))
 
     /** The test subject */
-    private lateinit var testSubject: StatsDaoMongoImpl
+    private lateinit var testSubject: AttributesDaoMongoImpl
 
     /**
      * Set up the test subject
      */
     @Before
     fun setup() {
-        testSubject = StatsDaoMongoImpl(db = mongoRule.database, clock = clock)
+        testSubject = AttributesDaoMongoImpl(db = mongoRule.database, clock = clock)
     }
     @Test
     fun `retrieve unknown stat by internal ID`() {
-        testSubject.getById(StatId("unknown")).should.be.`null`
+        testSubject.getById(AttributeId("unknown")).should.be.`null`
     }
 
     @Test
@@ -53,14 +53,14 @@ class StatsDaoMongoImplTest {
                         .append("description", "Makes you strong")
         )
 
-        testSubject.getById(StatId("ECEE75F3-4037-4B1F-891A-C5B06546A0BC")).should.equal(Model(
+        testSubject.getById(AttributeId("ECEE75F3-4037-4B1F-891A-C5B06546A0BC")).should.equal(Model(
                 identity = Identity(
-                        id = StatId("ECEE75F3-4037-4B1F-891A-C5B06546A0BC"),
+                        id = AttributeId("ECEE75F3-4037-4B1F-891A-C5B06546A0BC"),
                         version = "0394E84E-A3F6-4F8D-BA44-3BA845328FCE",
                         created = Instant.ofEpochMilli(1483983699000),
                         updated = Instant.ofEpochMilli(1483983699000)
                 ),
-                data = StatData(
+                data = AttributeData(
                         name = "Strength",
                         description = "Makes you strong"
                 )

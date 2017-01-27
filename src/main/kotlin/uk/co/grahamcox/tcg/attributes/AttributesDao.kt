@@ -5,4 +5,4 @@ import uk.co.grahamcox.tcg.dao.BaseDao
 /**
  * DAO for accessing attributes
  */
-interface StatsDao : BaseDao<StatId, StatData>
+interface AttributesDao : BaseDao<AttributeId, AttributeData>

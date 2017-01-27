@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import uk.co.grahamcox.tcg.model.Retriever
-import uk.co.grahamcox.tcg.attributes.StatData
-import uk.co.grahamcox.tcg.attributes.StatId
+import uk.co.grahamcox.tcg.attributes.AttributeData
+import uk.co.grahamcox.tcg.attributes.AttributeId
 import uk.co.grahamcox.tcg.webapp.IdentityModel
 
 
@@ -14,7 +14,7 @@ import uk.co.grahamcox.tcg.webapp.IdentityModel
  */
 @RestController
 @RequestMapping("/api/attributes")
-class StatsController(private val statsRetriever: Retriever<StatId, StatData>) {
+class StatsController(private val statsRetriever: Retriever<AttributeId, AttributeData>) {
     /**
      * Get the request stat
      * @param statId The ID of the stat to retriever
@@ -22,7 +22,7 @@ class StatsController(private val statsRetriever: Retriever<StatId, StatData>) {
      */
     @RequestMapping("/{id}")
     fun getStat(@PathVariable("id") statId: String): StatModel {
-        val stat = statsRetriever.retrieveById(StatId(statId))
+        val stat = statsRetriever.retrieveById(AttributeId(statId))
 
         return StatModel()
                 .withName(stat.data.name)

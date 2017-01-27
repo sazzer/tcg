@@ -8,28 +8,28 @@ import uk.co.grahamcox.tcg.model.Model
 import java.time.Clock
 
 /**
- * Implementation of the Stats DAO that works in terms of MongoDB
+ * Implementation of the Attributes DAO that works in terms of MongoDB
  * @property db The Database connection
  * @property clock The clock
  */
-class StatsDaoMongoImpl(
+class AttributesDaoMongoImpl(
         private val db: MongoDatabase,
-        private val clock: Clock) : BaseMongoDao<StatId, StatData>(db, "stat", clock) {
+        private val clock: Clock) : BaseMongoDao<AttributeId, AttributeData>(db, "stat", clock) {
 
     /**
      * Parse the given document into a single record
      * @param result the document to parse
      * @return the model parsed from the result
      */
-    override fun parseResult(result: Document): Model<StatId, StatData> {
+    override fun parseResult(result: Document): Model<AttributeId, AttributeData> {
         return Model(
                 identity = Identity(
-                        id = StatId(result.getString("_id")),
+                        id = AttributeId(result.getString("_id")),
                         version = result.getString("version"),
                         created = result.getDate("created").toInstant(),
                         updated = result.getDate("updated").toInstant()
                 ),
-                data = StatData(
+                data = AttributeData(
                         name = result.getString("name"),
                         description = result.getString("description")
                 )
