@@ -15,7 +15,7 @@ import uk.co.grahamcox.tcg.webapp.model.IdentityModel
  */
 @RestController
 @RequestMapping("/api/attributes")
-class AttributesController(private val statsRetriever: Retriever<AttributeId, AttributeData>) {
+class AttributesController(private val attributesRetriever: Retriever<AttributeId, AttributeData>) {
     /**
      * Get the requested attribute
      * @param statId The ID of the attribute to retriever
@@ -23,7 +23,7 @@ class AttributesController(private val statsRetriever: Retriever<AttributeId, At
      */
     @RequestMapping("/{id}")
     fun getStat(@PathVariable("id") statId: String): AttributeModel {
-        val stat = statsRetriever.retrieveById(AttributeId(statId))
+        val stat = attributesRetriever.retrieveById(AttributeId(statId))
 
         return AttributeModel()
                 .withName(stat.data.name)
