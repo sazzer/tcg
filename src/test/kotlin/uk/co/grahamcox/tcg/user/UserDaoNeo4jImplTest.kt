@@ -56,7 +56,8 @@ class UserDaoNeo4jImplTest {
                 ),
                 data = UserData(
                         name = "Graham",
-                        email = "graham@grahamcox.co.uk"
+                        email = "graham@grahamcox.co.uk",
+                        providerIds = mapOf()
                 )
         ))
     }
@@ -83,7 +84,10 @@ class UserDaoNeo4jImplTest {
                 ),
                 data = UserData(
                         name = "Graham",
-                        email = "graham@grahamcox.co.uk"
+                        email = "graham@grahamcox.co.uk",
+                        providerIds = mapOf(
+                                "google" to "googleId"
+                        )
                 )
         ))
     }
@@ -92,7 +96,10 @@ class UserDaoNeo4jImplTest {
     fun `create new user`() {
         val createUserResponse = testSubject.create(UserData(
                 name = "Graham Cox",
-                email = "graham@grahamcox.co.uk"
+                email = "graham@grahamcox.co.uk",
+                providerIds = mapOf(
+                        "google" to "googleId"
+                )
         ))
 
         val nodeCount = neo4jRule.driver.execute { session ->
@@ -100,23 +107,36 @@ class UserDaoNeo4jImplTest {
         }
         nodeCount.single().get("totalCount").asInt().should.equal(1)
 
-        val userRecord = neo4jRule.driver.execute { session ->
-            session.run("""MATCH (u:User {id: {id}}) RETURN u""", mapOf("id" to createUserResponse.identity.id.id))
+        neo4jRule.driver.execute { session ->
+            val userRecord = session.run("""MATCH (u:User {id: {id}}) RETURN u""", mapOf(
+                    "id" to createUserResponse.identity.id.id)
+            )
+
+            val user = userRecord.single().get("u")
+            user.get("id").asString().should.equal(createUserResponse.identity.id.id)
+            user.get("version").asString().should.equal(createUserResponse.identity.version)
+            user.get("created").asLong().should.equal(currentTime.toEpochMilli())
+            user.get("updated").asLong().should.equal(currentTime.toEpochMilli())
+            user.get("name").asString().should.equal("Graham Cox")
+            user.get("email").asString().should.equal("graham@grahamcox.co.uk")
+
+            val relationships = session.run("""MATCH (u:User {id: {id}})-[r:PROVIDER]->(p) RETURN r,p""", mapOf(
+                    "id" to createUserResponse.identity.id.id)
+            ).list()
+            relationships.size.should.equal(1)
+            relationships[0].let { record ->
+                record.get("r").asRelationship().get("id").asString().should.equal("googleId")
+                record.get("p").asNode().get("id").asString().should.equal("google")
+            }
         }
-        val user = userRecord.single().get("u")
-        user.get("id").asString().should.equal(createUserResponse.identity.id.id)
-        user.get("version").asString().should.equal(createUserResponse.identity.version)
-        user.get("created").asLong().should.equal(currentTime.toEpochMilli())
-        user.get("updated").asLong().should.equal(currentTime.toEpochMilli())
-        user.get("name").asString().should.equal("Graham Cox")
-        user.get("email").asString().should.equal("graham@grahamcox.co.uk")
     }
 
     @Test
-    fun `create new user without email`() {
+    fun `create new user without email or providers`() {
         val createUserResponse = testSubject.create(UserData(
                 name = "Graham Cox",
-                email = null
+                email = null,
+                providerIds = mapOf()
         ))
 
         val nodeCount = neo4jRule.driver.execute { session ->
@@ -124,76 +144,20 @@ class UserDaoNeo4jImplTest {
         }
         nodeCount.single().get("totalCount").asInt().should.equal(1)
 
-        val userRecord = neo4jRule.driver.execute { session ->
-            session.run("""MATCH (u:User {id: {id}}) RETURN u""", mapOf("id" to createUserResponse.identity.id.id))
+        neo4jRule.driver.execute { session ->
+            val userRecord = session.run("""MATCH (u:User {id: {id}}) RETURN u""", mapOf("id" to createUserResponse.identity.id.id))
+            val user = userRecord.single().get("u")
+            user.get("id").asString().should.equal(createUserResponse.identity.id.id)
+            user.get("version").asString().should.equal(createUserResponse.identity.version)
+            user.get("created").asLong().should.equal(currentTime.toEpochMilli())
+            user.get("updated").asLong().should.equal(currentTime.toEpochMilli())
+            user.get("name").asString().should.equal("Graham Cox")
+            user.get("email").isNull.should.be.`true`
+
+            val relationships = session.run("""MATCH (u:User {id: {id}})-[r:PROVIDER]->(p) RETURN r,p""", mapOf(
+                    "id" to createUserResponse.identity.id.id)
+            ).list()
+            relationships.size.should.equal(0)
         }
-        val user = userRecord.single().get("u")
-        user.get("id").asString().should.equal(createUserResponse.identity.id.id)
-        user.get("version").asString().should.equal(createUserResponse.identity.version)
-        user.get("created").asLong().should.equal(currentTime.toEpochMilli())
-        user.get("updated").asLong().should.equal(currentTime.toEpochMilli())
-        user.get("name").asString().should.equal("Graham Cox")
-        user.get("email").isNull.should.be.`true`
-    }
-
-    @Test
-    fun `link user to unknown provider`() {
-        neo4jRule.driver.execute(AccessMode.WRITE) { session ->
-            session.run("""CREATE (u:User {id: "ECEE75F3-4037-4B1F-891A-C5B06546A0BC", version: "0394E84E-A3F6-4F8D-BA44-3BA845328FCE", created: 1483983699000, updated: 1483983699000, name: "Graham", email: "graham@grahamcox.co.uk"})""")
-        }
-
-        testSubject.linkUserToProvider(Model(
-                identity = Identity(
-                        id = UserId("ECEE75F3-4037-4B1F-891A-C5B06546A0BC"),
-                        version = "0394E84E-A3F6-4F8D-BA44-3BA845328FCE",
-                        created = Instant.ofEpochMilli(1483983699000),
-                        updated = Instant.ofEpochMilli(1483983699000)
-                ),
-                data = UserData(
-                        name = "Graham",
-                        email = "graham@grahamcox.co.uk"
-                )
-        ), "google", "123456")
-
-        val providerCount = neo4jRule.driver.execute { session ->
-            session.run("""MATCH (p:AuthenticationProvider) RETURN COUNT(p) as providerCount""")
-        }
-        providerCount.single().get("providerCount").asInt().should.equal(1)
-
-        val relationshipCount = neo4jRule.driver.execute { session ->
-            session.run("""MATCH (u:User {id: "ECEE75F3-4037-4B1F-891A-C5B06546A0BC"}) -[r:PROVIDER {id:"123456"}]-> (p:AuthenticationProvider {id:"google"}) RETURN COUNT(r) as relationshipCount""")
-        }
-        relationshipCount.single().get("relationshipCount").asInt().should.equal(1)
-    }
-
-    @Test
-    fun `link user to known provider`() {
-        neo4jRule.driver.execute(AccessMode.WRITE) { session ->
-            session.run("""CREATE (p:AuthenticationProvider {id:"google"})""")
-            session.run("""CREATE (u:User {id: "ECEE75F3-4037-4B1F-891A-C5B06546A0BC", version: "0394E84E-A3F6-4F8D-BA44-3BA845328FCE", created: 1483983699000, updated: 1483983699000, name: "Graham", email: "graham@grahamcox.co.uk"})""")
-        }
-
-        testSubject.linkUserToProvider(Model(
-                identity = Identity(
-                        id = UserId("ECEE75F3-4037-4B1F-891A-C5B06546A0BC"),
-                        version = "0394E84E-A3F6-4F8D-BA44-3BA845328FCE",
-                        created = Instant.ofEpochMilli(1483983699000),
-                        updated = Instant.ofEpochMilli(1483983699000)
-                ),
-                data = UserData(
-                        name = "Graham",
-                        email = "graham@grahamcox.co.uk"
-                )
-        ), "google", "123456")
-
-        val providerCount = neo4jRule.driver.execute { session ->
-            session.run("""MATCH (p:AuthenticationProvider) RETURN COUNT(p) as providerCount""")
-        }
-        providerCount.single().get("providerCount").asInt().should.equal(1)
-
-        val relationshipCount = neo4jRule.driver.execute { session ->
-            session.run("""MATCH (u:User {id: "ECEE75F3-4037-4B1F-891A-C5B06546A0BC"}) -[r:PROVIDER {id:"123456"}]-> (p:AuthenticationProvider {id:"google"}) RETURN COUNT(r) as relationshipCount""")
-        }
-        relationshipCount.single().get("relationshipCount").asInt().should.equal(1)
     }
 }

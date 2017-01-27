@@ -24,7 +24,8 @@ class AccessTokenGeneratorImplTest {
                 ),
                 data = UserData(
                         name = "Graham",
-                        email = "graham@grahamcox.co.uk"
+                        email = "graham@grahamcox.co.uk",
+                        providerIds = mapOf()
                 )
         )
 

@@ -26,7 +26,10 @@ class UserLoaderTest {
             ),
             data = UserData(
                     name = "Graham",
-                    email = "graham@grahamcox.co.uk"
+                    email = "graham@grahamcox.co.uk",
+                    providerIds = mapOf(
+                         "google" to "abc123"
+                    )
             )
     )
     /** The User Profile */

@@ -1,7 +1,5 @@
 package uk.co.grahamcox.tcg.user
 
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.whenever
 import com.winterbe.expekt.should
@@ -23,7 +21,8 @@ class UserModifierImplTest {
     /** The user data */
     private val userData = UserData(
             name = "Graham",
-            email = "graham@grahamcox.co.uk"
+            email = "graham@grahamcox.co.uk",
+            providerIds = mapOf()
     )
 
     /** A User Model */
@@ -49,24 +48,5 @@ class UserModifierImplTest {
 
         testSubject.createUser(userData).should.equal(userModel)
         Mockito.verify(dao, times(1)).create(userData)
-        Mockito.verify(dao, times(0)).linkUserToProvider(userModel, "google", "123456")
-    }
-
-    @Test
-    fun `link user to provider`() {
-        testSubject.linkUserToProvider(userModel, "google", "123456")
-        Mockito.verify(dao, times(0)).create(userData)
-        Mockito.verify(dao, times(1)).linkUserToProvider(userModel, "google", "123456")
-
-    }
-
-    @Test
-    fun `create new user and link to provider`() {
-        whenever(dao.create(userData)).thenReturn(userModel)
-
-        testSubject.createUser(userData, "google", "123456").should.equal(userModel)
-        Mockito.verify(dao, times(1)).create(userData)
-        Mockito.verify(dao, times(1)).linkUserToProvider(userModel, "google", "123456")
-
     }
 }

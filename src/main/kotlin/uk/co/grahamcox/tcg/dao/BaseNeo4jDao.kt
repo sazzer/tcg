@@ -1,10 +1,13 @@
 package uk.co.grahamcox.tcg.dao
 
 import org.neo4j.driver.v1.Driver
+import org.neo4j.driver.v1.Record
+import org.neo4j.driver.v1.Session
 import org.neo4j.driver.v1.StatementResult
 import org.slf4j.LoggerFactory
 import uk.co.grahamcox.tcg.model.Id
 import uk.co.grahamcox.tcg.model.Model
+import uk.co.grahamcox.tcg.neo4j.execute
 import uk.co.grahamcox.tcg.neo4j.executeStatement
 import java.time.Clock
 import java.util.*
@@ -58,14 +61,16 @@ abstract class BaseNeo4jDao<ID : Id, DATA>(
      * @return the record, if any was found
      */
     protected fun loadWithQuery(query: String, parameters: Map<String, Any?>): Model<ID, DATA>? {
-        val result = driver.executeStatement(query, parameters)
-        val user = when (result.hasNext()) {
-            true -> parseResult(result)
-            false -> null
+        val result = driver.execute { session ->
+            val result = session.run(query, parameters)
+            when (result.hasNext()) {
+                true -> parseResult(result.single(), session)
+                false -> null
+            }
         }
-        LOG.debug("Found record: {}", user)
+        LOG.debug("Found record: {}", result)
 
-        return user
+        return result
     }
 
     /**
@@ -93,7 +98,8 @@ abstract class BaseNeo4jDao<ID : Id, DATA>(
      * Note that the statement result has to be provided because there might be multiple rows returned representing a
      * single record
      * @param result the statement result to parse
+     * @param session The database session, in case more data needs to be retrieved
      * @return the model parsed from the result
      */
-    protected abstract fun parseResult(result: StatementResult): Model<ID, DATA>
+    protected abstract fun parseResult(result: Record, session: Session): Model<ID, DATA>
 }

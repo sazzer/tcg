@@ -1,6 +1,8 @@
 package uk.co.grahamcox.tcg.user
 
 import org.neo4j.driver.v1.Driver
+import org.neo4j.driver.v1.Record
+import org.neo4j.driver.v1.Session
 import org.neo4j.driver.v1.StatementResult
 import org.slf4j.LoggerFactory
 import uk.co.grahamcox.tcg.dao.BaseNeo4jDao
@@ -45,21 +47,31 @@ class UserDaoNeo4jImpl(private val driver: Driver,
      * Note that the statement result has to be provided because there might be multiple rows returned representing a
      * single record
      * @param result the statement result to parse
+     * @param session The database session, in case more data needs to be retrieved
      * @return the model parsed from the result
      */
-    override fun parseResult(result: StatementResult): Model<UserId, UserData> {
-        val node = result.single().get("u").asNode()
+    override fun parseResult(result: Record, session: Session): Model<UserId, UserData> {
+        val node = result.get("u").asNode()
+        val id = node.get("id").asString()
+        val providers = session.run("MATCH (u:User {id:{id}})-[r:PROVIDER]->(p:AuthenticationProvider) RETURN r,p", mapOf(
+                "id" to id
+        )).list()
 
         return Model(
                 identity = Identity(
-                        id = UserId(node.get("id").asString()),
+                        id = UserId(id),
                         version = node.get("version").asString(),
                         created = Instant.ofEpochMilli(node.get("created").asLong()),
                         updated = Instant.ofEpochMilli(node.get("updated").asLong())
                 ),
                 data = UserData(
                         name = node.get("name").asString(),
-                        email = node.get("email").asString()
+                        email = node.get("email").asString(),
+                        providerIds = providers.map { record ->
+                            record.get("p").get("id").asString() to record.get("r").get("id").asString()
+                        }
+                                .toTypedArray()
+                                .toMap()
                 )
         )
     }

@@ -1,6 +1,8 @@
 package uk.co.grahamcox.tcg.stats
 
 import org.neo4j.driver.v1.Driver
+import org.neo4j.driver.v1.Record
+import org.neo4j.driver.v1.Session
 import org.neo4j.driver.v1.StatementResult
 import uk.co.grahamcox.tcg.dao.BaseNeo4jDao
 import uk.co.grahamcox.tcg.model.Identity
@@ -22,10 +24,11 @@ class StatsDaoNeo4jImpl(driver: Driver, clock: Clock) : StatsDao, BaseNeo4jDao<S
      * Note that the statement result has to be provided because there might be multiple rows returned representing a
      * single record
      * @param result the statement result to parse
+     * @param session The database session, in case more data needs to be retrieved
      * @return the model parsed from the result
      */
-    override fun parseResult(result: StatementResult): Model<StatId, StatData> {
-        val node = result.single().get("s").asNode()
+    override fun parseResult(result: Record, session: Session): Model<StatId, StatData> {
+        val node = result.get("s").asNode()
 
         return Model(
                 identity = Identity(
