@@ -1,4 +1,4 @@
-package uk.co.grahamcox.tcg.webapp.cucumber.stats
+package uk.co.grahamcox.tcg.webapp.cucumber.attributes
 
 import cucumber.api.java.en.Given
 import cucumber.api.java.en.Then
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import uk.co.grahamcox.tcg.webapp.cucumber.Requester
 import uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher
 
-class StatsSteps {
+class AttributesSteps {
 
     /** The means to make requests */
     @Autowired
@@ -16,16 +16,16 @@ class StatsSteps {
 
     /** The stat response matcher to use */
     @Autowired
-    @Qualifier("statResponseMatcher")
-    private lateinit var statResponseMatcher: ResponseMatcher
+    @Qualifier("attributeResponseMatcher")
+    private lateinit var attributeResponseMatcher: ResponseMatcher
 
     /** The means to seed Stats records */
     @Autowired
-    private lateinit var statSeeder: StatSeeder
+    private lateinit var attributeSeeder: AttributeSeeder
 
     @Given("""^I have a Statistic with details:$""")
     fun seedStat(statDetails: Map<String, String>) {
-        statSeeder.seed(statDetails)
+        attributeSeeder.seed(statDetails)
     }
 
     @When("""^I retrieve the stat "(.+)"""")
@@ -35,6 +35,6 @@ class StatsSteps {
 
     @Then("""^I received statistic:$""")
     fun checkStatResponseMatches(expected: Map<String, String>) {
-        statResponseMatcher.match(expected)
+        attributeResponseMatcher.match(expected)
     }
 }
