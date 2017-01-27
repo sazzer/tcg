@@ -14,10 +14,10 @@ import uk.co.grahamcox.tcg.webapp.IdentityModel
  */
 @RestController
 @RequestMapping("/api/attributes")
-class StatsController(private val statsRetriever: Retriever<AttributeId, AttributeData>) {
+class AttributesController(private val statsRetriever: Retriever<AttributeId, AttributeData>) {
     /**
-     * Get the request stat
-     * @param statId The ID of the stat to retriever
+     * Get the requested attribute
+     * @param statId The ID of the attribute to retriever
      * @return the stat
      */
     @RequestMapping("/{id}")
