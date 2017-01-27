@@ -6,7 +6,7 @@ import uk.co.grahamcox.tcg.webapp.cucumber.seeder.MongoSeeder
 /**
  * Seeder for seeding Stats records
  */
-class StatSeeder(database: MongoDatabase) : MongoSeeder(database, "stat") {
+class StatSeeder(database: MongoDatabase) : MongoSeeder(database, "attributes") {
     /** The mapping between Cucumber fields and query binds */
     override val fieldMapping = mapOf(
             "ID" to "_id",

@@ -14,7 +14,7 @@ import java.time.Clock
  */
 class AttributesDaoMongoImpl(
         private val db: MongoDatabase,
-        private val clock: Clock) : BaseMongoDao<AttributeId, AttributeData>(db, "stat", clock) {
+        private val clock: Clock) : BaseMongoDao<AttributeId, AttributeData>(db, "attributes", clock) {
 
     /**
      * Parse the given document into a single record

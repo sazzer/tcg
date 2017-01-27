@@ -1,4 +1,4 @@
-package uk.co.grahamcox.tcg.webapp.stats
+package uk.co.grahamcox.tcg.webapp.attributes
 
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -18,12 +18,12 @@ import uk.co.grahamcox.tcg.webapp.model.IdentityModel
 class AttributesController(private val attributesRetriever: Retriever<AttributeId, AttributeData>) {
     /**
      * Get the requested attribute
-     * @param statId The ID of the attribute to retriever
-     * @return the stat
+     * @param attributeId The ID of the attribute to retriever
+     * @return the attribute
      */
     @RequestMapping("/{id}")
-    fun getStat(@PathVariable("id") statId: String): AttributeModel {
-        val stat = attributesRetriever.retrieveById(AttributeId(statId))
+    fun getAttribute(@PathVariable("id") attributeId: String): AttributeModel {
+        val stat = attributesRetriever.retrieveById(AttributeId(attributeId))
 
         return AttributeModel()
                 .withName(stat.data.name)

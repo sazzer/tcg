@@ -43,7 +43,7 @@ class AttributesDaoMongoImplTest {
 
     @Test
     fun `retrieve known stat by internal ID`() {
-        mongoRule.database.getCollection("stat").insertOne(
+        mongoRule.database.getCollection("attributes").insertOne(
                 Document()
                         .append("_id", "ECEE75F3-4037-4B1F-891A-C5B06546A0BC")
                         .append("version", "0394E84E-A3F6-4F8D-BA44-3BA845328FCE")
