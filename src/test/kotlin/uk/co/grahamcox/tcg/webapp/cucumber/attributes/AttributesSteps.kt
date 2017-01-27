@@ -8,24 +8,27 @@ import org.springframework.beans.factory.annotation.Qualifier
 import uk.co.grahamcox.tcg.webapp.cucumber.Requester
 import uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher
 
+/**
+ * Cucumber steps for working with Attributes
+ */
 class AttributesSteps {
 
     /** The means to make requests */
     @Autowired
     private lateinit var requester: Requester
 
-    /** The stat response matcher to use */
+    /** The attribute response matcher to use */
     @Autowired
     @Qualifier("attributeResponseMatcher")
     private lateinit var attributeResponseMatcher: ResponseMatcher
 
-    /** The means to seed Stats records */
+    /** The means to seed Attribute records */
     @Autowired
     private lateinit var attributeSeeder: AttributeSeeder
 
     @Given("""^I have an attribute with details:$""")
-    fun seedAttribute(statDetails: Map<String, String>) {
-        attributeSeeder.seed(statDetails)
+    fun seedAttribute(attributeDetails: Map<String, String>) {
+        attributeSeeder.seed(attributeDetails)
     }
 
     @When("""^I retrieve the attribute "(.+)"""")

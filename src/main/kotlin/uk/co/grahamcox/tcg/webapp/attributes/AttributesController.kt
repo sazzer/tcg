@@ -23,16 +23,16 @@ class AttributesController(private val attributesRetriever: Retriever<AttributeI
      */
     @RequestMapping("/{id}")
     fun getAttribute(@PathVariable("id") attributeId: String): AttributeModel {
-        val stat = attributesRetriever.retrieveById(AttributeId(attributeId))
+        val attribute = attributesRetriever.retrieveById(AttributeId(attributeId))
 
         return AttributeModel()
-                .withName(stat.data.name)
-                .withDescription(stat.data.description)
+                .withName(attribute.data.name)
+                .withDescription(attribute.data.description)
                 .withIdentity(IdentityModel()
-                        .withId(stat.identity.id.id)
-                        .withVersion(stat.identity.version)
-                        .withCreated(stat.identity.created)
-                        .withUpdated(stat.identity.updated)
+                        .withId(attribute.identity.id.id)
+                        .withVersion(attribute.identity.version)
+                        .withCreated(attribute.identity.created)
+                        .withUpdated(attribute.identity.updated)
                 )
     }
 
