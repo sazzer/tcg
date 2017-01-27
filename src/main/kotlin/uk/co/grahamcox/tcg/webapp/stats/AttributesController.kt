@@ -21,10 +21,10 @@ class AttributesController(private val statsRetriever: Retriever<AttributeId, At
      * @return the stat
      */
     @RequestMapping("/{id}")
-    fun getStat(@PathVariable("id") statId: String): StatModel {
+    fun getStat(@PathVariable("id") statId: String): AttributeModel {
         val stat = statsRetriever.retrieveById(AttributeId(statId))
 
-        return StatModel()
+        return AttributeModel()
                 .withName(stat.data.name)
                 .withDescription(stat.data.description)
                 .withIdentity(IdentityModel()
