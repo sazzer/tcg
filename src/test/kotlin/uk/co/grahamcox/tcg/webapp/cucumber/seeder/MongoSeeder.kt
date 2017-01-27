@@ -21,12 +21,14 @@ abstract class MongoSeeder(private val database: MongoDatabase,
     /** The collection to seed */
     private val collection = database.getCollection(collectionName)
 
-    /** The mapping between Cucumber fields and query binds */
+    /** The mapping between Cucumber fields and Mongo Fields */
     protected abstract val fieldMapping: Map<String, String>
     /** The providers for the default field values */
     protected abstract val defaultFieldValues: Map<String, () -> Any>
+    /** The more complex mappings, e.g. for nested fields */
+    protected open val complexFieldMapping: Map<String, (String, MutableMap<String, Any>) -> Any> = mapOf()
     /** The providers for the default field values for the identity of the record */
-    protected open val defaultIdentityFieldValues = mapOf(
+    protected val defaultIdentityFieldValues = mapOf(
             "_id" to { UUID.randomUUID().toString() },
             "version" to { UUID.randomUUID().toString() },
             "created" to { Date.from(Instant.now()) },
@@ -46,6 +48,10 @@ abstract class MongoSeeder(private val database: MongoDatabase,
         details.filterKeys { fieldMapping.containsKey(it) }
                 .mapKeys { fieldMapping[it.key]!! }
                 .forEach { k, v -> params[k] = v }
+        details.filterKeys { complexFieldMapping.containsKey(it) }
+                .forEach { k, v ->
+                    complexFieldMapping[k]?.invoke(v, params)
+                }
         val document = Document(params)
 
         LOG.debug("Creating record {} in collection {}.{}", document.toJson(), database.name, collectionName)

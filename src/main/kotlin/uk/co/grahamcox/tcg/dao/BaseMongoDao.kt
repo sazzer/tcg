@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory
 import uk.co.grahamcox.tcg.model.Id
 import uk.co.grahamcox.tcg.model.Model
 import java.time.Clock
+import java.util.*
 
 /**
  * Base representation of a MongoDB DAO
@@ -33,7 +34,14 @@ abstract class BaseMongoDao<ID : Id, DATA>(
      * @return the persisted record
      */
     override fun create(data: DATA): Model<ID, DATA> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val document = buildDocument(data)
+                .append("_id", UUID.randomUUID().toString())
+                .append("version", UUID.randomUUID().toString())
+                .append("created", Date.from(clock.instant()))
+                .append("updated", Date.from(clock.instant()))
+        LOG.debug("Inserting document: {}", document.toJson())
+        collection.insertOne(document)
+        return parseResult(document)
     }
 
     /**
@@ -52,7 +60,7 @@ abstract class BaseMongoDao<ID : Id, DATA>(
      * @param query The query to execute
      * @return the parsed result
      */
-    private fun loadOneWithQuery(query: BasicDBObject): Model<ID, DATA>? {
+    protected fun loadOneWithQuery(query: BasicDBObject): Model<ID, DATA>? {
         LOG.debug("Executing query: {}", query.toJson())
         val model = try {
             val result = collection.find(query).single()
@@ -71,4 +79,14 @@ abstract class BaseMongoDao<ID : Id, DATA>(
      * @return the model parsed from the result
      */
     protected abstract fun parseResult(result: Document): Model<ID, DATA>
+
+    /**
+     * Build the document that we will store in the database. Note that this only needs to worry about the data fields
+     * as everything else is taken care of automatically
+     * @param input The input data
+     * @return the document
+     */
+    protected open fun buildDocument(input: DATA): Document {
+        TODO("not implemented")
+    }
 }

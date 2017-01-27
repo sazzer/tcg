@@ -45,7 +45,7 @@ class StatsDaoMongoImplTest {
     }
 
     @Test
-    fun `retrieve known user by internal ID`() {
+    fun `retrieve known stat by internal ID`() {
         mongoRule.database.getCollection("stat").insertOne(
                 Document()
                         .append("_id", "ECEE75F3-4037-4B1F-891A-C5B06546A0BC")

@@ -25,7 +25,8 @@ class UserRetrieverImplTest {
             ),
             data = UserData(
                     name = "Graham",
-                    email = "graham@grahamcox.co.uk"
+                    email = "graham@grahamcox.co.uk",
+                    providers = mapOf()
             )
     )
 

@@ -26,13 +26,4 @@ class HealthcheckSteps {
         response.statusCode.should.equal(HttpStatus.OK)
         response.body.should.contain("status" to "UP")
     }
-
-    @Then("""^there are "(\d+)" nodes in the database$""")
-    fun checkNodesCount(count: Int) {
-        val response = requester.lastResponse
-        response.body["neo4jHealthchecks"].should.equal(mapOf(
-                "status" to "UP",
-                "nodeCount" to count
-        ))
-    }
 }
