@@ -24,6 +24,7 @@
     </mvc:annotation-driven>
 
     <bean class="uk.co.grahamcox.tcg.webapp.UnknownResourceHandler" />
+    <bean class="uk.co.grahamcox.tcg.webapp.BadSortHandler" />
 
     <import resource="authentication.xml" />
     <import resource="users.xml" />

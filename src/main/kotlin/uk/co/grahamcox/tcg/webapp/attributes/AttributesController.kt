@@ -14,6 +14,7 @@ import uk.co.grahamcox.tcg.webapp.model.AttributeModel
 import uk.co.grahamcox.tcg.webapp.model.IdentityModel
 import uk.co.grahamcox.tcg.webapp.model.PageModel
 import uk.co.grahamcox.tcg.webapp.model.PaginationModel
+import uk.co.grahamcox.tcg.webapp.parseSorts
 
 
 /**
@@ -32,11 +33,11 @@ class AttributesController(private val attributesRetriever: Retriever<AttributeI
     @RequestMapping
     fun getAttributes(@RequestParam(value = "offset", defaultValue = "0", required = false) offset: Int,
                       @RequestParam(value = "count", defaultValue = "10", required = false) count: Int,
-                      @RequestParam(value = "sort", required = false) sort: String?): PageModel {
+                      @RequestParam(value = "sort", defaultValue = "", required = false) sort: String): PageModel {
         val results = attributesRetriever.list(
                 offset,
                 count,
-                listOf()
+                parseSorts(sort)
         )
 
         return PageModel()
