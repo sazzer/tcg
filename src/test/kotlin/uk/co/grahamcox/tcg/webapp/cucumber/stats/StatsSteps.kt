@@ -30,7 +30,7 @@ class StatsSteps {
 
     @When("""^I retrieve the stat "(.+)"""")
     fun retrieveStat(id: String) {
-        requester.get("/api/stats/${id}")
+        requester.get("/api/attributes/${id}")
     }
 
     @Then("""^I received statistic:$""")

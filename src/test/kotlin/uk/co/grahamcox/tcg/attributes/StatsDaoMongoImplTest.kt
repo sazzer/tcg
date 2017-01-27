@@ -1,4 +1,4 @@
-package uk.co.grahamcox.tcg.stats
+package uk.co.grahamcox.tcg.attributes
 
 import com.winterbe.expekt.should
 import org.bson.Document
