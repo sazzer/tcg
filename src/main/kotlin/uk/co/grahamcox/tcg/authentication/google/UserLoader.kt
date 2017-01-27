@@ -33,8 +33,11 @@ class UserLoader(private val userRetriever: UserRetriever,
             LOG.info("Unknown user has logged in. Creating user record")
             userModifier.createUser(UserData(
                     name = userProfile.displayName,
-                    email = userProfile.emails.firstOrNull()?.value
-            ), GOOGLE_AUTHENTICATION_PROVIDER_NAME, userProfile.id)
+                    email = userProfile.emails.firstOrNull()?.value,
+                    providers = mapOf(
+                            GOOGLE_AUTHENTICATION_PROVIDER_NAME to userProfile.id
+                    )
+            ))
         } else {
             LOG.debug("User {} has logged in", userModel)
             userModel

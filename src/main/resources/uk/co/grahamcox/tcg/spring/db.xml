@@ -2,20 +2,25 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="mongoDbDatabase" class="uk.co.grahamcox.tcg.mongodb.EmbeddedMongoDB" destroy-method="shutdown" />
 
-    <bean id="neo4jDatabase" class="uk.co.grahamcox.tcg.webapp.spring.EmbeddedNeo4j">
-        <constructor-arg name="shellPort" value="5555" />
-        <constructor-arg name="boltPort" value="7687" />
-    </bean>
-
-    <bean id="neo4jClient" class="org.neo4j.driver.v1.GraphDatabase" factory-method="driver">
-        <constructor-arg name="uri" value="bolt://localhost:7687" />
-        <constructor-arg name="config">
-            <bean class="uk.co.grahamcox.tcg.webapp.spring.Neo4jConfigBuilder" />
+    <bean id="mongoUri" class="com.mongodb.MongoClientURI">
+        <constructor-arg name="uri">
+            <bean factory-bean="mongoDbDatabase" factory-method="getUrl" />
         </constructor-arg>
     </bean>
 
-    <bean id="neo4jHealthchecks" class="uk.co.grahamcox.tcg.neo4j.Neo4jHealthcheck">
-        <constructor-arg name="driver" ref="neo4jClient" />
+    <bean id="mongoClient" class="com.mongodb.MongoClient">
+        <constructor-arg name="uri" ref="mongoUri" />
+    </bean>
+
+    <bean id="mongoDb" factory-bean="mongoClient" factory-method="getDatabase">
+        <constructor-arg name="databaseName">
+            <bean factory-bean="mongoUri" factory-method="getDatabase" />
+        </constructor-arg>
+    </bean>
+
+    <bean id="mongoHealthcheck" class="uk.co.grahamcox.tcg.mongodb.MongoHealthcheck">
+        <constructor-arg name="db" ref="mongoDb" />
     </bean>
 </beans>

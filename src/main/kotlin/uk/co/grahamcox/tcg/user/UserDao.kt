@@ -15,12 +15,4 @@ interface UserDao : BaseDao<UserId, UserData>, BaseWritableDao<UserId, UserData>
      * @return the user, or null if no user with this external ID is present
      */
     fun retrieveUserByProviderId(provider: String, providerId: String): Model<UserId, UserData>?
-
-    /**
-     * Link the given user to the given Authentication Provider using the given Provider ID
-     * @param user The User to link
-     * @param provider The provider to link it to
-     * @param providerId The ID of the User at the Provider
-     */
-    fun linkUserToProvider(user: Model<UserId, UserData>, provider: String, providerId: String)
 }

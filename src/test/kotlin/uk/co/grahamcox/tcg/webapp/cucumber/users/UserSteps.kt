@@ -31,7 +31,7 @@ class UserSteps {
 
     @Given("""^I have a User with details:$""")
     fun seedUser(userDetails: Map<String, String>) {
-        userSeeder.seedUser(userDetails)
+        userSeeder.seed(userDetails)
     }
 
     @When("""^I retrieve the currently logged in user$""")
@@ -43,7 +43,7 @@ class UserSteps {
     fun checkUserMatches(userDetails: Map<String, String>) {
         val response = requester.lastResponseBodyAsJson
         val userId = response["userId"]!!.toString()
-        userDatabaseMatcher.matchUser(userId, userDetails)
+        userDatabaseMatcher.match(userId, userDetails)
     }
 
     @Then("""^I received user details:$""")

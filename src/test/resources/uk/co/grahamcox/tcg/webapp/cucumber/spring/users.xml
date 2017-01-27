@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="userDatabaseMatcher" class="uk.co.grahamcox.tcg.webapp.cucumber.users.UserDatabaseMatcher">
-        <constructor-arg name="driver" ref="neo4jClient" />
+        <constructor-arg name="db" ref="mongoDb" />
     </bean>
 
     <bean id="userResponseMatcher" class="uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher">
@@ -19,6 +19,6 @@
     </bean>
 
     <bean id="userSeeder" class="uk.co.grahamcox.tcg.webapp.cucumber.users.UserSeeder">
-        <constructor-arg name="neo4j" ref="neo4jClient" />
+        <constructor-arg name="db" ref="mongoDb" />
     </bean>
 </beans>
