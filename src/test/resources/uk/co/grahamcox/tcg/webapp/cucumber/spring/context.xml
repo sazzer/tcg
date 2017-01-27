@@ -9,5 +9,5 @@
     </bean>
 
     <import resource="users.xml" />
-    <import resource="stats.xml" />
+    <import resource="attributes.xml" />
 </beans>

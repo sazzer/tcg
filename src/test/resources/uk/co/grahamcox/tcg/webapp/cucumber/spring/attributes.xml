@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="statResponseMatcher" class="uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher">
+    <bean id="attributeResponseMatcher" class="uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher">
         <constructor-arg name="requester" ref="requester" />
         <constructor-arg name="fieldMapping">
             <map>
@@ -14,7 +14,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="statsSeeder" class="uk.co.grahamcox.tcg.webapp.cucumber.stats.StatSeeder">
+    <bean id="attributeSeeder" class="uk.co.grahamcox.tcg.webapp.cucumber.attributes.AttributeSeeder">
         <constructor-arg name="database" ref="mongoDb" />
     </bean>
 </beans>

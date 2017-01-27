@@ -2,12 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean id="statDao" class="uk.co.grahamcox.tcg.stats.StatsDaoMongoImpl">
+    <bean id="attributesDao" class="uk.co.grahamcox.tcg.attributes.AttributesDaoMongoImpl">
         <constructor-arg name="clock" ref="clock" />
         <constructor-arg name="db" ref="mongoDb" />
     </bean>
 
-    <bean id="statRetriever" class="uk.co.grahamcox.tcg.model.DaoRetriever">
-        <constructor-arg name="dao" ref="statDao" />
+    <bean id="attributesRetriever" class="uk.co.grahamcox.tcg.model.DaoRetriever">
+        <constructor-arg name="dao" ref="attributesDao" />
     </bean>
 </beans>

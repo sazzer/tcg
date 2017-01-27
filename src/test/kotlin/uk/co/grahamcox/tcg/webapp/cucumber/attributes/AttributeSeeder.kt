@@ -1,12 +1,12 @@
-package uk.co.grahamcox.tcg.webapp.cucumber.stats
+package uk.co.grahamcox.tcg.webapp.cucumber.attributes
 
 import com.mongodb.client.MongoDatabase
 import uk.co.grahamcox.tcg.webapp.cucumber.seeder.MongoSeeder
 
 /**
- * Seeder for seeding Stats records
+ * Seeder for seeding Attribute records
  */
-class StatSeeder(database: MongoDatabase) : MongoSeeder(database, "stat") {
+class AttributeSeeder(database: MongoDatabase) : MongoSeeder(database, "attributes") {
     /** The mapping between Cucumber fields and query binds */
     override val fieldMapping = mapOf(
             "ID" to "_id",
@@ -15,7 +15,7 @@ class StatSeeder(database: MongoDatabase) : MongoSeeder(database, "stat") {
     )
     /** The providers for the default field values */
     override val defaultFieldValues = mapOf(
-            "name" to { "Test Stat" },
-            "description" to { "Some test statistic" }
+            "name" to { "Test Attribute" },
+            "description" to { "Some test attribute" }
     )
 }
