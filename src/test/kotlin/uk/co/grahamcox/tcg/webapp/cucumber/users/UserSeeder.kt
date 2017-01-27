@@ -5,7 +5,7 @@ import uk.co.grahamcox.tcg.webapp.cucumber.seeder.MongoSeeder
 
 /**
  * Mechanism by which we can seed user records
- * @property neo4j The Neo4J connection
+ * @property db The MongoDB connection
  */
 class UserSeeder(private val db: MongoDatabase) : MongoSeeder(db, "users") {
 

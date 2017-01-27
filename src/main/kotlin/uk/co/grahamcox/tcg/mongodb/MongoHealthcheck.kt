@@ -1,4 +1,4 @@
-package uk.co.grahamcox.tcg.neo4j
+package uk.co.grahamcox.tcg.mongodb
 
 import com.mongodb.client.MongoDatabase
 import org.springframework.boot.actuate.health.AbstractHealthIndicator

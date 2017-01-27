@@ -1,4 +1,4 @@
-package uk.co.grahamcox.tcg.neo4j
+package uk.co.grahamcox.tcg.mongodb
 
 import com.winterbe.expekt.should
 import org.junit.Before

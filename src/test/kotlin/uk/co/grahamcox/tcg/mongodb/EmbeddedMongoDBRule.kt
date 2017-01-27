@@ -1,4 +1,4 @@
-package uk.co.grahamcox.tcg.neo4j
+package uk.co.grahamcox.tcg.mongodb
 
 import com.mongodb.MongoClient
 import com.mongodb.MongoClientURI
@@ -6,13 +6,7 @@ import com.mongodb.client.MongoDatabase
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
-import org.neo4j.driver.v1.Config
-import org.neo4j.driver.v1.Driver
-import org.neo4j.driver.v1.GraphDatabase
 import org.slf4j.LoggerFactory
-import uk.co.grahamcox.tcg.mongodb.EmbeddedMongoDB
-import uk.co.grahamcox.tcg.webapp.spring.EmbeddedNeo4j
-import java.net.ServerSocket
 import java.util.*
 
 /**

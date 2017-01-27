@@ -7,7 +7,7 @@ import java.time.Instant
 import java.util.*
 
 /**
- * Base class for simple seeders for Neo4J records
+ * Base class for simple seeders for MongoDB records
  * @property database The database to work with
  * @property collectionName The collection to seed
  */

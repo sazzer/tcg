@@ -5,12 +5,9 @@ import org.bson.Document
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.neo4j.driver.v1.AccessMode
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.model.Model
-import uk.co.grahamcox.tcg.neo4j.EmbeddedMongoDBRule
-import uk.co.grahamcox.tcg.neo4j.EmbeddedNeo4jRule
-import uk.co.grahamcox.tcg.neo4j.execute
+import uk.co.grahamcox.tcg.mongodb.EmbeddedMongoDBRule
 import java.time.*
 import java.util.*
 

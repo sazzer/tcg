@@ -7,7 +7,7 @@ import org.junit.Rule
 import org.junit.Test
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.model.Model
-import uk.co.grahamcox.tcg.neo4j.EmbeddedMongoDBRule
+import uk.co.grahamcox.tcg.mongodb.EmbeddedMongoDBRule
 import java.time.*
 import java.util.*
 
