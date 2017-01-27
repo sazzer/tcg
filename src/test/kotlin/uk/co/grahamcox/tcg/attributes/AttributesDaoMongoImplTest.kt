@@ -37,12 +37,12 @@ class AttributesDaoMongoImplTest {
         testSubject = AttributesDaoMongoImpl(db = mongoRule.database, clock = clock)
     }
     @Test
-    fun `retrieve unknown stat by internal ID`() {
+    fun `retrieve unknown attribute by internal ID`() {
         testSubject.getById(AttributeId("unknown")).should.be.`null`
     }
 
     @Test
-    fun `retrieve known stat by internal ID`() {
+    fun `retrieve known attribute by internal ID`() {
         mongoRule.database.getCollection("attributes").insertOne(
                 Document()
                         .append("_id", "ECEE75F3-4037-4B1F-891A-C5B06546A0BC")
