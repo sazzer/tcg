@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.RestController
 import uk.co.grahamcox.tcg.model.Retriever
 import uk.co.grahamcox.tcg.attributes.AttributeData
 import uk.co.grahamcox.tcg.attributes.AttributeId
-import uk.co.grahamcox.tcg.webapp.IdentityModel
+import uk.co.grahamcox.tcg.webapp.model.AttributeModel
+import uk.co.grahamcox.tcg.webapp.model.IdentityModel
 
 
 /**
