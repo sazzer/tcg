@@ -23,18 +23,18 @@ class AttributesSteps {
     @Autowired
     private lateinit var attributeSeeder: AttributeSeeder
 
-    @Given("""^I have a Statistic with details:$""")
-    fun seedStat(statDetails: Map<String, String>) {
+    @Given("""^I have an attribute with details:$""")
+    fun seedAttribute(statDetails: Map<String, String>) {
         attributeSeeder.seed(statDetails)
     }
 
-    @When("""^I retrieve the stat "(.+)"""")
-    fun retrieveStat(id: String) {
+    @When("""^I retrieve the attribute "(.+)"""")
+    fun retrieveAttribute(id: String) {
         requester.get("/api/attributes/${id}")
     }
 
-    @Then("""^I received statistic:$""")
-    fun checkStatResponseMatches(expected: Map<String, String>) {
+    @Then("""^I received attribute:$""")
+    fun checkAttributeResponseMatches(expected: Map<String, String>) {
         attributeResponseMatcher.match(expected)
     }
 }
