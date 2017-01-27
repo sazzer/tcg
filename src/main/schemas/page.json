@@ -13,11 +13,11 @@
       "description": "The pagination details for this page of results",
       "properties": {
         "offset": {
-          "type": "number",
+          "type": "integer",
           "description": "The offset of the first entry in this page in the overall resultset"
         },
         "total": {
-          "type": "number",
+          "type": "integer",
           "description": "The total number of records in the entire resultset"
         }
       },

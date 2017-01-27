@@ -4,8 +4,7 @@ import com.mongodb.BasicDBObject
 import com.mongodb.client.MongoDatabase
 import org.bson.Document
 import org.slf4j.LoggerFactory
-import uk.co.grahamcox.tcg.model.Id
-import uk.co.grahamcox.tcg.model.Model
+import uk.co.grahamcox.tcg.model.*
 import java.time.Clock
 import java.util.*
 
@@ -13,15 +12,16 @@ import java.util.*
  * Base representation of a MongoDB DAO
  * @param ID The type to use for the ID
  * @param DATA The type to use for the model data
+ * @param SORT The enum type to use for sort fields
  * @property db The Database connection
  * @property collectionName The collection name
  * @property clock The clock
  */
-abstract class BaseMongoDao<ID : Id, DATA>(
+abstract class BaseMongoDao<ID : Id, DATA, SORT : Enum<SORT>>(
         private val db: MongoDatabase,
         private val collectionName: String,
         private val clock: Clock
-) : BaseDao<ID, DATA>, BaseWritableDao<ID, DATA> {
+) : BaseDao<ID, DATA, SORT>, BaseWritableDao<ID, DATA> {
     companion object {
         /** The logger to use */
         private val LOG = LoggerFactory.getLogger(BaseMongoDao::class.java)
@@ -53,6 +53,24 @@ abstract class BaseMongoDao<ID : Id, DATA>(
         val query = BasicDBObject()
                 .append("_id", id.id)
         return loadOneWithQuery(query)
+    }
+
+    /**
+     * Retrieve a list of records
+     * @param offset The offset to start listing at
+     * @param count The total count to retrieve
+     * @param sort The sort to apply
+     * @return the page of results
+     */
+    override fun list(offset: Int, count: Int, sort: List<Sort<SORT>>): Page<ID, DATA> {
+        val resultset = collection.find()
+        val total = resultset.count()
+        val parsedResults = resultset
+                .skip(offset)
+                .limit(count)
+                .toList()
+                .map { parseResult(it) }
+        return Page(parsedResults, offset, total)
     }
 
     /**

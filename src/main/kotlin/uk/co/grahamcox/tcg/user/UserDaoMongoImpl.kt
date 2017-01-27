@@ -6,6 +6,7 @@ import org.bson.Document
 import uk.co.grahamcox.tcg.dao.BaseMongoDao
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.model.Model
+import uk.co.grahamcox.tcg.model.NoSort
 import java.time.Clock
 
 /**
@@ -15,7 +16,7 @@ import java.time.Clock
  */
 class UserDaoMongoImpl(
         private val db: MongoDatabase,
-        private val clock: Clock) : UserDao, BaseMongoDao<UserId, UserData>(db, "users", clock) {
+        private val clock: Clock) : UserDao, BaseMongoDao<UserId, UserData, NoSort>(db, "users", clock) {
     /**
      * Retrieve a user by it's ID in a third-party provider system
      * @param provider The name of the provider
@@ -24,7 +25,7 @@ class UserDaoMongoImpl(
      */
     override fun retrieveUserByProviderId(provider: String, providerId: String): Model<UserId, UserData>? {
         val query = BasicDBObject()
-                .append("providers.${provider}", providerId)
+                .append("providers.$provider", providerId)
         return loadOneWithQuery(query)
     }
 

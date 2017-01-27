@@ -3,11 +3,12 @@ package uk.co.grahamcox.tcg.user
 import uk.co.grahamcox.tcg.dao.BaseDao
 import uk.co.grahamcox.tcg.dao.BaseWritableDao
 import uk.co.grahamcox.tcg.model.Model
+import uk.co.grahamcox.tcg.model.NoSort
 
 /**
  * DAO layer for accessing user records
  */
-interface UserDao : BaseDao<UserId, UserData>, BaseWritableDao<UserId, UserData> {
+interface UserDao : BaseDao<UserId, UserData, NoSort>, BaseWritableDao<UserId, UserData> {
     /**
      * Retrieve a user by it's ID in a third-party provider system
      * @param provider The name of the provider
