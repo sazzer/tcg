@@ -63,9 +63,20 @@ abstract class BaseMongoDao<ID : Id, DATA, SORT : Enum<SORT>>(
      * @return the page of results
      */
     override fun list(offset: Int, count: Int, sort: List<Sort<SORT>>): Page<ID, DATA> {
+
+        val sortFields = sort.filter { sortFields.containsKey(it.sort) }
+                .map { sortFields[it.sort]!! to it.order }
+                .map { it.first to when (it.second) {
+                    SortOrder.ASCENDING -> 1
+                    SortOrder.DESCENDING -> -1
+                }}
+                .toMap()
+
         val resultset = collection.find()
+
         val total = resultset.count()
         val parsedResults = resultset
+                .sort(BasicDBObject(sortFields))
                 .skip(offset)
                 .limit(count)
                 .toList()
@@ -107,4 +118,10 @@ abstract class BaseMongoDao<ID : Id, DATA, SORT : Enum<SORT>>(
     protected open fun buildDocument(input: DATA): Document {
         TODO("not implemented")
     }
+
+    /**
+     * The mapping of sort fields to the actual database field
+     */
+    protected open val sortFields: Map<SORT, String>
+        get() { TODO("not iplemented") }
 }

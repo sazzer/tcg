@@ -17,6 +17,13 @@ class AttributesDaoMongoImpl(
         private val clock: Clock) : BaseMongoDao<AttributeId, AttributeData, AttributeSort>(db, "attributes", clock) {
 
     /**
+     * The mapping of sort fields to the actual database field
+     */
+    override val sortFields = mapOf(
+            AttributeSort.NAME to "name"
+    )
+
+    /**
      * Parse the given document into a single record
      * @param result the document to parse
      * @return the model parsed from the result
