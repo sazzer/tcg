@@ -431,6 +431,17 @@
                     </configuration>
                 </plugin>
                 <plugin>
+                    <groupId>net.masterthought</groupId>
+                    <artifactId>maven-cucumber-reporting</artifactId>
+                    <version>3.4.0</version>
+                    <configuration>
+                        <projectName>${project.artifactId}</projectName>
+                        <outputDirectory>${project.build.directory}/site/cucumber-html-reports</outputDirectory>
+                        <cucumberOutput>${project.build.directory}/failsafe-reports/cucumber.json</cucumberOutput>
+                        <parallelTesting>false</parallelTesting>
+                    </configuration>
+                </plugin>
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
                     <version>3.0.0</version>
@@ -599,6 +610,19 @@
                         <configuration>
                             <verifyFail>Stop</verifyFail>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>net.masterthought</groupId>
+                <artifactId>maven-cucumber-reporting</artifactId>
+                <executions>
+                    <execution>
+                        <id>execution</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
