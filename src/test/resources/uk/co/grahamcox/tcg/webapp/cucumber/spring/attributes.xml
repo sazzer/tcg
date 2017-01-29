@@ -17,4 +17,15 @@
     <bean id="attributeSeeder" class="uk.co.grahamcox.tcg.webapp.cucumber.attributes.AttributeSeeder">
         <constructor-arg name="database" ref="mongoDb" />
     </bean>
+
+    <bean id="listAttributesUrlBuilder" class="uk.co.grahamcox.tcg.webapp.cucumber.UrlBuilder">
+        <constructor-arg name="baseUrl" value="/api/attributes" />
+        <constructor-arg name="queryStringMappings">
+            <map>
+                <entry key="Sort" value="sort" />
+                <entry key="Offset" value="offset" />
+                <entry key="Count" value="count" />
+            </map>
+        </constructor-arg>
+    </bean>
 </beans>

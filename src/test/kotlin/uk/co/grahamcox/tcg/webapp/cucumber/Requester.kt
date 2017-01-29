@@ -35,9 +35,13 @@ class Requester(private val restTemplate: TestRestTemplate) {
      * @param params The parameters to the URI
      * @return the last response
      */
-    fun get(uri: String, params: Map<String, String> = mapOf()): ResponseEntity<Map<String, Any?>> {
-        val realUri = UriComponentsBuilder.fromUriString(uri)
-                .replaceQueryParams(LinkedMultiValueMap(params.mapValues { listOf(it.value) }))
+    fun get(uri: String, params: Map<String, String>? = null): ResponseEntity<Map<String, Any?>> {
+        val realUri = if (params != null) {
+            UriComponentsBuilder.fromUriString(uri)
+                    .replaceQueryParams(LinkedMultiValueMap(params.mapValues { listOf(it.value) }))
+        } else {
+            UriComponentsBuilder.fromUriString(uri)
+        }
                 .build()
                 .toUriString()
 
