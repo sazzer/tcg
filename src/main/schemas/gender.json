@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Gender",
+  "description": "Gender",
+  "type": "object",
+  "properties": {
+    "identity": {
+      "$ref": "./identity.json"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the Gender"
+    },
+    "description": {
+      "type": "string",
+      "description": "A description of the Gender"
+    },
+    "race": {
+      "type": "string",
+      "description": "The Race that this Gender applies to"
+    }
+  },
+  "required": [
+    "name",
+    "description",
+    "race"
+  ],
+  "additionalProperties": false
+}
