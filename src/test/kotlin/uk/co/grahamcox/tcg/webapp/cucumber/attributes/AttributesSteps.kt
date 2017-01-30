@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import uk.co.grahamcox.tcg.webapp.cucumber.Requester
 import uk.co.grahamcox.tcg.webapp.cucumber.UrlBuilder
 import uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher
+import uk.co.grahamcox.tcg.webapp.cucumber.seeder.MongoSeeder
 
 /**
  * Cucumber steps for working with Attributes
@@ -25,7 +26,8 @@ class AttributesSteps {
 
     /** The means to seed Attribute records */
     @Autowired
-    private lateinit var attributeSeeder: AttributeSeeder
+    @Qualifier("attributeSeeder")
+    private lateinit var attributeSeeder: MongoSeeder
 
     /** URL Builder for building URLs to list Attributes */
     @Autowired

@@ -13,7 +13,7 @@ import java.util.*
  * @property fieldMapping The mapping between Cucumber fields and Mongo Fields
  * @property defaultFieldValues The default field values to use
  */
-abstract class MongoSeeder(private val database: MongoDatabase,
+open class MongoSeeder(private val database: MongoDatabase,
                            private val collectionName: String,
                            private val fieldMapping: Map<String, String>,
                            private val defaultFieldValues: Map<String, FieldDefaulter>) {
