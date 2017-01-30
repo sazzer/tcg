@@ -14,8 +14,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="attributeSeeder" class="uk.co.grahamcox.tcg.webapp.cucumber.seeder.MongoSeeder">
-        <constructor-arg name="database" ref="mongoDb" />
+    <bean id="attributeSeeder" parent="seederBase">
         <constructor-arg name="collectionName" value="attributes" />
         <constructor-arg name="fieldMapping">
             <map>

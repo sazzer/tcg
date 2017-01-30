@@ -12,11 +12,14 @@ import java.util.*
  * @property collectionName The collection to seed
  * @property fieldMapping The mapping between Cucumber fields and Mongo Fields
  * @property defaultFieldValues The default field values to use
+ * @property complexFieldMapping The field mappings for more complex fields
  */
 open class MongoSeeder(private val database: MongoDatabase,
-                           private val collectionName: String,
-                           private val fieldMapping: Map<String, String>,
-                           private val defaultFieldValues: Map<String, FieldDefaulter>) {
+                       private val collectionName: String,
+                       private val fieldMapping: Map<String, String>,
+                       private val defaultFieldValues: Map<String, FieldDefaulter>,
+                       private val complexFieldMapping: Map<String, FieldMapper>
+) {
     companion object {
         /** The logger to use */
         private val LOG = LoggerFactory.getLogger(MongoSeeder::class.java)
@@ -25,8 +28,6 @@ open class MongoSeeder(private val database: MongoDatabase,
     /** The collection to seed */
     private val collection = database.getCollection(collectionName)
 
-    /** The more complex mappings, e.g. for nested fields */
-    protected open val complexFieldMapping: Map<String, FieldMapper> = mapOf()
     /** The providers for the default field values for the identity of the record */
     protected val defaultIdentityFieldValues = mapOf(
             "_id" to { UUID.randomUUID().toString() },
