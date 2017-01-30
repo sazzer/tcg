@@ -27,17 +27,25 @@ class GendersController(private val gendersRetriever: Retriever<GenderId, Gender
      * Get a list of the genders in the system
      * @param offset The offset to start listing from. Default of 0
      * @param count The number of records to get. Default of 10
+     * @param race The race to filter by, if any
      * @param sort The order to sort the records by. Defaults by name
      * @return the page of results
      */
     @RequestMapping
     fun getGenders(@RequestParam(value = "offset", defaultValue = "0", required = false) offset: Int,
-                      @RequestParam(value = "count", defaultValue = "10", required = false) count: Int,
-                      @RequestParam(value = "sort", defaultValue = "", required = false) sort: String): PageModel {
+                   @RequestParam(value = "count", defaultValue = "10", required = false) count: Int,
+                   @RequestParam(value = "race", required = false) race: String?,
+                   @RequestParam(value = "sort", defaultValue = "", required = false) sort: String): PageModel {
+        val filters = mapOf(
+                GenderFilter.RACE to race
+        )
+                .filterValues { it != null }
+                .mapValues { it.value!! }
+
         val results = gendersRetriever.list(
                 offset,
                 count,
-                mapOf(),
+                filters,
                 parseSorts(sort)
         )
 

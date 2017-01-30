@@ -77,6 +77,8 @@ abstract class BaseMongoDao<ID : Id, DATA, FILTER : Enum<FILTER>, SORT : Enum<SO
                 }}
                 .toMap()
 
+        LOG.debug("Retrieving records from collection {} with sort {} and filter {}",
+                collectionName, sort, filter)
         val resultset = collection.find()
 
         val total = resultset.count()
