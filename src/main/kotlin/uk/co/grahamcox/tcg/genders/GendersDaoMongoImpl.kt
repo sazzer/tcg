@@ -27,6 +27,13 @@ class GendersDaoMongoImpl(
     )
 
     /**
+     * The mapping of filter fields to the actual database field
+     */
+    override val filterFields = mapOf(
+            GenderFilter.RACE to "race"
+    )
+
+    /**
      * Parse the given document into a single record
      * @param result the document to parse
      * @return the model parsed from the result

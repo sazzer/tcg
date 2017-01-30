@@ -77,9 +77,12 @@ abstract class BaseMongoDao<ID : Id, DATA, FILTER : Enum<FILTER>, SORT : Enum<SO
                 }}
                 .toMap()
 
+        val filterFields = filter.filterKeys { filterFields.containsKey(it) }
+                .mapKeys { filterFields[it.key]!! }
+
         LOG.debug("Retrieving records from collection {} with sort {} and filter {}",
                 collectionName, sort, filter)
-        val resultset = collection.find()
+        val resultset = collection.find(Document(filterFields))
 
         val total = resultset.count()
         val parsedResults = resultset
@@ -130,5 +133,11 @@ abstract class BaseMongoDao<ID : Id, DATA, FILTER : Enum<FILTER>, SORT : Enum<SO
      * The mapping of sort fields to the actual database field
      */
     protected open val sortFields: Map<SORT, String>
-        get() { TODO("not iplemented") }
+        get() { TODO("not implemented") }
+
+    /**
+     * The mapping of filter fields to the actual database field
+     */
+    protected open val filterFields: Map<FILTER, String>
+        get() { TODO("not implemented") }
 }
