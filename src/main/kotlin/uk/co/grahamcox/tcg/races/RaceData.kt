@@ -1,4 +1,4 @@
-package uk.co.grahamcox.tcg.attributes
+package uk.co.grahamcox.tcg.races
 
 /**
  * Representation of a single race
