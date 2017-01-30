@@ -22,10 +22,6 @@ class UserSeeder(private val db: MongoDatabase) : MongoSeeder(db,
 
     /** The more complex mappings, e.g. for nested fields */
     override val complexFieldMapping = mapOf(
-            "Google Provider ID" to { field: String, document: MutableMap<String, Any> ->
-                val providers =
-                        document.getOrPut("providers", { mutableMapOf<String, String>() }) as MutableMap<String, String>
-                providers["google"] = field
-            }
+            "Google Provider ID" to ProviderIdFieldMapper("google")
     )
 }

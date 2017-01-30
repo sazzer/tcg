@@ -26,7 +26,7 @@ open class MongoSeeder(private val database: MongoDatabase,
     private val collection = database.getCollection(collectionName)
 
     /** The more complex mappings, e.g. for nested fields */
-    protected open val complexFieldMapping: Map<String, (String, MutableMap<String, Any>) -> Any> = mapOf()
+    protected open val complexFieldMapping: Map<String, FieldMapper> = mapOf()
     /** The providers for the default field values for the identity of the record */
     protected val defaultIdentityFieldValues = mapOf(
             "_id" to { UUID.randomUUID().toString() },
@@ -50,7 +50,7 @@ open class MongoSeeder(private val database: MongoDatabase,
                 .forEach { k, v -> params[k] = v }
         details.filterKeys { complexFieldMapping.containsKey(it) }
                 .forEach { k, v ->
-                    complexFieldMapping[k]?.invoke(v, params)
+                    complexFieldMapping[k]?.mapField(v, params)
                 }
         val document = Document(params)
 
