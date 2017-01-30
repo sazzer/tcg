@@ -23,4 +23,15 @@
     <bean id="mongoHealthcheck" class="uk.co.grahamcox.tcg.mongodb.MongoHealthcheck">
         <constructor-arg name="db" ref="mongoDb" />
     </bean>
+
+    <beans profile="dev">
+        <bean class="uk.co.grahamcox.tcg.mongodb.DatabaseSeeder" init-method="seed">
+            <constructor-arg name="database" ref="mongoDb" />
+            <constructor-arg name="seeders">
+                <map>
+                    <entry key="attributes"><bean class="uk.co.grahamcox.tcg.attributes.AttributesSeeder" /></entry>
+                </map>
+            </constructor-arg>
+        </bean>
+    </beans>
 </beans>
