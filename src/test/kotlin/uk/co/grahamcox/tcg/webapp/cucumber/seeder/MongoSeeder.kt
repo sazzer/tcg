@@ -15,10 +15,10 @@ import java.util.*
  * @property complexFieldMapping The field mappings for more complex fields
  */
 class MongoSeeder(private val database: MongoDatabase,
-                       private val collectionName: String,
-                       private val fieldMapping: Map<String, String>,
-                       private val defaultFieldValues: Map<String, FieldDefaulter>,
-                       private val complexFieldMapping: Map<String, FieldMapper>
+                  private val collectionName: String,
+                  private val fieldMapping: Map<String, String>,
+                  private val defaultFieldValues: Map<String, FieldDefaulter>,
+                  private val complexFieldMapping: Map<String, FieldMapper>
 ) {
     companion object {
         /** The logger to use */
