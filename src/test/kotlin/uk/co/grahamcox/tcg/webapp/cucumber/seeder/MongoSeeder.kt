@@ -10,9 +10,11 @@ import java.util.*
  * Base class for simple seeders for MongoDB records
  * @property database The database to work with
  * @property collectionName The collection to seed
+ * @property defaultFieldValues The default field values to use
  */
 abstract class MongoSeeder(private val database: MongoDatabase,
-                           private val collectionName: String) {
+                           private val collectionName: String,
+                           private val defaultFieldValues: Map<String, FieldDefaulter>) {
     companion object {
         /** The logger to use */
         private val LOG = LoggerFactory.getLogger(MongoSeeder::class.java)
@@ -23,8 +25,6 @@ abstract class MongoSeeder(private val database: MongoDatabase,
 
     /** The mapping between Cucumber fields and Mongo Fields */
     protected abstract val fieldMapping: Map<String, String>
-    /** The providers for the default field values */
-    protected abstract val defaultFieldValues: Map<String, () -> Any>
     /** The more complex mappings, e.g. for nested fields */
     protected open val complexFieldMapping: Map<String, (String, MutableMap<String, Any>) -> Any> = mapOf()
     /** The providers for the default field values for the identity of the record */
@@ -43,7 +43,7 @@ abstract class MongoSeeder(private val database: MongoDatabase,
         val params = mutableMapOf<String, Any>()
         defaultIdentityFieldValues.mapValues { it.value.invoke() }
                 .forEach { k, v -> params[k] = v }
-        defaultFieldValues.mapValues { it.value.invoke() }
+        defaultFieldValues.mapValues { it.value.getDefault() }
                 .forEach { k, v -> params[k] = v }
         details.filterKeys { fieldMapping.containsKey(it) }
                 .mapKeys { fieldMapping[it.key]!! }
