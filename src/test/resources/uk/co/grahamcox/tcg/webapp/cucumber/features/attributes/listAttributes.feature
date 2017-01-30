@@ -1,4 +1,3 @@
-@wip
 Feature: Listing Attributes
 
   Scenario: No Attributes to list

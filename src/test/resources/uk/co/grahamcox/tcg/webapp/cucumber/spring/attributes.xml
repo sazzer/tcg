@@ -27,5 +27,6 @@
                 <entry key="Count" value="count" />
             </map>
         </constructor-arg>
+        <constructor-arg name="pathMappings"><map /></constructor-arg>
     </bean>
 </beans>
