@@ -29,4 +29,5 @@
     <import resource="authentication.xml" />
     <import resource="users.xml" />
     <import resource="attributes.xml" />
+    <import resource="races.xml" />
 </beans>
