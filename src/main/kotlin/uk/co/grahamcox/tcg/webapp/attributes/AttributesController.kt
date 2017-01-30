@@ -9,6 +9,7 @@ import uk.co.grahamcox.tcg.attributes.AttributeData
 import uk.co.grahamcox.tcg.attributes.AttributeId
 import uk.co.grahamcox.tcg.attributes.AttributeSort
 import uk.co.grahamcox.tcg.model.Model
+import uk.co.grahamcox.tcg.model.NoFilter
 import uk.co.grahamcox.tcg.model.SortOrder
 import uk.co.grahamcox.tcg.webapp.model.AttributeModel
 import uk.co.grahamcox.tcg.webapp.model.IdentityModel
@@ -22,7 +23,7 @@ import uk.co.grahamcox.tcg.webapp.parseSorts
  */
 @RestController
 @RequestMapping("/api/attributes")
-class AttributesController(private val attributesRetriever: Retriever<AttributeId, AttributeData, *, AttributeSort>) {
+class AttributesController(private val attributesRetriever: Retriever<AttributeId, AttributeData, NoFilter, AttributeSort>) {
     /**
      * Get a list of the attributes in the system
      * @param offset The offset to start listing from. Default of 0
@@ -37,6 +38,7 @@ class AttributesController(private val attributesRetriever: Retriever<AttributeI
         val results = attributesRetriever.list(
                 offset,
                 count,
+                mapOf(),
                 parseSorts(sort)
         )
 

@@ -70,10 +70,16 @@ class DaoRetrieverTest {
         )
         val testSubject = DaoRetriever<UserId, UserData, FilterField, SortField>(
                 dao = mock {
-                    on { this.list(0, 5, listOf(Sort(SortField.ID, SortOrder.ASCENDING))) } doReturn result
+                    on { this.list(0,
+                            5,
+                            mapOf(FilterField.NAME to "Bob"),
+                            listOf(Sort(SortField.ID, SortOrder.ASCENDING))) } doReturn result
                 }
         )
 
-        testSubject.list(0, 5, listOf(Sort(SortField.ID, SortOrder.ASCENDING))).should.equal(result)
+        testSubject.list(0,
+                5,
+                mapOf(FilterField.NAME to "Bob"),
+                listOf(Sort(SortField.ID, SortOrder.ASCENDING))).should.equal(result)
     }
 }

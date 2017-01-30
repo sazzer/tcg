@@ -60,10 +60,14 @@ abstract class BaseMongoDao<ID : Id, DATA, FILTER : Enum<FILTER>, SORT : Enum<SO
      * Retrieve a list of records
      * @param offset The offset to start listing at
      * @param count The total count to retrieve
+     * @param filter Any filters to apply
      * @param sort The sort to apply
      * @return the page of results
      */
-    override fun list(offset: Int, count: Int, sort: List<Sort<SORT>>): Page<ID, DATA> {
+    override fun list(offset: Int,
+                      count: Int,
+                      filter: Map<FILTER, Any>,
+                      sort: List<Sort<SORT>>): Page<ID, DATA> {
 
         val sortFields = sort.filter { sortFields.containsKey(it.sort) }
                 .map { sortFields[it.sort]!! to it.order }

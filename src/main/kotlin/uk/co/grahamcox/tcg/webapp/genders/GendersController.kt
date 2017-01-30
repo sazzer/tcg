@@ -37,6 +37,7 @@ class GendersController(private val gendersRetriever: Retriever<GenderId, Gender
         val results = gendersRetriever.list(
                 offset,
                 count,
+                mapOf(),
                 parseSorts(sort)
         )
 

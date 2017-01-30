@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import uk.co.grahamcox.tcg.model.Model
+import uk.co.grahamcox.tcg.model.NoFilter
 import uk.co.grahamcox.tcg.model.Retriever
 import uk.co.grahamcox.tcg.races.RaceData
 import uk.co.grahamcox.tcg.races.RaceId
@@ -21,7 +22,7 @@ import uk.co.grahamcox.tcg.webapp.parseSorts
  */
 @RestController
 @RequestMapping("/api/races")
-class RacesController(private val racesRetriever: Retriever<RaceId, RaceData, *, RaceSort>) {
+class RacesController(private val racesRetriever: Retriever<RaceId, RaceData, NoFilter, RaceSort>) {
     /**
      * Get a list of the races in the system
      * @param offset The offset to start listing from. Default of 0
@@ -36,6 +37,7 @@ class RacesController(private val racesRetriever: Retriever<RaceId, RaceData, *,
         val results = racesRetriever.list(
                 offset,
                 count,
+                mapOf(),
                 parseSorts(sort)
         )
 
