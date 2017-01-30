@@ -14,7 +14,7 @@ import java.util.*
  * @property defaultFieldValues The default field values to use
  * @property complexFieldMapping The field mappings for more complex fields
  */
-open class MongoSeeder(private val database: MongoDatabase,
+class MongoSeeder(private val database: MongoDatabase,
                        private val collectionName: String,
                        private val fieldMapping: Map<String, String>,
                        private val defaultFieldValues: Map<String, FieldDefaulter>,
@@ -29,7 +29,7 @@ open class MongoSeeder(private val database: MongoDatabase,
     private val collection = database.getCollection(collectionName)
 
     /** The providers for the default field values for the identity of the record */
-    protected val defaultIdentityFieldValues = mapOf(
+    private val defaultIdentityFieldValues = mapOf(
             "_id" to { UUID.randomUUID().toString() },
             "version" to { UUID.randomUUID().toString() },
             "created" to { Date.from(Instant.now()) },
