@@ -10,4 +10,5 @@
     <import resource="users.xml" />
     <import resource="attributes.xml" />
     <import resource="races.xml" />
+    <import resource="genders.xml" />
 </beans>
