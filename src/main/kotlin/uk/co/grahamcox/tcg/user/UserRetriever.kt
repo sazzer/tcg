@@ -1,13 +1,14 @@
 package uk.co.grahamcox.tcg.user
 
 import uk.co.grahamcox.tcg.model.Model
+import uk.co.grahamcox.tcg.model.NoFilter
 import uk.co.grahamcox.tcg.model.NoSort
 import uk.co.grahamcox.tcg.model.Retriever
 
 /**
  * Mechanism to retrieve a user
  */
-interface UserRetriever : Retriever<UserId, UserData, NoSort> {
+interface UserRetriever : Retriever<UserId, UserData, NoFilter, NoSort> {
     /**
      * Retrieve a user by it's ID in a third-party provider system
      * @param provider The name of the provider

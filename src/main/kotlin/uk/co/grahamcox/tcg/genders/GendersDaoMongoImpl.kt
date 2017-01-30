@@ -16,7 +16,7 @@ import java.time.Clock
 class GendersDaoMongoImpl(
         private val db: MongoDatabase,
         private val clock: Clock)
-    : GendersDao, BaseMongoDao<GenderId, GenderData, GenderSort>(db, "genders", clock) {
+    : GendersDao, BaseMongoDao<GenderId, GenderData, GenderFilter, GenderSort>(db, "genders", clock) {
 
     /**
      * The mapping of sort fields to the actual database field

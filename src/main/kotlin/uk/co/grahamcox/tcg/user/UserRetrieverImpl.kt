@@ -1,13 +1,14 @@
 package uk.co.grahamcox.tcg.user
 
 import uk.co.grahamcox.tcg.model.DaoRetriever
+import uk.co.grahamcox.tcg.model.NoFilter
 import uk.co.grahamcox.tcg.model.NoSort
 
 /**
  * Standard implementation of the User Retriever
  * @property dao The User DAO to work with
  */
-class UserRetrieverImpl(private val dao: UserDao) : UserRetriever, DaoRetriever<UserId, UserData, NoSort>(dao) {
+class UserRetrieverImpl(private val dao: UserDao) : UserRetriever, DaoRetriever<UserId, UserData, NoFilter, NoSort>(dao) {
     /**
      * Retrieve a user by it's ID in a third-party provider system
      * @param provider The name of the provider

@@ -12,16 +12,17 @@ import java.util.*
  * Base representation of a MongoDB DAO
  * @param ID The type to use for the ID
  * @param DATA The type to use for the model data
+ * @param FILTER The enum type to use for filter fields
  * @param SORT The enum type to use for sort fields
  * @property db The Database connection
  * @property collectionName The collection name
  * @property clock The clock
  */
-abstract class BaseMongoDao<ID : Id, DATA, SORT : Enum<SORT>>(
+abstract class BaseMongoDao<ID : Id, DATA, FILTER : Enum<FILTER>, SORT : Enum<SORT>>(
         private val db: MongoDatabase,
         private val collectionName: String,
         private val clock: Clock
-) : BaseDao<ID, DATA, SORT>, BaseWritableDao<ID, DATA> {
+) : BaseDao<ID, DATA, FILTER, SORT>, BaseWritableDao<ID, DATA> {
     companion object {
         /** The logger to use */
         private val LOG = LoggerFactory.getLogger(BaseMongoDao::class.java)

@@ -6,8 +6,8 @@ import uk.co.grahamcox.tcg.dao.BaseDao
  * Standard implementation of the Retriever that works in terms of a [BaseDao]
  * @property dao The DAO to work with
  */
-open class DaoRetriever<ID : Id, out DATA, SORT : Enum<SORT>>(
-        private val dao: BaseDao<ID, DATA, SORT>) : Retriever<ID, DATA, SORT> {
+open class DaoRetriever<ID : Id, out DATA, FILTER : Enum<FILTER>, SORT : Enum<SORT>>(
+        private val dao: BaseDao<ID, DATA, FILTER, SORT>) : Retriever<ID, DATA, FILTER, SORT> {
     /**
      * Retrieve a record by it's internal ID
      * @param id The ID of the record

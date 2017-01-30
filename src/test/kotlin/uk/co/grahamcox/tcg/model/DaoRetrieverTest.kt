@@ -16,6 +16,10 @@ class DaoRetrieverTest {
     enum class SortField {
         ID
     }
+    /** Some field to filter on */
+    enum class FilterField {
+        NAME
+    }
 
     /** The ID of the user */
     private val userId = UserId("abc")
@@ -36,7 +40,7 @@ class DaoRetrieverTest {
 
     @Test
     fun `retrieve known by ID`() {
-        val testSubject = DaoRetriever<UserId, UserData, SortField>(
+        val testSubject = DaoRetriever<UserId, UserData, FilterField, SortField>(
                 dao = mock {
                     on { this.getById(userId) } doReturn userModel
                 }
@@ -48,7 +52,7 @@ class DaoRetrieverTest {
     @Test(expected = UnknownResourceException::class)
     fun `retrieve unknown by ID`() {
         val result: Model<UserId, UserData>? = null
-        val testSubject = DaoRetriever<UserId, UserData, SortField>(
+        val testSubject = DaoRetriever<UserId, UserData, FilterField, SortField>(
                 dao = mock {
                     on { this.getById(userId) } doReturn result
                 }
@@ -64,7 +68,7 @@ class DaoRetrieverTest {
                 offset = 0,
                 totalCount = 5
         )
-        val testSubject = DaoRetriever<UserId, UserData, SortField>(
+        val testSubject = DaoRetriever<UserId, UserData, FilterField, SortField>(
                 dao = mock {
                     on { this.list(0, 5, listOf(Sort(SortField.ID, SortOrder.ASCENDING))) } doReturn result
                 }

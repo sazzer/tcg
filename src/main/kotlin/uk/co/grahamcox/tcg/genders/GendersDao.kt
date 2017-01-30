@@ -5,4 +5,4 @@ import uk.co.grahamcox.tcg.dao.BaseDao
 /**
  * DAO for accessing genders
  */
-interface GendersDao : BaseDao<GenderId, GenderData, GenderSort>
+interface GendersDao : BaseDao<GenderId, GenderData, GenderFilter, GenderSort>

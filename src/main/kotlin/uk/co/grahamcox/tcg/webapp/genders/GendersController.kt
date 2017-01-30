@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import uk.co.grahamcox.tcg.genders.GenderData
+import uk.co.grahamcox.tcg.genders.GenderFilter
 import uk.co.grahamcox.tcg.genders.GenderId
 import uk.co.grahamcox.tcg.genders.GenderSort
 import uk.co.grahamcox.tcg.model.Model
@@ -21,7 +22,7 @@ import uk.co.grahamcox.tcg.webapp.parseSorts
  */
 @RestController
 @RequestMapping("/api/genders")
-class GendersController(private val gendersRetriever: Retriever<GenderId, GenderData, GenderSort>) {
+class GendersController(private val gendersRetriever: Retriever<GenderId, GenderData, GenderFilter, GenderSort>) {
     /**
      * Get a list of the genders in the system
      * @param offset The offset to start listing from. Default of 0

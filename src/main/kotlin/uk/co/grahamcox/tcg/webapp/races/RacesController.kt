@@ -21,7 +21,7 @@ import uk.co.grahamcox.tcg.webapp.parseSorts
  */
 @RestController
 @RequestMapping("/api/races")
-class RacesController(private val racesRetriever: Retriever<RaceId, RaceData, RaceSort>) {
+class RacesController(private val racesRetriever: Retriever<RaceId, RaceData, *, RaceSort>) {
     /**
      * Get a list of the races in the system
      * @param offset The offset to start listing from. Default of 0

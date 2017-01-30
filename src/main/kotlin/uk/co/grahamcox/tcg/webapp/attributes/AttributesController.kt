@@ -22,7 +22,7 @@ import uk.co.grahamcox.tcg.webapp.parseSorts
  */
 @RestController
 @RequestMapping("/api/attributes")
-class AttributesController(private val attributesRetriever: Retriever<AttributeId, AttributeData, AttributeSort>) {
+class AttributesController(private val attributesRetriever: Retriever<AttributeId, AttributeData, *, AttributeSort>) {
     /**
      * Get a list of the attributes in the system
      * @param offset The offset to start listing from. Default of 0

@@ -6,9 +6,10 @@ import uk.co.grahamcox.tcg.model.*
  * Base interface from which all DAOs that read data extend
  * @param ID The type to use for the ID
  * @param DATA The type to use for the model data
+ * @param FILTER The enum type to use for filter fields
  * @param SORT The enum type to use for sort fields
  */
-interface BaseDao<ID : Id, out DATA, SORT : Enum<SORT>> {
+interface BaseDao<ID : Id, out DATA, FILTER : Enum<FILTER>, SORT : Enum<SORT>> {
     /**
      * Retrieve a record by it's internal ID
      * @param id The ID of the record

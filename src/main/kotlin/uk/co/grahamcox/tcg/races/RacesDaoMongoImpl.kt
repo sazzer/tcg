@@ -5,6 +5,7 @@ import org.bson.Document
 import uk.co.grahamcox.tcg.dao.BaseMongoDao
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.model.Model
+import uk.co.grahamcox.tcg.model.NoFilter
 import java.time.Clock
 
 /**
@@ -15,7 +16,7 @@ import java.time.Clock
 class RacesDaoMongoImpl(
         private val db: MongoDatabase,
         private val clock: Clock)
-    : RacesDao, BaseMongoDao<RaceId, RaceData, RaceSort>(db, "races", clock) {
+    : RacesDao, BaseMongoDao<RaceId, RaceData, NoFilter, RaceSort>(db, "races", clock) {
 
     /**
      * The mapping of sort fields to the actual database field
