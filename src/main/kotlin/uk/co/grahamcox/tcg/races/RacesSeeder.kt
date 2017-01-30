@@ -12,10 +12,12 @@ class RacesSeeder : Seeder {
      */
     override fun generateDefaultData() = listOf(
             mapOf(
+                    "_id" to "human",
                     "name" to "Human",
                     "description" to "Pretty much the default"
             ),
             mapOf(
+                    "_id" to "dwarf",
                     "name" to "Dwarf",
                     "description" to "Short but good with an axe"
             )
