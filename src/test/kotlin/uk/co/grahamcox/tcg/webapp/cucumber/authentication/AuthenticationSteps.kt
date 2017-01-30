@@ -5,6 +5,7 @@ import cucumber.api.java.en.Given
 import cucumber.api.java.en.Then
 import cucumber.api.java.en.When
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.context.embedded.LocalServerPort
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
@@ -13,6 +14,7 @@ import org.springframework.test.web.client.match.MockRestRequestMatchers
 import org.springframework.test.web.client.response.MockRestResponseCreators
 import org.springframework.util.LinkedMultiValueMap
 import uk.co.grahamcox.tcg.webapp.cucumber.Requester
+import uk.co.grahamcox.tcg.webapp.cucumber.UrlBuilder
 
 /**
  * Cucumber steps for authentication workflows
@@ -21,6 +23,11 @@ class AuthenticationSteps {
     /** The means to make requests */
     @Autowired
     private lateinit var requester: Requester
+
+    /** The URL Builder for the Authentication Callback URLs */
+    @Autowired
+    @Qualifier("authenticationCallbackUrlBuilder")
+    private lateinit var authenticationCallbackUrlBuilder: UrlBuilder
 
     /** The local server port */
     @LocalServerPort
@@ -77,7 +84,7 @@ class AuthenticationSteps {
 
     @When("""^I receive an authentication callback from provider "(.+)" with parameters:$""")
     fun authenticationCallback(provider: String, parameters: Map<String, String>) {
-        requester.get("/api/authentication/${provider}/redirect", parameters)
+        requester.get(authenticationCallbackUrlBuilder.build(parameters + mapOf("Provider" to provider)))
     }
 
     @Then("""^I get an Access Token response$""")

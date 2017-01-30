@@ -3,8 +3,17 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="userDatabaseMatcher" class="uk.co.grahamcox.tcg.webapp.cucumber.users.UserDatabaseMatcher">
+    <bean id="userDatabaseMatcher" class="uk.co.grahamcox.tcg.webapp.cucumber.matcher.DatabaseMatcher">
         <constructor-arg name="db" ref="mongoDb" />
+        <constructor-arg name="collectionName" value="users" />
+        <constructor-arg name="userFieldMapping">
+            <map>
+                <entry key="User ID" value="_id" />
+                <entry key="Name" value="name" />
+                <entry key="Email" value="email" />
+                <entry key="Google Provider ID" value="providers/google" />
+            </map>
+        </constructor-arg>
     </bean>
 
     <bean id="userResponseMatcher" class="uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher">
@@ -18,7 +27,37 @@
         </constructor-arg>
     </bean>
 
-    <bean id="userSeeder" class="uk.co.grahamcox.tcg.webapp.cucumber.users.UserSeeder">
-        <constructor-arg name="db" ref="mongoDb" />
+    <bean id="userSeeder" parent="seederBase">
+        <constructor-arg name="collectionName" value="users" />
+        <constructor-arg name="fieldMapping">
+            <map>
+                <entry key="User ID" value="_id" />
+                <entry key="Name" value="name" />
+                <entry key="Email" value="email" />
+            </map>
+        </constructor-arg>
+        <constructor-arg name="defaultFieldValues">
+            <map>
+                <entry key="name">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.seeder.SimpleFieldDefaulter">
+                        <constructor-arg name="value" value="Test User" />
+                    </bean>
+                </entry>
+                <entry key="email">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.seeder.SimpleFieldDefaulter">
+                        <constructor-arg name="value" value="test@example.com" />
+                    </bean>
+                </entry>
+            </map>
+        </constructor-arg>
+        <constructor-arg name="complexFieldMapping">
+            <map>
+                <entry key="Google Provider ID">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.users.ProviderIdFieldMapper">
+                        <constructor-arg name="provider" value="google" />
+                    </bean>
+                </entry>
+            </map>
+        </constructor-arg>
     </bean>
 </beans>

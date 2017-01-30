@@ -8,6 +8,14 @@
         <constructor-arg name="restTemplate" ref="restTemplate" />
     </bean>
 
+    <bean id="seederBase" abstract="true" class="uk.co.grahamcox.tcg.webapp.cucumber.seeder.MongoSeeder">
+        <constructor-arg name="database" ref="mongoDb" />
+        <constructor-arg name="fieldMapping"><map /></constructor-arg>
+        <constructor-arg name="defaultFieldValues"><map /></constructor-arg>
+        <constructor-arg name="complexFieldMapping"><map /></constructor-arg>
+    </bean>
+
     <import resource="users.xml" />
+    <import resource="authentication.xml" />
     <import resource="attributes.xml" />
 </beans>

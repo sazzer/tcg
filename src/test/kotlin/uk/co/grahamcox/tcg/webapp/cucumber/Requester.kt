@@ -32,30 +32,20 @@ class Requester(private val restTemplate: TestRestTemplate) {
     /**
      * Make a GET request to the given URI
      * @param uri The URI
-     * @param params The parameters to the URI
      * @return the last response
      */
-    fun get(uri: String, params: Map<String, String>? = null): ResponseEntity<Map<String, Any?>> {
-        val realUri = if (params != null) {
-            UriComponentsBuilder.fromUriString(uri)
-                    .replaceQueryParams(LinkedMultiValueMap(params.mapValues { listOf(it.value) }))
-        } else {
-            UriComponentsBuilder.fromUriString(uri)
-        }
-                .build()
-                .toUriString()
-
+    fun get(uri: String): ResponseEntity<Map<String, Any?>> {
         val headers = HttpHeaders()
         accessToken?.let {
             headers.set("Authorization", "Bearer $it")
         }
 
         lastResponseEntity = restTemplate.exchange(
-                realUri,
+                uri,
                 HttpMethod.GET,
                 HttpEntity(null, headers),
                 Map::class.java)  as ResponseEntity<Map<String, Any?>>
-        LOG.debug("Request to {} returned response {}", realUri, lastResponseEntity)
+        LOG.debug("Request to {} returned response {}", uri, lastResponseEntity)
         return lastResponseEntity!!
     }
 }

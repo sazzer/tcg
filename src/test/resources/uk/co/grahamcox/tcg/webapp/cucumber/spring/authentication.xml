@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="authenticationCallbackUrlBuilder" class="uk.co.grahamcox.tcg.webapp.cucumber.UrlBuilder">
+        <constructor-arg name="baseUrl" value="/api/authentication/{provider}/redirect" />
+        <constructor-arg name="queryStringMappings">
+            <map>
+                <entry key="State" value="state" />
+                <entry key="Code" value="code" />
+            </map>
+        </constructor-arg>
+        <constructor-arg name="pathMappings">
+            <map>
+                <entry key="Provider" value="provider" />
+            </map>
+        </constructor-arg>
+    </bean>
+</beans>

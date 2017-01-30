@@ -14,8 +14,29 @@
         </constructor-arg>
     </bean>
 
-    <bean id="attributeSeeder" class="uk.co.grahamcox.tcg.webapp.cucumber.attributes.AttributeSeeder">
-        <constructor-arg name="database" ref="mongoDb" />
+    <bean id="attributeSeeder" parent="seederBase">
+        <constructor-arg name="collectionName" value="attributes" />
+        <constructor-arg name="fieldMapping">
+            <map>
+                <entry key="ID" value="_id" />
+                <entry key="Name" value="name" />
+                <entry key="Description" value="description" />
+            </map>
+        </constructor-arg>
+        <constructor-arg name="defaultFieldValues">
+            <map>
+                <entry key="name">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.seeder.SimpleFieldDefaulter">
+                        <constructor-arg name="value" value="Test Attribute" />
+                    </bean>
+                </entry>
+                <entry key="description">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.seeder.SimpleFieldDefaulter">
+                        <constructor-arg name="value" value="Some test attribute" />
+                    </bean>
+                </entry>
+            </map>
+        </constructor-arg>
     </bean>
 
     <bean id="listAttributesUrlBuilder" class="uk.co.grahamcox.tcg.webapp.cucumber.UrlBuilder">
@@ -27,5 +48,6 @@
                 <entry key="Count" value="count" />
             </map>
         </constructor-arg>
+        <constructor-arg name="pathMappings"><map /></constructor-arg>
     </bean>
 </beans>

@@ -16,8 +16,8 @@ Feature: Authentication against Google
       | Name    | Graham Cox             |
       | Email   | graham@grahamcox.co.uk |
     When I receive an authentication callback from provider "google" with parameters:
-      | state | theState |
-      | code  | abc123   |
+      | State | theState |
+      | Code  | abc123   |
     Then I get an "OK" response
     And I get an Access Token response
     And the database contains a user for this User ID with details:
@@ -37,8 +37,8 @@ Feature: Authentication against Google
       | Email              | test@example.com |
       | Google Provider ID | 1234567890       |
     When I receive an authentication callback from provider "google" with parameters:
-      | state | theState |
-      | code  | abc123   |
+      | State | theState |
+      | Code  | abc123   |
     Then I get an "OK" response
     And the database contains a user for this User ID with details:
       | User ID            | 0987654321       |

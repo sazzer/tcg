@@ -6,7 +6,9 @@ import cucumber.api.java.en.When
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import uk.co.grahamcox.tcg.webapp.cucumber.Requester
+import uk.co.grahamcox.tcg.webapp.cucumber.matcher.DatabaseMatcher
 import uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher
+import uk.co.grahamcox.tcg.webapp.cucumber.seeder.MongoSeeder
 
 /**
  * Cucumber steps for working with user records
@@ -18,7 +20,8 @@ class UserSteps {
 
     /** The user database matcher to use */
     @Autowired
-    private lateinit var userDatabaseMatcher: UserDatabaseMatcher
+    @Qualifier("userDatabaseMatcher")
+    private lateinit var userDatabaseMatcher: DatabaseMatcher
 
     /** The user response matcher to use */
     @Autowired
@@ -27,7 +30,8 @@ class UserSteps {
 
     /** The user seeder to use */
     @Autowired
-    private lateinit var userSeeder: UserSeeder
+    @Qualifier("userSeeder")
+    private lateinit var userSeeder: MongoSeeder
 
     @Given("""^I have a User with details:$""")
     fun seedUser(userDetails: Map<String, String>) {

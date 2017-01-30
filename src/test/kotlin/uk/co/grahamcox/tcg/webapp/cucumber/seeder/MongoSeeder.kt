@@ -10,9 +10,16 @@ import java.util.*
  * Base class for simple seeders for MongoDB records
  * @property database The database to work with
  * @property collectionName The collection to seed
+ * @property fieldMapping The mapping between Cucumber fields and Mongo Fields
+ * @property defaultFieldValues The default field values to use
+ * @property complexFieldMapping The field mappings for more complex fields
  */
-abstract class MongoSeeder(private val database: MongoDatabase,
-                           private val collectionName: String) {
+class MongoSeeder(private val database: MongoDatabase,
+                  private val collectionName: String,
+                  private val fieldMapping: Map<String, String>,
+                  private val defaultFieldValues: Map<String, FieldDefaulter>,
+                  private val complexFieldMapping: Map<String, FieldMapper>
+) {
     companion object {
         /** The logger to use */
         private val LOG = LoggerFactory.getLogger(MongoSeeder::class.java)
@@ -21,14 +28,8 @@ abstract class MongoSeeder(private val database: MongoDatabase,
     /** The collection to seed */
     private val collection = database.getCollection(collectionName)
 
-    /** The mapping between Cucumber fields and Mongo Fields */
-    protected abstract val fieldMapping: Map<String, String>
-    /** The providers for the default field values */
-    protected abstract val defaultFieldValues: Map<String, () -> Any>
-    /** The more complex mappings, e.g. for nested fields */
-    protected open val complexFieldMapping: Map<String, (String, MutableMap<String, Any>) -> Any> = mapOf()
     /** The providers for the default field values for the identity of the record */
-    protected val defaultIdentityFieldValues = mapOf(
+    private val defaultIdentityFieldValues = mapOf(
             "_id" to { UUID.randomUUID().toString() },
             "version" to { UUID.randomUUID().toString() },
             "created" to { Date.from(Instant.now()) },
@@ -43,14 +44,14 @@ abstract class MongoSeeder(private val database: MongoDatabase,
         val params = mutableMapOf<String, Any>()
         defaultIdentityFieldValues.mapValues { it.value.invoke() }
                 .forEach { k, v -> params[k] = v }
-        defaultFieldValues.mapValues { it.value.invoke() }
+        defaultFieldValues.mapValues { it.value.getDefault() }
                 .forEach { k, v -> params[k] = v }
         details.filterKeys { fieldMapping.containsKey(it) }
                 .mapKeys { fieldMapping[it.key]!! }
                 .forEach { k, v -> params[k] = v }
         details.filterKeys { complexFieldMapping.containsKey(it) }
                 .forEach { k, v ->
-                    complexFieldMapping[k]?.invoke(v, params)
+                    complexFieldMapping[k]?.mapField(v, params)
                 }
         val document = Document(params)
 
