@@ -9,4 +9,5 @@
     <import resource="authentication/authentication.xml" />
     <import resource="users.xml" />
     <import resource="attributes.xml" />
+    <import resource="races.xml" />
 </beans>
