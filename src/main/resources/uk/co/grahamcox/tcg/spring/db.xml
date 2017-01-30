@@ -30,6 +30,7 @@
             <constructor-arg name="seeders">
                 <map>
                     <entry key="attributes"><bean class="uk.co.grahamcox.tcg.attributes.AttributesSeeder" /></entry>
+                    <entry key="races"><bean class="uk.co.grahamcox.tcg.races.RacesSeeder" /></entry>
                 </map>
             </constructor-arg>
         </bean>
