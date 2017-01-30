@@ -6,6 +6,7 @@ import cucumber.api.java.en.When
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import uk.co.grahamcox.tcg.webapp.cucumber.Requester
+import uk.co.grahamcox.tcg.webapp.cucumber.matcher.DatabaseMatcher
 import uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher
 import uk.co.grahamcox.tcg.webapp.cucumber.seeder.MongoSeeder
 
@@ -19,7 +20,8 @@ class UserSteps {
 
     /** The user database matcher to use */
     @Autowired
-    private lateinit var userDatabaseMatcher: UserDatabaseMatcher
+    @Qualifier("userDatabaseMatcher")
+    private lateinit var userDatabaseMatcher: DatabaseMatcher
 
     /** The user response matcher to use */
     @Autowired

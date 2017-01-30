@@ -9,13 +9,13 @@ import org.apache.commons.jxpath.JXPathContext
  * Matcher to match a database record with the expected values
  * @property db The database connection
  * @property collectionName The collection name
+ * @property userFieldMapping Mapping of the provided inputs to the fields on the data returned
  */
-abstract class DatabaseMatcher(private val db: MongoDatabase, private val collectionName: String) {
+class DatabaseMatcher(private val db: MongoDatabase,
+                      private val collectionName: String,
+                      private val userFieldMapping: Map<String, String>) {
     /** The database collection */
     private val collection = db.getCollection(collectionName)
-
-    /** Mapping of the provided inputs to the fields on the data returned */
-    protected abstract val userFieldMapping: Map<String, String>
 
     /**
      * Check that the record with the ID provided is in the database with the correct values
