@@ -37,7 +37,8 @@ class GendersController(private val gendersRetriever: Retriever<GenderId, Gender
     fun getGenders(@RequestParam(value = "offset", defaultValue = "0", required = false) offset: Int,
                    @RequestParam(value = "count", defaultValue = "10", required = false) count: Int,
                    @RequestParam(value = "race", required = false) race: String?,
-                   @RequestParam(value = "sort", defaultValue = "", required = false) sort: String): PageModel {
+                   @RequestParam(value = "sort", defaultValue = "", required = false) sort: String):
+            ResourceCollection<String, GenderResourceData> {
         val filters = mapOf(
                 GenderFilter.RACE to race
         )
@@ -51,11 +52,18 @@ class GendersController(private val gendersRetriever: Retriever<GenderId, Gender
                 parseSorts(sort)
         )
 
-        return PageModel()
-                .withPagination(PaginationModel()
-                        .withOffset(results.offset.toLong())
-                        .withTotal(results.totalCount.toLong()))
-                .withEntries(results.contents.map { translateModel(it) })
+        return ResourceCollection(
+                links = ResourceCollectionLinks(
+                        self = ServletUriComponentsBuilder.fromCurrentRequest()
+                                .build()
+                                .toUri()
+                ),
+                pagination = Pagination(
+                        offset = results.offset,
+                        totalCount = results.totalCount
+                ),
+                data = results.contents.map { gender -> translateModel(gender) }
+        )
     }
 
     /**
@@ -68,55 +76,48 @@ class GendersController(private val gendersRetriever: Retriever<GenderId, Gender
         val gender = gendersRetriever.retrieveById(GenderId(genderId))
 
         return Resource(
-                data = ResourceData(
-                        id = ResourceIdentity(
-                                type = "genders",
-                                id = gender.identity.id.id
-                        ),
-                        attributes = GenderResourceData(
-                                name = gender.data.name,
-                                description = gender.data.description
-                        ),
-                        links = ResourceLinks(
-                                ServletUriComponentsBuilder.fromCurrentRequest()
-                                        .build()
-                                        .toUri()
-                        ),
-                        relationships = mapOf(
-                                "race" to SingleRelationship(
-                                        links = RelationshipLinks(
-                                                self = ServletUriComponentsBuilder.fromCurrentRequest()
-                                                        .replacePath("/api/races")
-                                                        .pathSegment(gender.data.race.id)
-                                                        .build()
-                                                        .toUri()
-                                        ),
-                                        data = RelationshipData(
-                                                id = ResourceIdentity(
-                                                        type = "races",
-                                                        id = gender.data.race.id
-                                                )
-                                        )
-                                )
-                        )
-                )
+                data = translateModel(gender)
         )
     }
 
     /**
      * Translate the retrieved Gender into the API version
-     * @param model The model to translate
+     * @param gender The gender to translate
      * @return the translated model
      */
-    private fun translateModel(model: Model<GenderId, GenderData>) =
-            GenderModel()
-                    .withName(model.data.name)
-                    .withDescription(model.data.description)
-                    .withRace(model.data.race.id)
-                    .withIdentity(IdentityModel()
-                            .withId(model.identity.id.id)
-                            .withVersion(model.identity.version)
-                            .withCreated(model.identity.created)
-                            .withUpdated(model.identity.updated)
+    private fun translateModel(gender: Model<GenderId, GenderData>) =
+            ResourceData(
+                    id = ResourceIdentity(
+                            type = "genders",
+                            id = gender.identity.id.id
+                    ),
+                    attributes = GenderResourceData(
+                            name = gender.data.name,
+                            description = gender.data.description
+                    ),
+                    links = ResourceLinks(
+                            ServletUriComponentsBuilder.fromCurrentContextPath()
+                                    .replacePath("/api/genders")
+                                    .pathSegment(gender.identity.id.id)
+                                    .build()
+                                    .toUri()
+                    ),
+                    relationships = mapOf(
+                            "race" to SingleRelationship(
+                                    links = RelationshipLinks(
+                                            self = ServletUriComponentsBuilder.fromCurrentContextPath()
+                                                    .replacePath("/api/races")
+                                                    .pathSegment(gender.data.race.id)
+                                                    .build()
+                                                    .toUri()
+                                    ),
+                                    data = RelationshipData(
+                                            id = ResourceIdentity(
+                                                    type = "races",
+                                                    id = gender.data.race.id
+                                            )
+                                    )
+                            )
                     )
+            )
 }
