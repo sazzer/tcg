@@ -64,11 +64,11 @@ class GendersController(private val gendersRetriever: Retriever<GenderId, Gender
      * @return the gender
      */
     @RequestMapping("/{id}")
-    fun getGender(@PathVariable("id") genderId: String): Resource {
+    fun getGender(@PathVariable("id") genderId: String): Resource<String, GenderResourceData> {
         val gender = gendersRetriever.retrieveById(GenderId(genderId))
 
         return Resource(
-                data = SingleResourceData(
+                data = ResourceData(
                         id = ResourceIdentity(
                                 type = "genders",
                                 id = gender.identity.id.id
