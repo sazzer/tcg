@@ -4,12 +4,14 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import uk.co.grahamcox.tcg.genders.GenderData
 import uk.co.grahamcox.tcg.genders.GenderFilter
 import uk.co.grahamcox.tcg.genders.GenderId
 import uk.co.grahamcox.tcg.genders.GenderSort
 import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.model.Retriever
+import uk.co.grahamcox.tcg.webapp.api.*
 import uk.co.grahamcox.tcg.webapp.model.GenderModel
 import uk.co.grahamcox.tcg.webapp.model.IdentityModel
 import uk.co.grahamcox.tcg.webapp.model.PageModel
@@ -62,10 +64,39 @@ class GendersController(private val gendersRetriever: Retriever<GenderId, Gender
      * @return the gender
      */
     @RequestMapping("/{id}")
-    fun getGender(@PathVariable("id") genderId: String): GenderModel {
+    fun getGender(@PathVariable("id") genderId: String): Resource<String, GenderResourceData> {
         val gender = gendersRetriever.retrieveById(GenderId(genderId))
 
-        return translateModel(gender)
+        return Resource(
+                data = ResourceData(
+                        type = "genders",
+                        id = gender.identity.id.id,
+                        attributes = GenderResourceData(
+                                name = gender.data.name,
+                                description = gender.data.description
+                        ),
+                        links = ResourceLinks(
+                                ServletUriComponentsBuilder.fromCurrentRequest()
+                                        .build()
+                                        .toUri()
+                        ),
+                        relationships = mapOf(
+                                "race" to SingleRelationship(
+                                        links = RelationshipLinks(
+                                                self = ServletUriComponentsBuilder.fromCurrentRequest()
+                                                        .replacePath("/api/races")
+                                                        .pathSegment(gender.data.race.id)
+                                                        .build()
+                                                        .toUri()
+                                        ),
+                                        data = RelationshipData(
+                                                type = "races",
+                                                id = gender.data.race.id
+                                        )
+                                )
+                        )
+                )
+        )
     }
 
     /**
