@@ -69,8 +69,10 @@ class GendersController(private val gendersRetriever: Retriever<GenderId, Gender
 
         return Resource(
                 data = SingleResourceData(
-                        type = "genders",
-                        id = gender.identity.id.id,
+                        id = ResourceIdentity(
+                                type = "genders",
+                                id = gender.identity.id.id
+                        ),
                         attributes = GenderResourceData(
                                 name = gender.data.name,
                                 description = gender.data.description
@@ -90,8 +92,10 @@ class GendersController(private val gendersRetriever: Retriever<GenderId, Gender
                                                         .toUri()
                                         ),
                                         data = RelationshipData(
-                                                type = "races",
-                                                id = gender.data.race.id
+                                                id = ResourceIdentity(
+                                                        type = "races",
+                                                        id = gender.data.race.id
+                                                )
                                         )
                                 )
                         )
