@@ -53,6 +53,7 @@
                 <entry key="Sort" value="sort" />
                 <entry key="Offset" value="offset" />
                 <entry key="Count" value="count" />
+                <entry key="Race" value="race" />
             </map>
         </constructor-arg>
         <constructor-arg name="pathMappings"><map /></constructor-arg>

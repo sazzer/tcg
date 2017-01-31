@@ -98,3 +98,25 @@ Feature: Listing Genders
       | Name        | Male  |
       | Description | Manly |
       | Race        | human |
+
+  Scenario: Listing genders filtered by race
+    Given I have an gender with details:
+      | ID          | humanmale  |
+      | Name        | Male       |
+      | Description | Manly      |
+      | Race        | human      |
+    And I have an gender with details:
+      | ID          | dwarfmale  |
+      | Name        | Male       |
+      | Description | Hairy      |
+      | Race        | dwarf      |
+    When I retrieve the list of genders:
+      | Sort   | Name  |
+      | Race   | human |
+    Then I get an "OK" response
+    And I get 1 of 1 results returned, starting at offset 0
+    And gender 1 has details:
+      | ID          | humanmale  |
+      | Name        | Male       |
+      | Description | Manly      |
+      | Race        | human      |
