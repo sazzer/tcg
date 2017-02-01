@@ -11,57 +11,24 @@ import uk.co.grahamcox.tcg.genders.GenderSort
 import uk.co.grahamcox.tcg.model.Retriever
 import uk.co.grahamcox.tcg.webapp.api.Resource
 import uk.co.grahamcox.tcg.webapp.api.ResourceCollection
-import uk.co.grahamcox.tcg.webapp.api.translator.*
+import uk.co.grahamcox.tcg.webapp.api.translator.ResourceCollectionTranslator
+import uk.co.grahamcox.tcg.webapp.api.translator.ResourceTranslator
 import uk.co.grahamcox.tcg.webapp.parseSorts
-import uk.co.grahamcox.tcg.webapp.races.RacesController
 
 
 /**
  * Controller for accessing genders
+ * @property gendersRetriever Retriever for loading Genders
+ * @property resourceTranslator Translator for translating individual genders
+ * @property resourceCollectionTranslator Translator for translating pages of genders
  */
 @RestController
 @RequestMapping("/api/genders")
-class GendersController(private val gendersRetriever: Retriever<GenderId, GenderData, GenderFilter, GenderSort>) {
-    private val resourceDataTranslator = ResourceDataTranslatorImpl(
-            resourceIdentityTranslator = ResourceIdentityTranslatorImpl("genders"),
-            resourceAttributesTranslator = GenderTranslator(),
-            resourceLinksTranslator = ResourceLinksTranslatorImpl(
-                    selfTranslator = MvcLinkBuilder(
-                            controller = GendersController::class.java,
-                            methodName = "getGender",
-                            parameterBuilder = IdParameterBuilder()
-                    )
-            ),
-            relationshipTranslators = mapOf(
-                    "race" to SingleRelationshipTranslatorImpl(
-                            relationshipDataBuilder = RelationshipDataBuilderImpl(
-                                    relationshipIdentityBuilder = RelationshipIdentityBuilderImpl(
-                                            type = "races",
-                                            relationshipIdExtractor = RaceIdExtractor()
-                                    )
-                            ),
-                            relationshipLinksTranslator = RelationshipLinksTranslatorImpl(
-                                    selfTranslator = MvcLinkBuilder(
-                                            controller = RacesController::class.java,
-                                            methodName = "getRace",
-                                            parameterBuilder = GetGenderRaceParameterBuilder()
-                                    )
-                            )
-                    )
-            )
-    )
+class GendersController(
+        private val gendersRetriever: Retriever<GenderId, GenderData, GenderFilter, GenderSort>,
+        private val resourceTranslator: ResourceTranslator<GenderId, GenderData, String, GenderResourceData>,
+        private val resourceCollectionTranslator: ResourceCollectionTranslator<GenderId, GenderData, String, GenderResourceData>) {
 
-    /** Translator for translating a gender into a Resource */
-    private val resourceTranslator = ResourceTranslatorImpl(resourceDataTranslator)
-
-    /** Translator for translating a page of genders into a Resource Collection */
-    private val resourceCollectionTranslator = ResourceCollectionTranslatorImpl(
-            paginationTranslator = PaginationTranslatorImpl(),
-            resourceCollectionLinksTranslator = ResourceCollectionLinksTranslatorImpl(
-                    selfTranslator = SelfLinkBuilder()
-            ),
-            resourceTranslator = resourceDataTranslator
-    )
     /**
      * Get a list of the genders in the system
      * @param offset The offset to start listing from. Default of 0
