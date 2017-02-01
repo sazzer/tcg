@@ -15,6 +15,6 @@ class PaginationTranslatorImpl<in MID : Id, in MDATA> : PaginationTranslator<MID
      */
     override fun translate(page: Page<MID, MDATA>) = Pagination(
             offset = page.offset,
-            totalCount = page.totalCount
+            total = page.totalCount
     )
 }

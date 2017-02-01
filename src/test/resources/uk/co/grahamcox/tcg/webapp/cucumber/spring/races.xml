@@ -12,6 +12,8 @@
                 <entry key="Description" value="description" />
             </map>
         </constructor-arg>
+        <constructor-arg name="singleMatchPrefix"><null /></constructor-arg>
+        <constructor-arg name="collectionPrefix" value="entries" />
     </bean>
 
     <bean id="raceSeeder" parent="seederBase">

@@ -7,12 +7,14 @@
         <constructor-arg name="requester" ref="requester" />
         <constructor-arg name="fieldMapping">
             <map>
-                <entry key="ID" value="identity/id" />
-                <entry key="Name" value="name" />
-                <entry key="Description" value="description" />
-                <entry key="Race" value="race" />
+                <entry key="ID" value="id" />
+                <entry key="Name" value="attributes/name" />
+                <entry key="Description" value="attributes/description" />
+                <entry key="Race" value="relationships/race/data/id" />
             </map>
         </constructor-arg>
+        <constructor-arg name="singleMatchPrefix" value="data" />
+        <constructor-arg name="collectionPrefix" value="data" />
     </bean>
 
     <bean id="genderSeeder" parent="seederBase">
