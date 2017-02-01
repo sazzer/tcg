@@ -12,6 +12,7 @@ import uk.co.grahamcox.tcg.genders.GenderSort
 import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.model.Retriever
 import uk.co.grahamcox.tcg.webapp.api.*
+import uk.co.grahamcox.tcg.webapp.api.translator.*
 import uk.co.grahamcox.tcg.webapp.model.GenderModel
 import uk.co.grahamcox.tcg.webapp.model.IdentityModel
 import uk.co.grahamcox.tcg.webapp.model.PageModel
@@ -25,6 +26,21 @@ import uk.co.grahamcox.tcg.webapp.parseSorts
 @RestController
 @RequestMapping("/api/genders")
 class GendersController(private val gendersRetriever: Retriever<GenderId, GenderData, GenderFilter, GenderSort>) {
+    /** Translator for translating a gender into a Resource */
+    private val resourceTranslator = ResourceTranslatorImpl(
+            resourceDataTranslator = ResourceDataTranslatorImpl(
+                    resourceIdentityTranslator = ResourceIdentityTranslatorImpl("genders"),
+                    resourceAttributesTranslator = GenderTranslator(),
+                    resourceLinksTranslator = ResourceLinksTranslatorImpl(
+                            selfTranslator = MvcLinkBuilder(
+                                    controller = GendersController::class.java,
+                                    methodName = "getGender",
+                                    parameterBuilder = IdParameterBuilder()
+                            )
+                    )
+            )
+    )
+
     /**
      * Get a list of the genders in the system
      * @param offset The offset to start listing from. Default of 0
@@ -75,9 +91,7 @@ class GendersController(private val gendersRetriever: Retriever<GenderId, Gender
     fun getGender(@PathVariable("id") genderId: String): Resource<String, GenderResourceData> {
         val gender = gendersRetriever.retrieveById(GenderId(genderId))
 
-        return Resource(
-                data = translateModel(gender)
-        )
+        return resourceTranslator.translate(gender)
     }
 
     /**

@@ -6,6 +6,6 @@ import java.net.URI
  * Links to a single Resource
  * @property self The self link
  */
-class ResourceLinks(
+data class ResourceLinks(
         val self: URI
 )
