@@ -27,7 +27,7 @@ class ResourceTranslatorImpl<in MID : Id, in MDATA, out RID, out RATTR>(
     override fun translate(input: Model<MID, MDATA>): Resource<RID, RATTR> {
         val resourceData = resourceDataTranslator.translate(input)
         val resource = Resource(resourceData)
-        LOG.trace("Translated input model {} into Resource {}", resource)
+        LOG.trace("Translated input model {} into Resource {}", input, resource)
         return resource
     }
 }

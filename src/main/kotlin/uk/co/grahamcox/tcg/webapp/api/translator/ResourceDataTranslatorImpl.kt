@@ -15,7 +15,8 @@ import uk.co.grahamcox.tcg.webapp.api.ResourceData
 class ResourceDataTranslatorImpl<in MID : Id, in MDATA, out RID, out RATTR>(
         private val resourceIdentityTranslator: ResourceIdentityTranslator<MID, RID>,
         private val resourceAttributesTranslator: ResourceAttributesTranslator<MID, MDATA, RATTR>,
-        private val resourceLinksTranslator: ResourceLinksTranslator<MID, MDATA>
+        private val resourceLinksTranslator: ResourceLinksTranslator<MID, MDATA>,
+        private val relationshipTranslators: Map<String, RelationshipTranslator<MID, MDATA>>?
 ) : ResourceDataTranslator<MID, MDATA, RID, RATTR> {
     companion object {
         /** The logger to use */
@@ -30,7 +31,7 @@ class ResourceDataTranslatorImpl<in MID : Id, in MDATA, out RID, out RATTR>(
         val identity = resourceIdentityTranslator.translate(input.identity)
         val attributes = resourceAttributesTranslator.translate(input)
         val links = resourceLinksTranslator.translate(input)
-        val relationships = null
+        val relationships = relationshipTranslators?.mapValues { it.value.translate(input) }
 
         val resourceData = ResourceData(
                 id = identity,

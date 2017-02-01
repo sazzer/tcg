@@ -13,6 +13,7 @@ import uk.co.grahamcox.tcg.webapp.api.Resource
 import uk.co.grahamcox.tcg.webapp.api.ResourceCollection
 import uk.co.grahamcox.tcg.webapp.api.translator.*
 import uk.co.grahamcox.tcg.webapp.parseSorts
+import uk.co.grahamcox.tcg.webapp.races.RacesController
 
 
 /**
@@ -29,6 +30,23 @@ class GendersController(private val gendersRetriever: Retriever<GenderId, Gender
                             controller = GendersController::class.java,
                             methodName = "getGender",
                             parameterBuilder = IdParameterBuilder()
+                    )
+            ),
+            relationshipTranslators = mapOf(
+                    "race" to SingleRelationshipTranslatorImpl(
+                            relationshipDataBuilder = RelationshipDataBuilderImpl(
+                                    relationshipIdentityBuilder = RelationshipIdentityBuilderImpl(
+                                            type = "races",
+                                            relationshipIdExtractor = RaceIdExtractor()
+                                    )
+                            ),
+                            relationshipLinksTranslator = RelationshipLinksTranslatorImpl(
+                                    selfTranslator = MvcLinkBuilder(
+                                            controller = RacesController::class.java,
+                                            methodName = "getRace",
+                                            parameterBuilder = GetGenderRaceParameterBuilder()
+                                    )
+                            )
                     )
             )
     )
