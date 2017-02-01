@@ -63,8 +63,12 @@
     <bean class="uk.co.grahamcox.tcg.webapp.genders.GendersController">
         <constructor-arg name="gendersRetriever" ref="gendersRetriever" />
         <constructor-arg name="resourceTranslator">
-            <bean class="uk.co.grahamcox.tcg.webapp.api.translator.ResourceTranslatorImpl">
-                <constructor-arg name="resourceDataTranslator" ref="genderResourceDataTranslator" />
+            <bean class="uk.co.grahamcox.tcg.webapp.api.translator.ResponseEntityResourceTranslatorWrapper">
+                <constructor-arg name="translator">
+                    <bean class="uk.co.grahamcox.tcg.webapp.api.translator.ResourceTranslatorImpl">
+                        <constructor-arg name="resourceDataTranslator" ref="genderResourceDataTranslator" />
+                    </bean>
+                </constructor-arg>
             </bean>
         </constructor-arg>
         <constructor-arg name="resourceCollectionTranslator">

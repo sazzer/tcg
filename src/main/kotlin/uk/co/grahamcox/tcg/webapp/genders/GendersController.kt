@@ -1,5 +1,6 @@
 package uk.co.grahamcox.tcg.webapp.genders
 
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -12,7 +13,7 @@ import uk.co.grahamcox.tcg.model.Retriever
 import uk.co.grahamcox.tcg.webapp.api.Resource
 import uk.co.grahamcox.tcg.webapp.api.ResourceCollection
 import uk.co.grahamcox.tcg.webapp.api.translator.ResourceCollectionTranslator
-import uk.co.grahamcox.tcg.webapp.api.translator.ResourceTranslator
+import uk.co.grahamcox.tcg.webapp.api.translator.ResponseEntityResourceTranslatorWrapper
 import uk.co.grahamcox.tcg.webapp.parseSorts
 
 
@@ -26,7 +27,7 @@ import uk.co.grahamcox.tcg.webapp.parseSorts
 @RequestMapping("/api/genders")
 class GendersController(
         private val gendersRetriever: Retriever<GenderId, GenderData, GenderFilter, GenderSort>,
-        private val resourceTranslator: ResourceTranslator<GenderId, GenderData, String, GenderResourceData>,
+        private val resourceTranslator: ResponseEntityResourceTranslatorWrapper<GenderId, GenderData, String, GenderResourceData>,
         private val resourceCollectionTranslator: ResourceCollectionTranslator<GenderId, GenderData, String, GenderResourceData>) {
 
     /**
@@ -65,7 +66,7 @@ class GendersController(
      * @return the gender
      */
     @RequestMapping("/{id}")
-    fun getGender(@PathVariable("id") genderId: String): Resource<String, GenderResourceData> {
+    fun getGender(@PathVariable("id") genderId: String): ResponseEntity<Resource<String, GenderResourceData>> {
         val gender = gendersRetriever.retrieveById(GenderId(genderId))
 
         return resourceTranslator.translate(gender)
