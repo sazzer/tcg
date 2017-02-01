@@ -4,19 +4,14 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import uk.co.grahamcox.tcg.genders.GenderData
 import uk.co.grahamcox.tcg.genders.GenderFilter
 import uk.co.grahamcox.tcg.genders.GenderId
 import uk.co.grahamcox.tcg.genders.GenderSort
-import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.model.Retriever
-import uk.co.grahamcox.tcg.webapp.api.*
+import uk.co.grahamcox.tcg.webapp.api.Resource
+import uk.co.grahamcox.tcg.webapp.api.ResourceCollection
 import uk.co.grahamcox.tcg.webapp.api.translator.*
-import uk.co.grahamcox.tcg.webapp.model.GenderModel
-import uk.co.grahamcox.tcg.webapp.model.IdentityModel
-import uk.co.grahamcox.tcg.webapp.model.PageModel
-import uk.co.grahamcox.tcg.webapp.model.PaginationModel
 import uk.co.grahamcox.tcg.webapp.parseSorts
 
 
@@ -26,21 +21,29 @@ import uk.co.grahamcox.tcg.webapp.parseSorts
 @RestController
 @RequestMapping("/api/genders")
 class GendersController(private val gendersRetriever: Retriever<GenderId, GenderData, GenderFilter, GenderSort>) {
-    /** Translator for translating a gender into a Resource */
-    private val resourceTranslator = ResourceTranslatorImpl(
-            resourceDataTranslator = ResourceDataTranslatorImpl(
-                    resourceIdentityTranslator = ResourceIdentityTranslatorImpl("genders"),
-                    resourceAttributesTranslator = GenderTranslator(),
-                    resourceLinksTranslator = ResourceLinksTranslatorImpl(
-                            selfTranslator = MvcLinkBuilder(
-                                    controller = GendersController::class.java,
-                                    methodName = "getGender",
-                                    parameterBuilder = IdParameterBuilder()
-                            )
+    private val resourceDataTranslator = ResourceDataTranslatorImpl(
+            resourceIdentityTranslator = ResourceIdentityTranslatorImpl("genders"),
+            resourceAttributesTranslator = GenderTranslator(),
+            resourceLinksTranslator = ResourceLinksTranslatorImpl(
+                    selfTranslator = MvcLinkBuilder(
+                            controller = GendersController::class.java,
+                            methodName = "getGender",
+                            parameterBuilder = IdParameterBuilder()
                     )
             )
     )
 
+    /** Translator for translating a gender into a Resource */
+    private val resourceTranslator = ResourceTranslatorImpl(resourceDataTranslator)
+
+    /** Translator for translating a page of genders into a Resource Collection */
+    private val resourceCollectionTranslator = ResourceCollectionTranslatorImpl(
+            paginationTranslator = PaginationTranslatorImpl(),
+            resourceCollectionLinksTranslator = ResourceCollectionLinksTranslatorImpl(
+                    selfTranslator = SelfLinkBuilder()
+            ),
+            resourceTranslator = resourceDataTranslator
+    )
     /**
      * Get a list of the genders in the system
      * @param offset The offset to start listing from. Default of 0
@@ -68,18 +71,7 @@ class GendersController(private val gendersRetriever: Retriever<GenderId, Gender
                 parseSorts(sort)
         )
 
-        return ResourceCollection(
-                links = ResourceCollectionLinks(
-                        self = ServletUriComponentsBuilder.fromCurrentRequest()
-                                .build()
-                                .toUri()
-                ),
-                pagination = Pagination(
-                        offset = results.offset,
-                        totalCount = results.totalCount
-                ),
-                data = results.contents.map { gender -> translateModel(gender) }
-        )
+        return resourceCollectionTranslator.translate(results)
     }
 
     /**
@@ -93,45 +85,4 @@ class GendersController(private val gendersRetriever: Retriever<GenderId, Gender
 
         return resourceTranslator.translate(gender)
     }
-
-    /**
-     * Translate the retrieved Gender into the API version
-     * @param gender The gender to translate
-     * @return the translated model
-     */
-    private fun translateModel(gender: Model<GenderId, GenderData>) =
-            ResourceData(
-                    id = ResourceIdentity(
-                            type = "genders",
-                            id = gender.identity.id.id
-                    ),
-                    attributes = GenderResourceData(
-                            name = gender.data.name,
-                            description = gender.data.description
-                    ),
-                    links = ResourceLinks(
-                            ServletUriComponentsBuilder.fromCurrentContextPath()
-                                    .replacePath("/api/genders")
-                                    .pathSegment(gender.identity.id.id)
-                                    .build()
-                                    .toUri()
-                    ),
-                    relationships = mapOf(
-                            "race" to SingleRelationship(
-                                    links = RelationshipLinks(
-                                            self = ServletUriComponentsBuilder.fromCurrentContextPath()
-                                                    .replacePath("/api/races")
-                                                    .pathSegment(gender.data.race.id)
-                                                    .build()
-                                                    .toUri()
-                                    ),
-                                    data = RelationshipData(
-                                            id = ResourceIdentity(
-                                                    type = "races",
-                                                    id = gender.data.race.id
-                                            )
-                                    )
-                            )
-                    )
-            )
 }

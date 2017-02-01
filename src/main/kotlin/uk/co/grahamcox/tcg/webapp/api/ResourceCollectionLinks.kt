@@ -6,6 +6,6 @@ import java.net.URI
  * Links to a Resource Collection
  * @property self The self link
  */
-class ResourceCollectionLinks(
+data class ResourceCollectionLinks(
         val self: URI
 )

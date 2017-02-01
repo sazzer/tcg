@@ -38,7 +38,7 @@ class ResourceDataTranslatorImpl<in MID : Id, in MDATA, out RID, out RATTR>(
                 links = links,
                 relationships = relationships
         )
-        LOG.trace("Translated input model {} into Resource Data {}", resourceData)
+        LOG.trace("Translated input model {} into Resource Data {}", input, resourceData)
         return resourceData
     }
 }
