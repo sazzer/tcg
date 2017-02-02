@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="classesDao" class="uk.co.grahamcox.tcg.classes.ClassesDaoMongoImpl">
+        <constructor-arg name="clock" ref="clock" />
+        <constructor-arg name="db" ref="mongoDb" />
+    </bean>
+
+    <bean id="classesRetriever" class="uk.co.grahamcox.tcg.model.DaoRetriever">
+        <constructor-arg name="dao" ref="classesDao" />
+    </bean>
+</beans>

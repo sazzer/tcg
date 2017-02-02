@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="classResponseMatcher" class="uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher">
+        <constructor-arg name="requester" ref="requester" />
+        <constructor-arg name="fieldMapping">
+            <map>
+                <entry key="ID" value="identity/id" />
+                <entry key="Name" value="name" />
+                <entry key="Description" value="description" />
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="classeseeder" parent="seederBase">
+        <constructor-arg name="collectionName" value="classes" />
+        <constructor-arg name="fieldMapping">
+            <map>
+                <entry key="ID" value="_id" />
+                <entry key="Name" value="name" />
+                <entry key="Description" value="description" />
+            </map>
+        </constructor-arg>
+        <constructor-arg name="defaultFieldValues">
+            <map>
+                <entry key="name">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.seeder.SimpleFieldDefaulter">
+                        <constructor-arg name="value" value="Test Class" />
+                    </bean>
+                </entry>
+                <entry key="description">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.seeder.SimpleFieldDefaulter">
+                        <constructor-arg name="value" value="Some test class" />
+                    </bean>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="listClassesUrlBuilder" class="uk.co.grahamcox.tcg.webapp.cucumber.UrlBuilder">
+        <constructor-arg name="baseUrl" value="/api/classes" />
+        <constructor-arg name="queryStringMappings">
+            <map>
+                <entry key="Sort" value="sort" />
+                <entry key="Offset" value="offset" />
+                <entry key="Count" value="count" />
+            </map>
+        </constructor-arg>
+        <constructor-arg name="pathMappings"><map /></constructor-arg>
+    </bean>
+</beans>
