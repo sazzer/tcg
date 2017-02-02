@@ -4,17 +4,14 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import uk.co.grahamcox.tcg.model.Retriever
 import uk.co.grahamcox.tcg.attributes.AttributeData
 import uk.co.grahamcox.tcg.attributes.AttributeId
 import uk.co.grahamcox.tcg.attributes.AttributeSort
-import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.model.NoFilter
-import uk.co.grahamcox.tcg.model.SortOrder
+import uk.co.grahamcox.tcg.model.Retriever
+import uk.co.grahamcox.tcg.webapp.PageTranslator
 import uk.co.grahamcox.tcg.webapp.model.AttributeModel
-import uk.co.grahamcox.tcg.webapp.model.IdentityModel
 import uk.co.grahamcox.tcg.webapp.model.PageModel
-import uk.co.grahamcox.tcg.webapp.model.PaginationModel
 import uk.co.grahamcox.tcg.webapp.parseSorts
 
 
@@ -24,6 +21,10 @@ import uk.co.grahamcox.tcg.webapp.parseSorts
 @RestController
 @RequestMapping("/api/attributes")
 class AttributesController(private val attributesRetriever: Retriever<AttributeId, AttributeData, NoFilter, AttributeSort>) {
+    /** The translator to use for the individual models */
+    private val modelTranslator = AttributeTranslator()
+    /** The translator to use for the whole page */
+    private val pageTranslator = PageTranslator(modelTranslator)
     /**
      * Get a list of the attributes in the system
      * @param offset The offset to start listing from. Default of 0
@@ -42,11 +43,7 @@ class AttributesController(private val attributesRetriever: Retriever<AttributeI
                 parseSorts(sort)
         )
 
-        return PageModel()
-                .withPagination(PaginationModel()
-                        .withOffset(results.offset.toLong())
-                        .withTotal(results.totalCount.toLong()))
-                .withEntries(results.contents.map { translateModel(it) })
+        return pageTranslator.translate(results)
     }
 
     /**
@@ -58,22 +55,6 @@ class AttributesController(private val attributesRetriever: Retriever<AttributeI
     fun getAttribute(@PathVariable("id") attributeId: String): AttributeModel {
         val attribute = attributesRetriever.retrieveById(AttributeId(attributeId))
 
-        return translateModel(attribute)
+        return modelTranslator.translate(attribute)
     }
-
-    /**
-     * Translate the retrieved Attribute into the API version
-     * @param model The model to translate
-     * @return the translated model
-     */
-    private fun translateModel(model: Model<AttributeId, AttributeData>) =
-            AttributeModel()
-                    .withName(model.data.name)
-                    .withDescription(model.data.description)
-                    .withIdentity(IdentityModel()
-                            .withId(model.identity.id.id)
-                            .withVersion(model.identity.version)
-                            .withCreated(model.identity.created)
-                            .withUpdated(model.identity.updated)
-                    )
 }
