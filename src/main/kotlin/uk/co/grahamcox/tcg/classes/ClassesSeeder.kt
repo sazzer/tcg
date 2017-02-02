@@ -12,6 +12,7 @@ class ClassesSeeder : Seeder {
      */
     override fun generateDefaultData() = listOf(
             mapOf(
+                    "_id" to "warrior",
                     "name" to "Warrior",
                     "description" to "Hits things"
             )
