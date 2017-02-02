@@ -1,5 +1,6 @@
 package uk.co.grahamcox.tcg.webapp.attributes
 
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -10,6 +11,7 @@ import uk.co.grahamcox.tcg.attributes.AttributeSort
 import uk.co.grahamcox.tcg.model.NoFilter
 import uk.co.grahamcox.tcg.model.Retriever
 import uk.co.grahamcox.tcg.webapp.PageTranslator
+import uk.co.grahamcox.tcg.webapp.ResponseTranslator
 import uk.co.grahamcox.tcg.webapp.model.AttributeModel
 import uk.co.grahamcox.tcg.webapp.model.PageModel
 import uk.co.grahamcox.tcg.webapp.parseSorts
@@ -22,9 +24,9 @@ import uk.co.grahamcox.tcg.webapp.parseSorts
 @RequestMapping("/api/attributes")
 class AttributesController(private val attributesRetriever: Retriever<AttributeId, AttributeData, NoFilter, AttributeSort>) {
     /** The translator to use for the individual models */
-    private val modelTranslator = AttributeTranslator()
+    private val modelTranslator = ResponseTranslator(AttributeTranslator())
     /** The translator to use for the whole page */
-    private val pageTranslator = PageTranslator(modelTranslator)
+    private val pageTranslator = PageTranslator(AttributeTranslator())
     /**
      * Get a list of the attributes in the system
      * @param offset The offset to start listing from. Default of 0
@@ -52,7 +54,7 @@ class AttributesController(private val attributesRetriever: Retriever<AttributeI
      * @return the attribute
      */
     @RequestMapping("/{id}")
-    fun getAttribute(@PathVariable("id") attributeId: String): AttributeModel {
+    fun getAttribute(@PathVariable("id") attributeId: String): ResponseEntity<AttributeModel> {
         val attribute = attributesRetriever.retrieveById(AttributeId(attributeId))
 
         return modelTranslator.translate(attribute)
