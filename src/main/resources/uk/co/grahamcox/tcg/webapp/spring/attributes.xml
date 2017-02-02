@@ -2,7 +2,56 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="attributeResourceDataTranslator" class="uk.co.grahamcox.tcg.webapp.api.translator.ResourceDataTranslatorImpl">
+        <constructor-arg name="resourceIdentityTranslator">
+            <bean class="uk.co.grahamcox.tcg.webapp.api.translator.ResourceIdentityTranslatorImpl">
+                <constructor-arg name="type" value="attributes" />
+            </bean>
+        </constructor-arg>
+        <constructor-arg name="resourceAttributesTranslator">
+            <bean class="uk.co.grahamcox.tcg.webapp.attributes.AttributeTranslator" />
+        </constructor-arg>
+        <constructor-arg name="resourceLinksTranslator">
+            <bean class="uk.co.grahamcox.tcg.webapp.api.translator.ResourceLinksTranslatorImpl">
+                <constructor-arg name="selfTranslator">
+                    <bean class="uk.co.grahamcox.tcg.webapp.api.translator.MvcLinkBuilder">
+                        <constructor-arg name="controller" value="uk.co.grahamcox.tcg.webapp.attributes.AttributesController"/>
+                        <constructor-arg name="methodName" value="getAttribute" />
+                        <constructor-arg name="parameterBuilder">
+                            <bean class="uk.co.grahamcox.tcg.webapp.api.translator.IdParameterBuilder" />
+                        </constructor-arg>
+                    </bean>
+                </constructor-arg>
+            </bean>
+        </constructor-arg>
+        <constructor-arg name="relationshipTranslators"><null /></constructor-arg>
+
+    </bean>
+
     <bean class="uk.co.grahamcox.tcg.webapp.attributes.AttributesController">
         <constructor-arg name="attributesRetriever" ref="attributesRetriever" />
+        <constructor-arg name="resourceTranslator">
+            <bean class="uk.co.grahamcox.tcg.webapp.api.translator.ResponseEntityResourceTranslatorWrapper">
+                <constructor-arg name="translator">
+                    <bean class="uk.co.grahamcox.tcg.webapp.api.translator.ResourceTranslatorImpl">
+                        <constructor-arg name="resourceDataTranslator" ref="attributeResourceDataTranslator" />
+                    </bean>
+                </constructor-arg>
+            </bean>
+        </constructor-arg>
+        <constructor-arg name="resourceCollectionTranslator">
+            <bean class="uk.co.grahamcox.tcg.webapp.api.translator.ResourceCollectionTranslatorImpl">
+                <constructor-arg name="resourceTranslator" ref="attributeResourceDataTranslator" />
+                <constructor-arg name="paginationTranslator" ref="paginationTranslator" />
+                <constructor-arg name="resourceCollectionLinksTranslator">
+                    <bean class="uk.co.grahamcox.tcg.webapp.api.translator.ResourceCollectionLinksTranslatorImpl">
+                        <constructor-arg name="selfTranslator">
+                            <bean class="uk.co.grahamcox.tcg.webapp.api.translator.SelfLinkBuilder" />
+                        </constructor-arg>
+                    </bean>
+                </constructor-arg>
+            </bean>
+        </constructor-arg>
     </bean>
 </beans>
