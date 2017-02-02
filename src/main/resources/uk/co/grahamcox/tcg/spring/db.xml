@@ -33,6 +33,7 @@
                     <entry key="races"><bean class="uk.co.grahamcox.tcg.races.RacesSeeder" /></entry>
                     <entry key="genders"><bean class="uk.co.grahamcox.tcg.genders.GendersSeeder" /></entry>
                     <entry key="classes"><bean class="uk.co.grahamcox.tcg.classes.ClassesSeeder" /></entry>
+                    <entry key="skills"><bean class="uk.co.grahamcox.tcg.skills.SkillsSeeder" /></entry>
                 </map>
             </constructor-arg>
         </bean>

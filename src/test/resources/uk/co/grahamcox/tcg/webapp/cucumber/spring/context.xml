@@ -21,4 +21,5 @@
     <import resource="races.xml" />
     <import resource="genders.xml" />
     <import resource="classes.xml" />
+    <import resource="skills.xml" />
 </beans>
