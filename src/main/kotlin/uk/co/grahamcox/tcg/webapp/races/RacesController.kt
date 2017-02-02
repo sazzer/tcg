@@ -1,19 +1,19 @@
 package uk.co.grahamcox.tcg.webapp.races
 
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.model.NoFilter
 import uk.co.grahamcox.tcg.model.Retriever
 import uk.co.grahamcox.tcg.races.RaceData
 import uk.co.grahamcox.tcg.races.RaceId
 import uk.co.grahamcox.tcg.races.RaceSort
-import uk.co.grahamcox.tcg.webapp.model.IdentityModel
-import uk.co.grahamcox.tcg.webapp.model.PageModel
-import uk.co.grahamcox.tcg.webapp.model.PaginationModel
-import uk.co.grahamcox.tcg.webapp.model.RaceModel
+import uk.co.grahamcox.tcg.webapp.api.Resource
+import uk.co.grahamcox.tcg.webapp.api.ResourceCollection
+import uk.co.grahamcox.tcg.webapp.api.translator.ResourceCollectionTranslator
+import uk.co.grahamcox.tcg.webapp.api.translator.ResponseEntityResourceTranslatorWrapper
 import uk.co.grahamcox.tcg.webapp.parseSorts
 
 
@@ -22,7 +22,10 @@ import uk.co.grahamcox.tcg.webapp.parseSorts
  */
 @RestController
 @RequestMapping("/api/races")
-class RacesController(private val racesRetriever: Retriever<RaceId, RaceData, NoFilter, RaceSort>) {
+class RacesController(
+        private val racesRetriever: Retriever<RaceId, RaceData, NoFilter, RaceSort>,
+        private val resourceTranslator: ResponseEntityResourceTranslatorWrapper<RaceId, RaceData, String, RaceResourceData>,
+        private val resourceCollectionTranslator: ResourceCollectionTranslator<RaceId, RaceData, String, RaceResourceData>) {
     /**
      * Get a list of the races in the system
      * @param offset The offset to start listing from. Default of 0
@@ -33,7 +36,8 @@ class RacesController(private val racesRetriever: Retriever<RaceId, RaceData, No
     @RequestMapping
     fun getRaces(@RequestParam(value = "offset", defaultValue = "0", required = false) offset: Int,
                  @RequestParam(value = "count", defaultValue = "10", required = false) count: Int,
-                 @RequestParam(value = "sort", defaultValue = "", required = false) sort: String): PageModel {
+                 @RequestParam(value = "sort", defaultValue = "", required = false) sort: String):
+            ResourceCollection<String, RaceResourceData> {
         val results = racesRetriever.list(
                 offset,
                 count,
@@ -41,11 +45,7 @@ class RacesController(private val racesRetriever: Retriever<RaceId, RaceData, No
                 parseSorts(sort)
         )
 
-        return PageModel()
-                .withPagination(PaginationModel()
-                        .withOffset(results.offset.toLong())
-                        .withTotal(results.totalCount.toLong()))
-                .withEntries(results.contents.map { translateModel(it) })
+        return resourceCollectionTranslator.translate(results)
     }
 
     /**
@@ -54,25 +54,9 @@ class RacesController(private val racesRetriever: Retriever<RaceId, RaceData, No
      * @return the race
      */
     @RequestMapping("/{id}")
-    fun getRace(@PathVariable("id") raceId: String): RaceModel {
+    fun getRace(@PathVariable("id") raceId: String): ResponseEntity<Resource<String, RaceResourceData>> {
         val race = racesRetriever.retrieveById(RaceId(raceId))
 
-        return translateModel(race)
+        return resourceTranslator.translate(race)
     }
-
-    /**
-     * Translate the retrieved Race into the API version
-     * @param model The model to translate
-     * @return the translated model
-     */
-    private fun translateModel(model: Model<RaceId, RaceData>) =
-            RaceModel()
-                    .withName(model.data.name)
-                    .withDescription(model.data.description)
-                    .withIdentity(IdentityModel()
-                            .withId(model.identity.id.id)
-                            .withVersion(model.identity.version)
-                            .withCreated(model.identity.created)
-                            .withUpdated(model.identity.updated)
-                    )
 }
