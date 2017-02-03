@@ -26,7 +26,7 @@
     <bean class="uk.co.grahamcox.tcg.webapp.UnknownResourceHandler" />
     <bean class="uk.co.grahamcox.tcg.webapp.BadSortHandler" />
     <bean class="uk.co.grahamcox.tcg.webapp.InvalidRequestFieldHandler" />
-    
+
     <import resource="authentication.xml" />
     <import resource="users.xml" />
     <import resource="attributes.xml" />

@@ -2,9 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean id="attributeTranslator" class="uk.co.grahamcox.tcg.webapp.attributes.AttributeTranslator" />
+    <bean id="characterCreator" class="uk.co.grahamcox.tcg.characters.CharacterCreatorImpl">
 
-    <bean class="uk.co.grahamcox.tcg.webapp.characters.CharacterController">
-        <constructor-arg name="characterCreator" ref="characterCreator" />
     </bean>
 </beans>
