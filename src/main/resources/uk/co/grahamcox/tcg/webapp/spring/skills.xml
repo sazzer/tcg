@@ -2,7 +2,19 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="skillTranslator" class="uk.co.grahamcox.tcg.webapp.skills.SkillTranslator" />
+
     <bean class="uk.co.grahamcox.tcg.webapp.skills.SkillsController">
         <constructor-arg name="skillsRetriever" ref="skillsRetriever" />
+        <constructor-arg name="modelTranslator">
+            <bean class="uk.co.grahamcox.tcg.webapp.ResponseTranslator">
+                <constructor-arg name="modelTranslator" ref="skillTranslator" />
+            </bean>
+        </constructor-arg>
+        <constructor-arg name="pageTranslator">
+            <bean class="uk.co.grahamcox.tcg.webapp.PageTranslator">
+                <constructor-arg name="modelTranslator" ref="skillTranslator" />
+            </bean>
+        </constructor-arg>
     </bean>
 </beans>

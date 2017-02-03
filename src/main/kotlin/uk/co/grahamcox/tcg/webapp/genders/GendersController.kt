@@ -1,5 +1,6 @@
 package uk.co.grahamcox.tcg.webapp.genders
 
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -8,21 +9,26 @@ import uk.co.grahamcox.tcg.genders.GenderData
 import uk.co.grahamcox.tcg.genders.GenderFilter
 import uk.co.grahamcox.tcg.genders.GenderId
 import uk.co.grahamcox.tcg.genders.GenderSort
-import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.model.Retriever
+import uk.co.grahamcox.tcg.webapp.PageTranslator
+import uk.co.grahamcox.tcg.webapp.ResponseTranslator
 import uk.co.grahamcox.tcg.webapp.model.GenderModel
-import uk.co.grahamcox.tcg.webapp.model.IdentityModel
 import uk.co.grahamcox.tcg.webapp.model.PageModel
-import uk.co.grahamcox.tcg.webapp.model.PaginationModel
 import uk.co.grahamcox.tcg.webapp.parseSorts
 
 
 /**
  * Controller for accessing genders
+ * @property gendersRetriever The means to retrieve genders
+ * @property modelTranslator The translator to use for the individual models
+ * @property pageTranslator The translator to use for the whole page
  */
 @RestController
 @RequestMapping("/api/genders")
-class GendersController(private val gendersRetriever: Retriever<GenderId, GenderData, GenderFilter, GenderSort>) {
+class GendersController(
+        private val gendersRetriever: Retriever<GenderId, GenderData, GenderFilter, GenderSort>,
+        private val modelTranslator: ResponseTranslator<GenderId, GenderData, GenderModel>,
+        private val pageTranslator: PageTranslator<GenderId, GenderData, GenderModel>) {
     /**
      * Get a list of the genders in the system
      * @param offset The offset to start listing from. Default of 0
@@ -49,11 +55,7 @@ class GendersController(private val gendersRetriever: Retriever<GenderId, Gender
                 parseSorts(sort)
         )
 
-        return PageModel()
-                .withPagination(PaginationModel()
-                        .withOffset(results.offset.toLong())
-                        .withTotal(results.totalCount.toLong()))
-                .withEntries(results.contents.map { translateModel(it) })
+        return pageTranslator.translate(results)
     }
 
     /**
@@ -62,26 +64,9 @@ class GendersController(private val gendersRetriever: Retriever<GenderId, Gender
      * @return the gender
      */
     @RequestMapping("/{id}")
-    fun getGender(@PathVariable("id") genderId: String): GenderModel {
+    fun getGender(@PathVariable("id") genderId: String): ResponseEntity<GenderModel> {
         val gender = gendersRetriever.retrieveById(GenderId(genderId))
 
-        return translateModel(gender)
+        return modelTranslator.translate(gender)
     }
-
-    /**
-     * Translate the retrieved Gender into the API version
-     * @param model The model to translate
-     * @return the translated model
-     */
-    private fun translateModel(model: Model<GenderId, GenderData>) =
-            GenderModel()
-                    .withName(model.data.name)
-                    .withDescription(model.data.description)
-                    .withRace(model.data.race.id)
-                    .withIdentity(IdentityModel()
-                            .withId(model.identity.id.id)
-                            .withVersion(model.identity.version)
-                            .withCreated(model.identity.created)
-                            .withUpdated(model.identity.updated)
-                    )
 }

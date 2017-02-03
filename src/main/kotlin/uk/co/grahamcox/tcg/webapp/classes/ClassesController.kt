@@ -1,5 +1,6 @@
 package uk.co.grahamcox.tcg.webapp.classes
 
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -7,22 +8,27 @@ import org.springframework.web.bind.annotation.RestController
 import uk.co.grahamcox.tcg.classes.ClassData
 import uk.co.grahamcox.tcg.classes.ClassId
 import uk.co.grahamcox.tcg.classes.ClassSort
-import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.model.NoFilter
 import uk.co.grahamcox.tcg.model.Retriever
+import uk.co.grahamcox.tcg.webapp.PageTranslator
+import uk.co.grahamcox.tcg.webapp.ResponseTranslator
 import uk.co.grahamcox.tcg.webapp.model.ClassModel
-import uk.co.grahamcox.tcg.webapp.model.IdentityModel
 import uk.co.grahamcox.tcg.webapp.model.PageModel
-import uk.co.grahamcox.tcg.webapp.model.PaginationModel
 import uk.co.grahamcox.tcg.webapp.parseSorts
 
 
 /**
  * Controller for accessing classes
+ * @property classesRetriever The means to retrieve classes
+ * @property modelTranslator The translator to use for the individual models
+ * @property pageTranslator The translator to use for the whole page
  */
 @RestController
 @RequestMapping("/api/classes")
-class ClassesController(private val classesRetriever: Retriever<ClassId, ClassData, NoFilter, ClassSort>) {
+class ClassesController(
+        private val classesRetriever: Retriever<ClassId, ClassData, NoFilter, ClassSort>,
+        private val modelTranslator: ResponseTranslator<ClassId, ClassData, ClassModel>,
+        private val pageTranslator: PageTranslator<ClassId, ClassData, ClassModel>) {
     /**
      * Get a list of the classes in the system
      * @param offset The offset to start listing from. Default of 0
@@ -41,11 +47,7 @@ class ClassesController(private val classesRetriever: Retriever<ClassId, ClassDa
                 parseSorts(sort)
         )
 
-        return PageModel()
-                .withPagination(PaginationModel()
-                        .withOffset(results.offset.toLong())
-                        .withTotal(results.totalCount.toLong()))
-                .withEntries(results.contents.map { translateModel(it) })
+        return pageTranslator.translate(results)
     }
 
     /**
@@ -54,25 +56,9 @@ class ClassesController(private val classesRetriever: Retriever<ClassId, ClassDa
      * @return the class
      */
     @RequestMapping("/{id}")
-    fun getClass(@PathVariable("id") classId: String): ClassModel {
+    fun getClass(@PathVariable("id") classId: String): ResponseEntity<ClassModel> {
         val cls = classesRetriever.retrieveById(ClassId(classId))
 
-        return translateModel(cls)
+        return modelTranslator.translate(cls)
     }
-
-    /**
-     * Translate the retrieved Class into the API version
-     * @param model The model to translate
-     * @return the translated model
-     */
-    private fun translateModel(model: Model<ClassId, ClassData>) =
-            ClassModel()
-                    .withName(model.data.name)
-                    .withDescription(model.data.description)
-                    .withIdentity(IdentityModel()
-                            .withId(model.identity.id.id)
-                            .withVersion(model.identity.version)
-                            .withCreated(model.identity.created)
-                            .withUpdated(model.identity.updated)
-                    )
 }

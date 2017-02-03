@@ -2,7 +2,14 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="userTranslator" class="uk.co.grahamcox.tcg.webapp.users.UserTranslator" />
+
     <bean class="uk.co.grahamcox.tcg.webapp.users.UserController">
         <constructor-arg name="userRetriever" ref="userRetriever" />
+        <constructor-arg name="modelTranslator">
+            <bean class="uk.co.grahamcox.tcg.webapp.ResponseTranslator">
+                <constructor-arg name="modelTranslator" ref="userTranslator" />
+            </bean>
+        </constructor-arg>
     </bean>
 </beans>

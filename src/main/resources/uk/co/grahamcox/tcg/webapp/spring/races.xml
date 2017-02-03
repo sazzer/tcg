@@ -2,7 +2,19 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="raceTranslator" class="uk.co.grahamcox.tcg.webapp.races.RaceTranslator" />
+
     <bean class="uk.co.grahamcox.tcg.webapp.races.RacesController">
         <constructor-arg name="racesRetriever" ref="racesRetriever" />
+        <constructor-arg name="modelTranslator">
+            <bean class="uk.co.grahamcox.tcg.webapp.ResponseTranslator">
+                <constructor-arg name="modelTranslator" ref="raceTranslator" />
+            </bean>
+        </constructor-arg>
+        <constructor-arg name="pageTranslator">
+            <bean class="uk.co.grahamcox.tcg.webapp.PageTranslator">
+                <constructor-arg name="modelTranslator" ref="raceTranslator" />
+            </bean>
+        </constructor-arg>
     </bean>
 </beans>
