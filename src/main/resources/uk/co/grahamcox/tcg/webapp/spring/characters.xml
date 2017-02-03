@@ -5,5 +5,8 @@
     <bean id="attributeTranslator" class="uk.co.grahamcox.tcg.webapp.attributes.AttributeTranslator" />
 
     <bean class="uk.co.grahamcox.tcg.webapp.characters.CharacterController">
+        <constructor-arg name="racesRetriever" ref="racesRetriever" />
+        <constructor-arg name="gendersRetriever" ref="gendersRetriever" />
+        <constructor-arg name="classsRetriever" ref="classesRetriever" />
     </bean>
 </beans>
