@@ -19,14 +19,16 @@ import uk.co.grahamcox.tcg.webapp.parseSorts
 
 /**
  * Controller for accessing attributes
+ * @property attributesRetriever The means to retrieve attributes
+ * @property modelTranslator The translator to use for the individual models
+ * @property pageTranslator The translator to use for the whole page
  */
 @RestController
 @RequestMapping("/api/attributes")
-class AttributesController(private val attributesRetriever: Retriever<AttributeId, AttributeData, NoFilter, AttributeSort>) {
-    /** The translator to use for the individual models */
-    private val modelTranslator = ResponseTranslator(AttributeTranslator())
-    /** The translator to use for the whole page */
-    private val pageTranslator = PageTranslator(AttributeTranslator())
+class AttributesController(
+        private val attributesRetriever: Retriever<AttributeId, AttributeData, NoFilter, AttributeSort>,
+        private val modelTranslator: ResponseTranslator<AttributeId, AttributeData, AttributeModel>,
+        private val pageTranslator: PageTranslator<AttributeId, AttributeData, AttributeModel>) {
     /**
      * Get a list of the attributes in the system
      * @param offset The offset to start listing from. Default of 0
