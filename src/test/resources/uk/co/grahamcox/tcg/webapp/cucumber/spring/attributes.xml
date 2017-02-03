@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <bean id="attributeResponseMatcher" class="uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher">
-        <constructor-arg name="requester" ref="requester" />
+    <bean id="attributeResponseMatcher" parent="responseMatcherBase">
         <constructor-arg name="fieldMapping">
             <map>
                 <entry key="ID" value="id" />
                 <entry key="Name" value="name" />
                 <entry key="Description" value="description" />
+                <entry key="Default Value" value="default" />
+            </map>
+        </constructor-arg>
+        <constructor-arg name="typeConverters">
+            <map>
+                <entry key="Default Value">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.IntegerTypeConverter" />
+                </entry>
             </map>
         </constructor-arg>
     </bean>
@@ -21,6 +28,7 @@
                 <entry key="ID" value="_id" />
                 <entry key="Name" value="name" />
                 <entry key="Description" value="description" />
+                <entry key="Default Value" value="default" />
             </map>
         </constructor-arg>
         <constructor-arg name="defaultFieldValues">
@@ -34,6 +42,18 @@
                     <bean class="uk.co.grahamcox.tcg.webapp.cucumber.seeder.SimpleFieldDefaulter">
                         <constructor-arg name="value" value="Some test attribute" />
                     </bean>
+                </entry>
+                <entry key="default">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.seeder.SimpleFieldDefaulter">
+                        <constructor-arg name="value" value="10" />
+                    </bean>
+                </entry>
+            </map>
+        </constructor-arg>
+        <constructor-arg name="typeConverters">
+            <map>
+                <entry key="default">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.LongTypeConverter" />
                 </entry>
             </map>
         </constructor-arg>

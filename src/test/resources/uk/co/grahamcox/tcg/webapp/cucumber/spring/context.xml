@@ -13,6 +13,12 @@
         <constructor-arg name="fieldMapping"><map /></constructor-arg>
         <constructor-arg name="defaultFieldValues"><map /></constructor-arg>
         <constructor-arg name="complexFieldMapping"><map /></constructor-arg>
+        <constructor-arg name="typeConverters"><map /></constructor-arg>
+    </bean>
+
+    <bean id="responseMatcherBase" abstract="true" class="uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher">
+        <constructor-arg name="requester" ref="requester" />
+        <constructor-arg name="typeConverters"><map /></constructor-arg>
     </bean>
 
     <import resource="users.xml" />

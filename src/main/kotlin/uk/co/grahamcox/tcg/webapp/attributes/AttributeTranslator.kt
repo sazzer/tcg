@@ -20,4 +20,5 @@ class AttributeTranslator : ModelTranslator<AttributeId, AttributeData, Attribut
                     .withId(input.identity.id.id)
                     .withName(input.data.name)
                     .withDescription(input.data.description)
+                    .withDefault(input.data.defaultValue)
 }

@@ -15,11 +15,16 @@
     "description": {
       "type": "string",
       "description": "A description of the Attribute"
+    },
+    "default": {
+      "type": "integer",
+      "description": "The default value for new characters"
     }
   },
   "required": [
     "name",
-    "description"
+    "description",
+    "default"
   ],
   "additionalProperties": false
 }

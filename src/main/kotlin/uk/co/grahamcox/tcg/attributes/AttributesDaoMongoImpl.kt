@@ -40,7 +40,8 @@ class AttributesDaoMongoImpl(
                 ),
                 data = AttributeData(
                         name = result.getString("name"),
-                        description = result.getString("description")
+                        description = result.getString("description"),
+                        defaultValue = result.getLong("default")
                 )
         )
     }

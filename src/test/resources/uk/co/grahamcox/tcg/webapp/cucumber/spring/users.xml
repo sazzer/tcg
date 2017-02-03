@@ -16,8 +16,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="userResponseMatcher" class="uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher">
-        <constructor-arg name="requester" ref="requester" />
+    <bean id="userResponseMatcher" parent="responseMatcherBase">
         <constructor-arg name="fieldMapping">
             <map>
                 <entry key="User ID" value="id" />

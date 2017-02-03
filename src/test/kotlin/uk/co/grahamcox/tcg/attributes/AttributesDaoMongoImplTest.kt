@@ -51,6 +51,7 @@ class AttributesDaoMongoImplTest {
                         .append("updated", Date.from(Instant.ofEpochMilli(1483983699000)))
                         .append("name", "Strength")
                         .append("description", "Makes you strong")
+                        .append("default", 10L)
         )
 
         testSubject.getById(AttributeId("ECEE75F3-4037-4B1F-891A-C5B06546A0BC")).should.equal(Model(
@@ -62,7 +63,8 @@ class AttributesDaoMongoImplTest {
                 ),
                 data = AttributeData(
                         name = "Strength",
-                        description = "Makes you strong"
+                        description = "Makes you strong",
+                        defaultValue = 10
                 )
         ))
     }
