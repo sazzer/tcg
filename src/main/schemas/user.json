@@ -4,8 +4,9 @@
   "description": "User Profile",
   "type": "object",
   "properties": {
-    "identity": {
-      "$ref": "./identity.json"
+    "id": {
+      "type": "string",
+      "description": "The ID of the User"
     },
     "name": {
       "type": "string",

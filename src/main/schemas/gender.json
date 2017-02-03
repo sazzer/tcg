@@ -4,8 +4,9 @@
   "description": "Gender",
   "type": "object",
   "properties": {
-    "identity": {
-      "$ref": "./identity.json"
+    "id": {
+      "type": "string",
+      "description": "The ID of the Gender"
     },
     "name": {
       "type": "string",

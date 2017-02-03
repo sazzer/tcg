@@ -4,8 +4,9 @@
   "description": "Attribute",
   "type": "object",
   "properties": {
-    "identity": {
-      "$ref": "./identity.json"
+    "id": {
+      "type": "string",
+      "description": "The ID of the Attribute"
     },
     "name": {
       "type": "string",

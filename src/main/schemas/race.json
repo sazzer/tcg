@@ -4,8 +4,9 @@
   "description": "Race",
   "type": "object",
   "properties": {
-    "identity": {
-      "$ref": "./identity.json"
+    "id": {
+      "type": "string",
+      "description": "The ID of the Race"
     },
     "name": {
       "type": "string",

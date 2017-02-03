@@ -5,7 +5,6 @@ import uk.co.grahamcox.tcg.attributes.AttributeId
 import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.webapp.ModelTranslator
 import uk.co.grahamcox.tcg.webapp.model.AttributeModel
-import uk.co.grahamcox.tcg.webapp.model.IdentityModel
 
 /**
  * Translator to translate an Attribute into the API version
@@ -18,12 +17,7 @@ class AttributeTranslator : ModelTranslator<AttributeId, AttributeData, Attribut
      */
     override fun translate(input: Model<AttributeId, AttributeData>) =
             AttributeModel()
+                    .withId(input.identity.id.id)
                     .withName(input.data.name)
                     .withDescription(input.data.description)
-                    .withIdentity(IdentityModel()
-                            .withId(input.identity.id.id)
-                            .withVersion(input.identity.version)
-                            .withCreated(input.identity.created)
-                            .withUpdated(input.identity.updated)
-                    )
 }

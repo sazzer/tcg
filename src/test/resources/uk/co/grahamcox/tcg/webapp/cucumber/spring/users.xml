@@ -20,7 +20,7 @@
         <constructor-arg name="requester" ref="requester" />
         <constructor-arg name="fieldMapping">
             <map>
-                <entry key="User ID" value="identity/id" />
+                <entry key="User ID" value="id" />
                 <entry key="Name" value="name" />
                 <entry key="Email" value="email" />
             </map>

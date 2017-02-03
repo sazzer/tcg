@@ -7,7 +7,7 @@
         <constructor-arg name="requester" ref="requester" />
         <constructor-arg name="fieldMapping">
             <map>
-                <entry key="ID" value="identity/id" />
+                <entry key="ID" value="id" />
                 <entry key="Name" value="name" />
                 <entry key="Description" value="description" />
             </map>
