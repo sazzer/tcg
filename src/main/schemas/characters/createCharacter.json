@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Create Character",
+  "description": "Schema describing the details needed to create a new character",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the Character"
+    },
+    "race": {
+      "type": "string",
+      "description": "The race of the Character"
+    },
+    "gender": {
+      "type": "string",
+      "description": "The gender of the Character. Must be applicable to the Race selected."
+    },
+    "class": {
+      "type": "string",
+      "description": "The class of the Character"
+    }
+  },
+  "required": [
+    "name",
+    "race",
+    "gender",
+    "class"
+  ],
+  "additionalProperties": false
+}
