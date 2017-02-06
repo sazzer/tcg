@@ -20,4 +20,5 @@ class SkillTranslator : ModelTranslator<SkillId, SkillData, SkillModel> {
                     .withId(input.identity.id.id)
                     .withName(input.data.name)
                     .withDescription(input.data.description)
+                    .withDefault(input.data.defaultValue)
 }

@@ -14,12 +14,14 @@ class SkillsSeeder : Seeder {
             mapOf(
                     "_id" to "swords",
                     "name" to "Swordsmanship",
-                    "description" to "Hitting things with pointy sticks"
+                    "description" to "Hitting things with pointy sticks",
+                    "default" to 5L
             ),
             mapOf(
                     "_id" to "clubs",
                     "name" to "Clubs",
-                    "description" to "Hitting things with blunt sticks"
+                    "description" to "Hitting things with blunt sticks",
+                    "default" to 5L
             )
     )
 }

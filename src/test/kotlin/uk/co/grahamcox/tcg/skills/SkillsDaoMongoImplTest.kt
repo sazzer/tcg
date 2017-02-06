@@ -51,6 +51,7 @@ class SkillsDaoMongoImplTest {
                         .append("updated", Date.from(Instant.ofEpochMilli(1483983699000)))
                         .append("name", "Swordsmanship")
                         .append("description", "Hitting things with pointy sticks")
+                        .append("default", 5L)
         )
 
         testSubject.getById(SkillId("ECEE75F3-4037-4B1F-891A-C5B06546A0BC")).should.equal(Model(
@@ -62,7 +63,8 @@ class SkillsDaoMongoImplTest {
                 ),
                 data = SkillData(
                         name = "Swordsmanship",
-                        description = "Hitting things with pointy sticks"
+                        description = "Hitting things with pointy sticks",
+                        defaultValue = 5L
                 )
         ))
     }

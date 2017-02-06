@@ -9,6 +9,14 @@
                 <entry key="ID" value="id" />
                 <entry key="Name" value="name" />
                 <entry key="Description" value="description" />
+                <entry key="Default Value" value="default" />
+            </map>
+        </constructor-arg>
+        <constructor-arg name="typeConverters">
+            <map>
+                <entry key="Default Value">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.IntegerTypeConverter" />
+                </entry>
             </map>
         </constructor-arg>
     </bean>
@@ -20,6 +28,7 @@
                 <entry key="ID" value="_id" />
                 <entry key="Name" value="name" />
                 <entry key="Description" value="description" />
+                <entry key="Default Value" value="default" />
             </map>
         </constructor-arg>
         <constructor-arg name="defaultFieldValues">
@@ -33,6 +42,18 @@
                     <bean class="uk.co.grahamcox.tcg.webapp.cucumber.seeder.SimpleFieldDefaulter">
                         <constructor-arg name="value" value="Some test skill" />
                     </bean>
+                </entry>
+                <entry key="default">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.seeder.SimpleFieldDefaulter">
+                        <constructor-arg name="value" value="5" />
+                    </bean>
+                </entry>
+            </map>
+        </constructor-arg>
+        <constructor-arg name="typeConverters">
+            <map>
+                <entry key="default">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.LongTypeConverter" />
                 </entry>
             </map>
         </constructor-arg>
