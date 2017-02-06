@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ability",
+  "description": "Ability",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The ID of the Ability"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the Ability"
+    },
+    "description": {
+      "type": "string",
+      "description": "A description of the Ability"
+    }
+  },
+  "required": [
+    "name",
+    "description"
+  ],
+  "additionalProperties": false
+}

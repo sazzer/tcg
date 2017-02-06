@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="abilityTranslator" class="uk.co.grahamcox.tcg.webapp.abilities.AbilityTranslator" />
+
+    <bean class="uk.co.grahamcox.tcg.webapp.abilities.AbilitiesController">
+        <constructor-arg name="abilitiesRetriever" ref="abilitiesRetriever" />
+        <constructor-arg name="modelTranslator">
+            <bean class="uk.co.grahamcox.tcg.webapp.ResponseTranslator">
+                <constructor-arg name="modelTranslator" ref="abilityTranslator" />
+            </bean>
+        </constructor-arg>
+        <constructor-arg name="pageTranslator">
+            <bean class="uk.co.grahamcox.tcg.webapp.PageTranslator">
+                <constructor-arg name="modelTranslator" ref="abilityTranslator" />
+            </bean>
+        </constructor-arg>
+    </bean>
+</beans>

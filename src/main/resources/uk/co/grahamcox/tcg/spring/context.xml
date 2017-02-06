@@ -13,5 +13,6 @@
     <import resource="genders.xml" />
     <import resource="classes.xml" />
     <import resource="skills.xml" />
+    <import resource="abilities.xml" />
     <import resource="characters.xml" />
 </beans>
