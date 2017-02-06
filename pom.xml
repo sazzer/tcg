@@ -237,11 +237,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>de.flapdoodle.embed</groupId>
-            <artifactId>de.flapdoodle.embed.mongo</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <scope>compile</scope>
@@ -275,6 +270,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.flapdoodle.embed</groupId>
+            <artifactId>de.flapdoodle.embed.mongo</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -428,6 +428,18 @@
                         <sortPlugins>groupId,artifactId</sortPlugins>
                         <sortProperties>true</sortProperties>
                         <nrOfIndentSpace>4</nrOfIndentSpace>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.heroku.sdk</groupId>
+                    <artifactId>heroku-maven-plugin</artifactId>
+                    <version>1.1.3</version>
+                    <configuration>
+                        <appName>boiling-sierra-78539</appName>
+                        <jdkVersion>${version.jdk}</jdkVersion>
+                        <processTypes>
+                            <web>java $JAVA_OPTS -jar target/tcg-1.0-SNAPSHOT.war --server.port=$PORT --mongodb.url=$MONGODB_URI</web>
+                        </processTypes>
                     </configuration>
                 </plugin>
                 <plugin>
