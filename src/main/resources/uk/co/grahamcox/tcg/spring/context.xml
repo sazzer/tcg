@@ -5,7 +5,7 @@
     <bean id="clock" class="java.time.Clock" factory-method="systemUTC" />
     <bean id="restTemplate" class="org.springframework.web.client.RestTemplate" />
 
-    <import resource="db.xml" />
+    <import resource="db/db.xml" />
     <import resource="authentication/authentication.xml" />
     <import resource="users.xml" />
     <import resource="attributes.xml" />

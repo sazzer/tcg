@@ -1,27 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       profile="!prod">
+
     <bean id="mongoDbDatabase" class="uk.co.grahamcox.tcg.mongodb.EmbeddedMongoDB" destroy-method="shutdown" />
 
     <bean id="mongoUri" class="com.mongodb.MongoClientURI">
         <constructor-arg name="uri">
             <bean factory-bean="mongoDbDatabase" factory-method="getUrl" />
         </constructor-arg>
-    </bean>
-
-    <bean id="mongoClient" class="com.mongodb.MongoClient">
-        <constructor-arg name="uri" ref="mongoUri" />
-    </bean>
-
-    <bean id="mongoDb" factory-bean="mongoClient" factory-method="getDatabase">
-        <constructor-arg name="databaseName">
-            <bean factory-bean="mongoUri" factory-method="getDatabase" />
-        </constructor-arg>
-    </bean>
-
-    <bean id="mongoHealthcheck" class="uk.co.grahamcox.tcg.mongodb.MongoHealthcheck">
-        <constructor-arg name="db" ref="mongoDb" />
     </bean>
 
     <beans profile="dev">
@@ -38,4 +26,5 @@
             </constructor-arg>
         </bean>
     </beans>
+
 </beans>

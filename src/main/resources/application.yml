@@ -1,6 +1,8 @@
 server:
     port: 8080
 spring:
+    profiles:
+        active: prod
     boot:
         admin:
             url: http://localhost:${server.port}/admin
@@ -23,3 +25,5 @@ authentication:
     accessToken:
         signingKey: replaceThisWithARealKey
         expiry: PT1H
+mongodb:
+    url: mongodb://i.dont.exist:27017/setme
