@@ -15,6 +15,36 @@
     "description": {
       "type": "string",
       "description": "A description of the Race"
+    },
+    "attributes": {
+      "type": "object",
+      "description": "The attribute modifiers from this Race",
+      "patternProperties": {
+        "^.+$": {
+          "type": "integer",
+          "description": "The modifier for this attribute"
+        }
+      }
+    },
+    "skills": {
+      "type": "object",
+      "description": "The skill modifiers from this Race",
+      "patternProperties": {
+        "^.+$": {
+          "type": "integer",
+          "description": "The modifier for this skill"
+        }
+      }
+    },
+    "abilities": {
+      "type": "array",
+      "description": "Abilities granted from this Race",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "description": "The ID of an Ability granted from this Race"
+      },
+      "uniqueItems": true
     }
   },
   "required": [
