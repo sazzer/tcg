@@ -11,6 +11,7 @@ Feature: Get an Race
       | Description | Pretty much standard     |
       | Attributes  | strength: 10, wisdom: 20 |
       | Skills      | swords: 5, clubs: 10     |
+      | Abilities   | powerstrike, cleave      |
     When I retrieve the race "human"
     Then I get an "OK" response
     And I received race:
@@ -19,3 +20,4 @@ Feature: Get an Race
       | Description | Pretty much standard     |
       | Attributes  | strength: 10, wisdom: 20 |
       | Skills      | swords: 5, clubs: 10     |
+      | Abilities   | powerstrike, cleave      |

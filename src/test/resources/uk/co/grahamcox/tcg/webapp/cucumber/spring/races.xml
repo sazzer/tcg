@@ -11,6 +11,7 @@
                 <entry key="Description" value="description" />
                 <entry key="Attributes" value="attributes" />
                 <entry key="Skills" value="skills" />
+                <entry key="Abilities" value="abilities" />
             </map>
         </constructor-arg>
         <constructor-arg name="typeConverters">
@@ -29,6 +30,9 @@
                         </constructor-arg>
                     </bean>
                 </entry>
+                <entry key="Abilities">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.ListTypeConverter" />
+                </entry>
             </map>
         </constructor-arg>
     </bean>
@@ -42,6 +46,7 @@
                 <entry key="Description" value="description" />
                 <entry key="Attributes" value="attributes" />
                 <entry key="Skills" value="skills" />
+                <entry key="Abilities" value="abilities" />
             </map>
         </constructor-arg>
         <constructor-arg name="defaultFieldValues">
@@ -73,6 +78,9 @@
                             <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.LongTypeConverter" />
                         </constructor-arg>
                     </bean>
+                </entry>
+                <entry key="abilities">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.ListTypeConverter" />
                 </entry>
             </map>
         </constructor-arg>
