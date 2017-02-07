@@ -89,6 +89,12 @@
                 <version>${version.jackson}</version>
             </dependency>
             <dependency>
+                <groupId>com.newrelic.agent.java</groupId>
+                <artifactId>newrelic-java</artifactId>
+                <version>3.35.2</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
                 <groupId>com.nhaarman</groupId>
                 <artifactId>mockito-kotlin</artifactId>
                 <version>1.2.0</version>
@@ -277,6 +283,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>com.newrelic.agent.java</groupId>
+            <artifactId>newrelic-java</artifactId>
+            <type>zip</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>de.flapdoodle.embed</groupId>
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
             <scope>provided</scope>
@@ -438,8 +450,13 @@
                         <appName>boiling-sierra-78539</appName>
                         <jdkVersion>${version.jdk}</jdkVersion>
                         <processTypes>
-                            <web>java $JAVA_OPTS -jar target/tcg-1.0-SNAPSHOT.war --server.port=$PORT --mongodb.url=$MONGODB_URI</web>
+                            <web>java -javaagent:target/newrelic/newrelic.jar $JAVA_OPTS -jar target/${project.artifactId}-${project.version}.war --server.port=$PORT --mongodb.url=$MONGODB_URI</web>
                         </processTypes>
+                        <includeTarget>false</includeTarget>
+                        <includes>
+                            <include>target/${project.artifactId}-${project.version}.war</include>
+                            <include>target/newrelic/**/*</include>
+                        </includes>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -471,6 +488,11 @@
                         <source>${version.jdk}</source>
                         <target>${version.jdk}</target>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>2.6</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -635,6 +657,33 @@
                         <goals>
                             <goal>generate</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack-zip</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.newrelic.agent.java</groupId>
+                                    <artifactId>newrelic-java</artifactId>
+                                    <version>3.35.2</version>
+                                    <type>zip</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>target</outputDirectory>
+                                    <destFileName>newrelic</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>target</outputDirectory>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
