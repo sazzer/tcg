@@ -450,12 +450,12 @@
                         <appName>boiling-sierra-78539</appName>
                         <jdkVersion>${version.jdk}</jdkVersion>
                         <processTypes>
-                            <web>java -javaagent:target/newrelic/newrelic.jar $JAVA_OPTS -jar target/${project.artifactId}-${project.version}.war --server.port=$PORT --mongodb.url=$MONGODB_URI</web>
+                            <web>java -javaagent:target/dependencies/newrelic/newrelic.jar $JAVA_OPTS -jar target/${project.artifactId}-${project.version}.war --server.port=$PORT --mongodb.url=$MONGODB_URI</web>
                         </processTypes>
                         <includeTarget>false</includeTarget>
                         <includes>
                             <include>target/${project.artifactId}-${project.version}.war</include>
-                            <include>target/newrelic/**/*</include>
+                            <include>target/dependencies/newrelic/**/*</include>
                         </includes>
                     </configuration>
                 </plugin>
@@ -682,7 +682,7 @@
                                     <destFileName>newrelic</destFileName>
                                 </artifactItem>
                             </artifactItems>
-                            <outputDirectory>target</outputDirectory>
+                            <outputDirectory>target/dependencies</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
