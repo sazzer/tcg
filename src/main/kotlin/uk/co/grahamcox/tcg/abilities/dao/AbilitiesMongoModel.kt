@@ -1,4 +1,4 @@
-package uk.co.grahamcox.tcg.abilities
+package uk.co.grahamcox.tcg.abilities.dao
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.litote.kmongo.MongoId

@@ -1,6 +1,9 @@
-package uk.co.grahamcox.tcg.attributes
+package uk.co.grahamcox.tcg.abilities.dao
 
 import com.mongodb.client.MongoDatabase
+import uk.co.grahamcox.tcg.abilities.AbilityData
+import uk.co.grahamcox.tcg.abilities.AbilityId
+import uk.co.grahamcox.tcg.abilities.AbilitySort
 import uk.co.grahamcox.tcg.dao.BaseKMongoDao
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.model.Model
@@ -8,23 +11,23 @@ import uk.co.grahamcox.tcg.model.NoFilter
 import java.time.Clock
 
 /**
- * Implementation of the Attributes DAO that works in terms of MongoDB
+ * Implementation of the Abilities DAO that works in terms of MongoDB
  * @property db The Database connection
  * @property clock The clock
  */
-class AttributesDaoMongoImpl(
+class AbilitiesDaoMongoImpl(
         private val db: MongoDatabase,
         private val clock: Clock)
-    : AttributesDao, BaseKMongoDao<AttributeId, AttributeData, AttributesMongoModel, NoFilter, AttributeSort>(db,
-        "attributes",
+    : AbilitiesDao, BaseKMongoDao<AbilityId, AbilityData, AbilitiesMongoModel, NoFilter, AbilitySort>(db,
+        "abilities",
         clock,
-        AttributesMongoModel::class.java) {
+        AbilitiesMongoModel::class.java) {
 
     /**
      * The mapping of sort fields to the actual database field
      */
     override val sortFields = mapOf(
-            AttributeSort.NAME to "name"
+            AbilitySort.NAME to "name"
     )
 
     /**
@@ -32,18 +35,17 @@ class AttributesDaoMongoImpl(
      * @param result the document to parse
      * @return the model parsed from the result
      */
-    override fun parseResult(result: AttributesMongoModel): Model<AttributeId, AttributeData> {
+    override fun parseResult(result: AbilitiesMongoModel): Model<AbilityId, AbilityData> {
         return Model(
                 identity = Identity(
-                        id = AttributeId(result.id),
+                        id = AbilityId(result.id),
                         version = result.version,
                         created = result.created,
                         updated = result.updated
                 ),
-                data = AttributeData(
+                data = AbilityData(
                         name = result.name,
-                        description = result.description,
-                        defaultValue = result.default
+                        description = result.description
                 )
         )
     }
