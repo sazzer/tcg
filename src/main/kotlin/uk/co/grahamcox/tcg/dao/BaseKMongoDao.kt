@@ -21,7 +21,7 @@ import java.util.*
  * @property clock The clock
  * @param modelType The type to use for the database model
  */
-abstract class BaseKMongoDao<ID : Id, DATA, in MODEL, FILTER : Enum<FILTER>, SORT : Enum<SORT>>(
+abstract class BaseKMongoDao<ID : Id, DATA, MODEL, FILTER : Enum<FILTER>, SORT : Enum<SORT>>(
         private val db: MongoDatabase,
         private val collectionName: String,
         private val clock: Clock,
@@ -32,8 +32,6 @@ abstract class BaseKMongoDao<ID : Id, DATA, in MODEL, FILTER : Enum<FILTER>, SOR
         private val LOG = LoggerFactory.getLogger(BaseKMongoDao::class.java)
     }
 
-
-
     /** The raw collection to use */
     private val collection = db.getCollection<MODEL>(collectionName, modelType)
     /**
@@ -42,7 +40,10 @@ abstract class BaseKMongoDao<ID : Id, DATA, in MODEL, FILTER : Enum<FILTER>, SOR
      * @return the persisted record
      */
     override fun create(data: DATA): Model<ID, DATA> {
-        TODO("Not implemented yet")
+        val document = buildDocument(data, null)
+        LOG.debug("Inserting document: {}", document)
+        collection.insertOne(document)
+        return parseResult(document)
     }
 
     /**
@@ -118,6 +119,16 @@ abstract class BaseKMongoDao<ID : Id, DATA, in MODEL, FILTER : Enum<FILTER>, SOR
      * @return the model parsed from the result
      */
     protected abstract fun parseResult(result: MODEL): Model<ID, DATA>
+
+    /**
+     * Build a document from the provided record
+     * @param data The data to build the document from
+     * @param identity The Identity of the record, if there is one. For creates this will be null
+     * @return the document to save into the database
+     */
+    protected open fun buildDocument(data: DATA, identity: Identity<ID>? = null): MODEL {
+        TODO("Not implemented")
+    }
 
     /**
      * The mapping of sort fields to the actual database field

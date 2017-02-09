@@ -3,6 +3,7 @@ package uk.co.grahamcox.tcg.user
 import uk.co.grahamcox.tcg.model.DaoRetriever
 import uk.co.grahamcox.tcg.model.NoFilter
 import uk.co.grahamcox.tcg.model.NoSort
+import uk.co.grahamcox.tcg.user.dao.UserDao
 
 /**
  * Standard implementation of the User Retriever

@@ -1,5 +1,7 @@
 package uk.co.grahamcox.tcg.user
 
+import uk.co.grahamcox.tcg.user.dao.UserDao
+
 /**
  * Standard implementation of the User Modifier
  * @property dao The User DAO to work with

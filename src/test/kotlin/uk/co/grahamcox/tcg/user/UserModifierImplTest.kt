@@ -13,6 +13,7 @@ import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.model.Model
+import uk.co.grahamcox.tcg.user.dao.UserDao
 import java.time.Instant
 
 /**
