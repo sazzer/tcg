@@ -10,6 +10,30 @@
                 <entry key="Name" value="name" />
                 <entry key="Description" value="description" />
                 <entry key="Race" value="race" />
+                <entry key="Attributes" value="attributes" />
+                <entry key="Skills" value="skills" />
+                <entry key="Abilities" value="abilities" />
+            </map>
+        </constructor-arg>
+        <constructor-arg name="typeConverters">
+            <map>
+                <entry key="Attributes">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.MapTypeConverter">
+                        <constructor-arg name="valueConverter">
+                            <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.IntegerTypeConverter" />
+                        </constructor-arg>
+                    </bean>
+                </entry>
+                <entry key="Skills">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.MapTypeConverter">
+                        <constructor-arg name="valueConverter">
+                            <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.IntegerTypeConverter" />
+                        </constructor-arg>
+                    </bean>
+                </entry>
+                <entry key="Abilities">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.ListTypeConverter" />
+                </entry>
             </map>
         </constructor-arg>
     </bean>
@@ -22,6 +46,9 @@
                 <entry key="Name" value="name" />
                 <entry key="Description" value="description" />
                 <entry key="Race" value="race" />
+                <entry key="Attributes" value="attributes" />
+                <entry key="Skills" value="skills" />
+                <entry key="Abilities" value="abilities" />
             </map>
         </constructor-arg>
         <constructor-arg name="defaultFieldValues">
@@ -40,6 +67,27 @@
                     <bean class="uk.co.grahamcox.tcg.webapp.cucumber.seeder.SimpleFieldDefaulter">
                         <constructor-arg name="value" value="human" />
                     </bean>
+                </entry>
+            </map>
+        </constructor-arg>
+        <constructor-arg name="typeConverters">
+            <map>
+                <entry key="attributes">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.MapTypeConverter">
+                        <constructor-arg name="valueConverter">
+                            <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.LongTypeConverter" />
+                        </constructor-arg>
+                    </bean>
+                </entry>
+                <entry key="skills">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.MapTypeConverter">
+                        <constructor-arg name="valueConverter">
+                            <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.LongTypeConverter" />
+                        </constructor-arg>
+                    </bean>
+                </entry>
+                <entry key="abilities">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.ListTypeConverter" />
                 </entry>
             </map>
         </constructor-arg>

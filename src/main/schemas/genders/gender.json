@@ -19,6 +19,36 @@
     "race": {
       "type": "string",
       "description": "The Race that this Gender applies to"
+    },
+    "attributes": {
+      "type": "object",
+      "description": "The attribute modifiers from this Gender",
+      "patternProperties": {
+        "^.+$": {
+          "type": "integer",
+          "description": "The modifier for this attribute"
+        }
+      }
+    },
+    "skills": {
+      "type": "object",
+      "description": "The skill modifiers from this Gender",
+      "patternProperties": {
+        "^.+$": {
+          "type": "integer",
+          "description": "The modifier for this skill"
+        }
+      }
+    },
+    "abilities": {
+      "type": "array",
+      "description": "Abilities granted from this Gender",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "description": "The ID of an Ability granted from this Gender"
+      },
+      "uniqueItems": true
     }
   },
   "required": [
