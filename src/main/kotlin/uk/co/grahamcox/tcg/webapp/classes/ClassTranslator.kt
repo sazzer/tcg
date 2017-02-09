@@ -4,7 +4,7 @@ import uk.co.grahamcox.tcg.classes.ClassData
 import uk.co.grahamcox.tcg.classes.ClassId
 import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.webapp.ModelTranslator
-import uk.co.grahamcox.tcg.webapp.model.ClassModel
+import uk.co.grahamcox.tcg.webapp.model.classes.ClassModel
 
 /**
  * Translator to translate an Class into the API version

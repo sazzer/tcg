@@ -12,8 +12,8 @@ import uk.co.grahamcox.tcg.model.NoFilter
 import uk.co.grahamcox.tcg.model.Retriever
 import uk.co.grahamcox.tcg.webapp.PageTranslator
 import uk.co.grahamcox.tcg.webapp.ResponseTranslator
-import uk.co.grahamcox.tcg.webapp.model.AbilityModel
 import uk.co.grahamcox.tcg.webapp.model.PageModel
+import uk.co.grahamcox.tcg.webapp.model.abilities.AbilityModel
 import uk.co.grahamcox.tcg.webapp.parseSorts
 
 

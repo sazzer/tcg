@@ -12,8 +12,8 @@ import uk.co.grahamcox.tcg.genders.GenderSort
 import uk.co.grahamcox.tcg.model.Retriever
 import uk.co.grahamcox.tcg.webapp.PageTranslator
 import uk.co.grahamcox.tcg.webapp.ResponseTranslator
-import uk.co.grahamcox.tcg.webapp.model.GenderModel
 import uk.co.grahamcox.tcg.webapp.model.PageModel
+import uk.co.grahamcox.tcg.webapp.model.genders.GenderModel
 import uk.co.grahamcox.tcg.webapp.parseSorts
 
 

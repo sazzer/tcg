@@ -7,7 +7,7 @@ import uk.co.grahamcox.tcg.user.UserData
 import uk.co.grahamcox.tcg.user.UserId
 import uk.co.grahamcox.tcg.user.UserRetriever
 import uk.co.grahamcox.tcg.webapp.ResponseTranslator
-import uk.co.grahamcox.tcg.webapp.model.UserModel
+import uk.co.grahamcox.tcg.webapp.model.users.UserModel
 
 /**
  * Controller for accessing user data

@@ -13,7 +13,7 @@ import uk.co.grahamcox.tcg.races.RaceSort
 import uk.co.grahamcox.tcg.webapp.PageTranslator
 import uk.co.grahamcox.tcg.webapp.ResponseTranslator
 import uk.co.grahamcox.tcg.webapp.model.PageModel
-import uk.co.grahamcox.tcg.webapp.model.RaceModel
+import uk.co.grahamcox.tcg.webapp.model.races.RaceModel
 import uk.co.grahamcox.tcg.webapp.parseSorts
 
 

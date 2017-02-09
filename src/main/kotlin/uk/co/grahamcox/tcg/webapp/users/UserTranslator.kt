@@ -4,7 +4,7 @@ import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.user.UserData
 import uk.co.grahamcox.tcg.user.UserId
 import uk.co.grahamcox.tcg.webapp.ModelTranslator
-import uk.co.grahamcox.tcg.webapp.model.UserModel
+import uk.co.grahamcox.tcg.webapp.model.users.UserModel
 
 /**
  * Translator to translate an User into the API version

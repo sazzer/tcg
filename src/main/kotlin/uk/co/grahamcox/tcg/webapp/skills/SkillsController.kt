@@ -13,7 +13,7 @@ import uk.co.grahamcox.tcg.skills.SkillSort
 import uk.co.grahamcox.tcg.webapp.PageTranslator
 import uk.co.grahamcox.tcg.webapp.ResponseTranslator
 import uk.co.grahamcox.tcg.webapp.model.PageModel
-import uk.co.grahamcox.tcg.webapp.model.SkillModel
+import uk.co.grahamcox.tcg.webapp.model.skills.SkillModel
 import uk.co.grahamcox.tcg.webapp.parseSorts
 
 

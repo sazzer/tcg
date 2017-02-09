@@ -5,9 +5,9 @@ import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.races.RaceData
 import uk.co.grahamcox.tcg.races.RaceId
 import uk.co.grahamcox.tcg.webapp.ModelTranslator
-import uk.co.grahamcox.tcg.webapp.model.AttributesModel
-import uk.co.grahamcox.tcg.webapp.model.RaceModel
-import uk.co.grahamcox.tcg.webapp.model.SkillsModel
+import uk.co.grahamcox.tcg.webapp.model.races.AttributesModel
+import uk.co.grahamcox.tcg.webapp.model.races.RaceModel
+import uk.co.grahamcox.tcg.webapp.model.races.SkillsModel
 
 /**
  * Translator to translate an Race into the API version

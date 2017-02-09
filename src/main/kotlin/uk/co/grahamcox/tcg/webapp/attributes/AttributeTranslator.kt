@@ -4,7 +4,7 @@ import uk.co.grahamcox.tcg.attributes.AttributeData
 import uk.co.grahamcox.tcg.attributes.AttributeId
 import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.webapp.ModelTranslator
-import uk.co.grahamcox.tcg.webapp.model.AttributeModel
+import uk.co.grahamcox.tcg.webapp.model.attributes.AttributeModel
 
 /**
  * Translator to translate an Attribute into the API version

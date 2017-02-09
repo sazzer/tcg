@@ -4,7 +4,7 @@ import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.skills.SkillData
 import uk.co.grahamcox.tcg.skills.SkillId
 import uk.co.grahamcox.tcg.webapp.ModelTranslator
-import uk.co.grahamcox.tcg.webapp.model.SkillModel
+import uk.co.grahamcox.tcg.webapp.model.skills.SkillModel
 
 /**
  * Translator to translate an Skill into the API version
