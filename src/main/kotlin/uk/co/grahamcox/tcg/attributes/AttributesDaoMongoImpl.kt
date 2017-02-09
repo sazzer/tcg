@@ -35,10 +35,10 @@ class AttributesDaoMongoImpl(
     override fun parseResult(result: AttributesMongoModel): Model<AttributeId, AttributeData> {
         return Model(
                 identity = Identity(
-                        id = AttributeId(result.id!!),
-                        version = result.version!!,
-                        created = result.created!!,
-                        updated = result.updated!!
+                        id = AttributeId(result.id),
+                        version = result.version,
+                        created = result.created,
+                        updated = result.updated
                 ),
                 data = AttributeData(
                         name = result.name,

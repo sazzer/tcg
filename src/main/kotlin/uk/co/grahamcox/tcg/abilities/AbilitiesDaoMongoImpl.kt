@@ -37,10 +37,10 @@ class AbilitiesDaoMongoImpl(
     override fun parseResult(result: AbilitiesMongoModel): Model<AbilityId, AbilityData> {
         return Model(
                 identity = Identity(
-                        id = AbilityId(result.id!!),
-                        version = result.version!!,
-                        created = result.created!!,
-                        updated = result.updated!!
+                        id = AbilityId(result.id),
+                        version = result.version,
+                        created = result.created,
+                        updated = result.updated
                 ),
                 data = AbilityData(
                         name = result.name,
