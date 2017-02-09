@@ -1,11 +1,15 @@
-package uk.co.grahamcox.tcg.skills
+package uk.co.grahamcox.tcg.skills.dao
 
 import com.mongodb.client.MongoDatabase
 import org.bson.Document
+import uk.co.grahamcox.tcg.dao.BaseKMongoDao
 import uk.co.grahamcox.tcg.dao.BaseMongoDao
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.model.NoFilter
+import uk.co.grahamcox.tcg.skills.SkillData
+import uk.co.grahamcox.tcg.skills.SkillId
+import uk.co.grahamcox.tcg.skills.SkillSort
 import java.time.Clock
 
 /**
@@ -16,7 +20,10 @@ import java.time.Clock
 class SkillsDaoMongoImpl(
         private val db: MongoDatabase,
         private val clock: Clock)
-    : SkillsDao, BaseMongoDao<SkillId, SkillData, NoFilter, SkillSort>(db, "skills", clock) {
+    : SkillsDao, BaseKMongoDao<SkillId, SkillData, SkillsMongoModel, NoFilter, SkillSort>(db,
+        "skills",
+        clock,
+        SkillsMongoModel::class.java) {
 
     /**
      * The mapping of sort fields to the actual database field
@@ -30,18 +37,18 @@ class SkillsDaoMongoImpl(
      * @param result the document to parse
      * @return the model parsed from the result
      */
-    override fun parseResult(result: Document): Model<SkillId, SkillData> {
+    override fun parseResult(result: SkillsMongoModel): Model<SkillId, SkillData> {
         return Model(
                 identity = Identity(
-                        id = SkillId(result.getString("_id")),
-                        version = result.getString("version"),
-                        created = result.getDate("created").toInstant(),
-                        updated = result.getDate("updated").toInstant()
+                        id = SkillId(result.id),
+                        version = result.version,
+                        created = result.created,
+                        updated = result.updated
                 ),
                 data = SkillData(
-                        name = result.getString("name"),
-                        description = result.getString("description"),
-                        defaultValue = result.getLong("default")
+                        name = result.name,
+                        description = result.description,
+                        defaultValue = result.default
                 )
         )
     }
