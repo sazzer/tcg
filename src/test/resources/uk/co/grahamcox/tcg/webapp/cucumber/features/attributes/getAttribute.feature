@@ -4,7 +4,6 @@ Feature: Get an Attribute
     When I retrieve the attribute "unknown"
     Then I get a "Not Found" response
 
-    @wip
   Scenario: Retrieve a known Attribute
     Given I have an attribute with details:
       | ID            | str               |

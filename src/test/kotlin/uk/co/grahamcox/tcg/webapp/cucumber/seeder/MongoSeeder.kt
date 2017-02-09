@@ -44,6 +44,11 @@ class MongoSeeder(private val database: MongoDatabase,
      * @param details The details to seed into the database
      */
     fun seed(details: Map<String, String>) {
+        val unexpected = details.filterKeys { !fieldMapping.containsKey(it) && !complexFieldMapping.containsKey(it) }
+        if (unexpected.isNotEmpty()) {
+            throw IllegalArgumentException("Received seed fields that we didn't expect: " + unexpected)
+        }
+
         val params = mutableMapOf<String, Any>()
         defaultIdentityFieldValues.mapValues { it.value.invoke() }
                 .forEach { k, v -> params[k] = v }

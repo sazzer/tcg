@@ -18,6 +18,8 @@ class ResponseMatcher(
      * @param expected The expected values
      */
     fun match(expected: Map<String, String>) {
+        checkUnexpectedInputs(expected)
+
         val responseData = requester.lastResponseBodyAsJson
 
         val jxPathContext = JXPathContext.newContext(responseData)
@@ -43,16 +45,31 @@ class ResponseMatcher(
      * @param expected The expected values
      */
     fun match(offset: Int, expected: Map<String, String>) {
+        checkUnexpectedInputs(expected)
+
         val responseData = requester.lastResponseBodyAsJson
 
         val pageJxPathContext = JXPathContext.newContext(responseData)
         val jxPathContext =
                 pageJxPathContext.getRelativeContext(pageJxPathContext.createPath("/entries[$offset]"))
 
+
         expected.filterKeys { fieldMapping.containsKey(it) }
                 .mapKeys { fieldMapping[it.key] }
                 .forEach { field, value ->
                     jxPathContext.getValue(field).should.equal(value)
                 }
+    }
+
+    /**
+     * Check that there is nothing in the provided map of expected values to match against that we didn't expect to see
+     * @param expected The expected values
+     * @throws IllegalArgumentException if any of these values we didn't expect
+     */
+    private fun checkUnexpectedInputs(expected: Map<String, String>) {
+        val unexpected = expected.filterKeys { !fieldMapping.containsKey(it) }
+        if (unexpected.isNotEmpty()) {
+            throw IllegalArgumentException("Received match fields that we didn't expect: " + unexpected)
+        }
     }
 }
