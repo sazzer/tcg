@@ -43,7 +43,7 @@
         <version.kotlin>1.1-M04</version.kotlin>
         <version.maven>3.2.2</version.maven>
         <version.slf4j>1.7.22</version.slf4j>
-        <version.springBoot>1.4.3.RELEASE</version.springBoot>
+        <version.springBoot>1.4.4.RELEASE</version.springBoot>
         <version.springBootAdmin>1.4.5</version.springBootAdmin>
     </properties>
     <dependencyManagement>
@@ -51,7 +51,7 @@
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>1.1.9</version>
+                <version>1.2.0</version>
             </dependency>
             <dependency>
                 <groupId>com.auth0</groupId>
@@ -127,7 +127,7 @@
             <dependency>
                 <groupId>de.flapdoodle.embed</groupId>
                 <artifactId>de.flapdoodle.embed.mongo</artifactId>
-                <version>1.50.5</version>
+                <version>2.0.0</version>
             </dependency>
             <dependency>
                 <groupId>info.cukes</groupId>
@@ -147,7 +147,7 @@
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
-                <version>3.1.0</version>
+                <version>4.0.0-b02</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
@@ -177,7 +177,7 @@
             <dependency>
                 <groupId>org.mongodb</groupId>
                 <artifactId>mongodb-driver</artifactId>
-                <version>3.2.2</version>
+                <version>3.4.2</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -445,7 +445,7 @@
                 <plugin>
                     <groupId>com.heroku.sdk</groupId>
                     <artifactId>heroku-maven-plugin</artifactId>
-                    <version>1.1.3</version>
+                    <version>1.1.4</version>
                     <configuration>
                         <appName>boiling-sierra-78539</appName>
                         <jdkVersion>${version.jdk}</jdkVersion>
@@ -492,7 +492,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>2.6</version>
+                    <version>2.10</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
