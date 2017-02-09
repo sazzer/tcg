@@ -1,4 +1,4 @@
-package uk.co.grahamcox.tcg.races
+package uk.co.grahamcox.tcg.races.dao
 
 import com.winterbe.expekt.should
 import org.bson.Document
@@ -10,6 +10,9 @@ import uk.co.grahamcox.tcg.attributes.AttributeId
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.mongodb.EmbeddedMongoDBRule
+import uk.co.grahamcox.tcg.races.RaceData
+import uk.co.grahamcox.tcg.races.RaceId
+import uk.co.grahamcox.tcg.races.dao.RacesDaoMongoImpl
 import uk.co.grahamcox.tcg.skills.SkillId
 import java.time.*
 import java.util.*
