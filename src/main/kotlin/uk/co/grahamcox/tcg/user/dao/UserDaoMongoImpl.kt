@@ -11,7 +11,6 @@ import uk.co.grahamcox.tcg.user.UserData
 import uk.co.grahamcox.tcg.user.UserId
 import uk.co.grahamcox.tcg.users.dao.UserMongoModel
 import java.time.Clock
-import java.util.*
 
 /**
  * Implementation of the User DAO that works in terms of MongoDB
@@ -61,14 +60,9 @@ class UserDaoMongoImpl(
     /**
      * Build a document from the provided record
      * @param data The data to build the document from
-     * @param identity The Identity of the record, if there is one. For creates this will be null
      * @return the document to save into the database
      */
-    override fun buildDocument(data: UserData, identity: Identity<UserId>?) = UserMongoModel(
-            id = identity?.id?.id ?: UUID.randomUUID().toString(),
-            version = UUID.randomUUID().toString(),
-            created = identity?.created ?: clock.instant(),
-            updated = clock.instant(),
+    override fun buildDocument(data: UserData) = UserMongoModel(
             name = data.name,
             email = data.email,
             providers = data.providers

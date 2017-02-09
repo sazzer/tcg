@@ -3,7 +3,8 @@ package uk.co.grahamcox.tcg.dao
 import com.mongodb.BasicDBObject
 import com.mongodb.client.MongoDatabase
 import org.bson.Document
-import org.litote.kmongo.*
+import org.litote.kmongo.findOne
+import org.litote.kmongo.toList
 import org.slf4j.LoggerFactory
 import uk.co.grahamcox.tcg.model.*
 import java.time.Clock
@@ -21,7 +22,7 @@ import java.util.*
  * @property clock The clock
  * @param modelType The type to use for the database model
  */
-abstract class BaseKMongoDao<ID : Id, DATA, MODEL, FILTER : Enum<FILTER>, SORT : Enum<SORT>>(
+abstract class BaseKMongoDao<ID : Id, DATA, MODEL : BaseMongoModel, FILTER : Enum<FILTER>, SORT : Enum<SORT>>(
         private val db: MongoDatabase,
         private val collectionName: String,
         private val clock: Clock,
@@ -40,7 +41,12 @@ abstract class BaseKMongoDao<ID : Id, DATA, MODEL, FILTER : Enum<FILTER>, SORT :
      * @return the persisted record
      */
     override fun create(data: DATA): Model<ID, DATA> {
-        val document = buildDocument(data, null)
+        val document = buildDocument(data)
+        document.id = UUID.randomUUID().toString()
+        document.version = UUID.randomUUID().toString()
+        document.created = clock.instant()
+        document.updated = clock.instant()
+
         LOG.debug("Inserting document: {}", document)
         collection.insertOne(document)
         return parseResult(document)
@@ -123,10 +129,9 @@ abstract class BaseKMongoDao<ID : Id, DATA, MODEL, FILTER : Enum<FILTER>, SORT :
     /**
      * Build a document from the provided record
      * @param data The data to build the document from
-     * @param identity The Identity of the record, if there is one. For creates this will be null
      * @return the document to save into the database
      */
-    protected open fun buildDocument(data: DATA, identity: Identity<ID>? = null): MODEL {
+    protected open fun buildDocument(data: DATA): MODEL {
         TODO("Not implemented")
     }
 
