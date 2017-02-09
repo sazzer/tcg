@@ -1,10 +1,12 @@
-package uk.co.grahamcox.tcg.classes
+package uk.co.grahamcox.tcg.classes.dao
 
 import com.mongodb.client.MongoDatabase
-import org.bson.Document
 import uk.co.grahamcox.tcg.abilities.AbilityId
 import uk.co.grahamcox.tcg.attributes.AttributeId
-import uk.co.grahamcox.tcg.dao.BaseMongoDao
+import uk.co.grahamcox.tcg.classes.ClassData
+import uk.co.grahamcox.tcg.classes.ClassId
+import uk.co.grahamcox.tcg.classes.ClassSort
+import uk.co.grahamcox.tcg.dao.BaseKMongoDao
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.model.NoFilter
@@ -19,7 +21,10 @@ import java.time.Clock
 class ClassesDaoMongoImpl(
         private val db: MongoDatabase,
         private val clock: Clock)
-    : ClassesDao, BaseMongoDao<ClassId, ClassData, NoFilter, ClassSort>(db, "classes", clock) {
+    : ClassesDao, BaseKMongoDao<ClassId, ClassData, ClassesMongoModel, NoFilter, ClassSort>(db,
+        "classes",
+        clock,
+        ClassesMongoModel::class.java) {
 
     /**
      * The mapping of sort fields to the actual database field
@@ -33,25 +38,25 @@ class ClassesDaoMongoImpl(
      * @param result the document to parse
      * @return the model parsed from the result
      */
-    override fun parseResult(result: Document): Model<ClassId, ClassData> {
+    override fun parseResult(result: ClassesMongoModel): Model<ClassId, ClassData> {
         return Model(
                 identity = Identity(
-                        id = ClassId(result.getString("_id")),
-                        version = result.getString("version"),
-                        created = result.getDate("created").toInstant(),
-                        updated = result.getDate("updated").toInstant()
+                        id = ClassId(result.id),
+                        version = result.version,
+                        created = result.created,
+                        updated = result.updated
                 ),
                 data = ClassData(
-                        name = result.getString("name"),
-                        description = result.getString("description"),
-                        attributeModifiers = (result.get("attributes", Map::class.java) as Map<String, Long>?)
+                        name = result.name,
+                        description = result.description,
+                        attributeModifiers = result.attributes
                                 ?.mapKeys { AttributeId(it.key) }
                                 ?: mapOf(),
-                        skillModifiers = (result.get("skills", Map::class.java) as Map<String, Long>?)
+                        skillModifiers = result.skills
                                 ?.mapKeys { SkillId(it.key) }
                                 ?: mapOf(),
-                        grantedAbilities = (result.get("abilities", List::class.java) as List<String>?)
-                                ?.map { AbilityId(it) }
+                        grantedAbilities = result.abilities
+                                ?.map(::AbilityId)
                                 ?.toSet()
                                 ?: setOf()
                 )

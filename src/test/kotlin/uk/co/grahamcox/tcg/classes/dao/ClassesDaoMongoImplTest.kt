@@ -1,4 +1,4 @@
-package uk.co.grahamcox.tcg.classes
+package uk.co.grahamcox.tcg.classes.dao
 
 import com.winterbe.expekt.should
 import org.bson.Document
@@ -7,6 +7,8 @@ import org.junit.Rule
 import org.junit.Test
 import uk.co.grahamcox.tcg.abilities.AbilityId
 import uk.co.grahamcox.tcg.attributes.AttributeId
+import uk.co.grahamcox.tcg.classes.ClassData
+import uk.co.grahamcox.tcg.classes.ClassId
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.mongodb.EmbeddedMongoDBRule
