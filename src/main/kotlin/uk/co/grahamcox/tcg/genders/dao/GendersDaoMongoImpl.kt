@@ -1,10 +1,13 @@
-package uk.co.grahamcox.tcg.genders
+package uk.co.grahamcox.tcg.genders.dao
 
 import com.mongodb.client.MongoDatabase
-import org.bson.Document
 import uk.co.grahamcox.tcg.abilities.AbilityId
 import uk.co.grahamcox.tcg.attributes.AttributeId
-import uk.co.grahamcox.tcg.dao.BaseMongoDao
+import uk.co.grahamcox.tcg.dao.BaseKMongoDao
+import uk.co.grahamcox.tcg.genders.GenderData
+import uk.co.grahamcox.tcg.genders.GenderFilter
+import uk.co.grahamcox.tcg.genders.GenderId
+import uk.co.grahamcox.tcg.genders.GenderSort
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.races.RaceId
@@ -19,7 +22,10 @@ import java.time.Clock
 class GendersDaoMongoImpl(
         private val db: MongoDatabase,
         private val clock: Clock)
-    : GendersDao, BaseMongoDao<GenderId, GenderData, GenderFilter, GenderSort>(db, "genders", clock) {
+    : GendersDao, BaseKMongoDao<GenderId, GenderData, GendersMongoModel, GenderFilter, GenderSort>(db,
+        "genders",
+        clock,
+        GendersMongoModel::class.java) {
 
     /**
      * The mapping of sort fields to the actual database field
@@ -41,26 +47,26 @@ class GendersDaoMongoImpl(
      * @param result the document to parse
      * @return the model parsed from the result
      */
-    override fun parseResult(result: Document): Model<GenderId, GenderData> {
+    override fun parseResult(result: GendersMongoModel): Model<GenderId, GenderData> {
         return Model(
                 identity = Identity(
-                        id = GenderId(result.getString("_id")),
-                        version = result.getString("version"),
-                        created = result.getDate("created").toInstant(),
-                        updated = result.getDate("updated").toInstant()
+                        id = GenderId(result.id),
+                        version = result.version,
+                        created = result.created,
+                        updated = result.updated
                 ),
                 data = GenderData(
-                        name = result.getString("name"),
-                        description = result.getString("description"),
-                        race = RaceId(result.getString("race")),
-                        attributeModifiers = (result.get("attributes", Map::class.java) as Map<String, Long>?)
+                        name = result.name,
+                        description = result.description,
+                        race = RaceId(result.race),
+                        attributeModifiers = result.attributes
                                 ?.mapKeys { AttributeId(it.key) }
                                 ?: mapOf(),
-                        skillModifiers = (result.get("skills", Map::class.java) as Map<String, Long>?)
+                        skillModifiers = result.skills
                                 ?.mapKeys { SkillId(it.key) }
                                 ?: mapOf(),
-                        grantedAbilities = (result.get("abilities", List::class.java) as List<String>?)
-                                ?.map { AbilityId(it) }
+                        grantedAbilities = result.abilities
+                                ?.map(::AbilityId)
                                 ?.toSet()
                                 ?: setOf()
                 )

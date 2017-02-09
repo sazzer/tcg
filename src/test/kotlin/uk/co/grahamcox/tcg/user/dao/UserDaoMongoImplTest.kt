@@ -1,4 +1,4 @@
-package uk.co.grahamcox.tcg.user
+package uk.co.grahamcox.tcg.user.dao
 
 import com.winterbe.expekt.should
 import org.bson.Document
@@ -8,6 +8,8 @@ import org.junit.Test
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.mongodb.EmbeddedMongoDBRule
+import uk.co.grahamcox.tcg.user.UserData
+import uk.co.grahamcox.tcg.user.UserId
 import java.time.*
 import java.util.*
 

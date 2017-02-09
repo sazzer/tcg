@@ -6,6 +6,7 @@ import com.mongodb.client.MongoDatabase
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
+import org.litote.kmongo.KMongo
 import org.slf4j.LoggerFactory
 import java.util.*
 
@@ -43,7 +44,7 @@ class EmbeddedMongoDBRule : TestRule {
                 val mongoClientUri = MongoClientURI(embeddedMongoDB.getUrl())
                 try {
                     LOG.debug("Started MongoDB on {}", mongoClientUri)
-                    val mongoClient = MongoClient(mongoClientUri)
+                    val mongoClient = KMongo.createClient(mongoClientUri)
                     val databaseName = UUID.randomUUID().toString()
                     database = mongoClient.getDatabase(databaseName)
                     base.evaluate()

@@ -1,10 +1,12 @@
-package uk.co.grahamcox.tcg.user
+package uk.co.grahamcox.tcg.user.dao
 
 import uk.co.grahamcox.tcg.dao.BaseDao
 import uk.co.grahamcox.tcg.dao.BaseWritableDao
 import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.model.NoFilter
 import uk.co.grahamcox.tcg.model.NoSort
+import uk.co.grahamcox.tcg.user.UserData
+import uk.co.grahamcox.tcg.user.UserId
 
 /**
  * DAO layer for accessing user records

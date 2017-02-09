@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean id="classesDao" class="uk.co.grahamcox.tcg.classes.ClassesDaoMongoImpl">
+    <bean id="classesDao" class="uk.co.grahamcox.tcg.classes.dao.ClassesDaoMongoImpl">
         <constructor-arg name="clock" ref="clock" />
         <constructor-arg name="db" ref="mongoDb" />
     </bean>

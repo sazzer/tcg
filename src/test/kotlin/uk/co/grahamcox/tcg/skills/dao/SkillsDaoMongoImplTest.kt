@@ -1,4 +1,4 @@
-package uk.co.grahamcox.tcg.skills
+package uk.co.grahamcox.tcg.skills.dao
 
 import com.winterbe.expekt.should
 import org.bson.Document
@@ -8,6 +8,9 @@ import org.junit.Test
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.mongodb.EmbeddedMongoDBRule
+import uk.co.grahamcox.tcg.skills.SkillData
+import uk.co.grahamcox.tcg.skills.SkillId
+import uk.co.grahamcox.tcg.skills.dao.SkillsDaoMongoImpl
 import java.time.*
 import java.util.*
 
