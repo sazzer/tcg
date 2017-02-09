@@ -10,9 +10,9 @@ import uk.co.grahamcox.tcg.skills.SkillId
  * @property name The name of the gender
  * @property description The description of the gender
  * @property race The Race that the Gender relates to
- * @property attributeModifiers The attribute modifiers to apply based on this race
- * @property skillModifiers The skill modifiers to apply based on this race
- * @property grantedAbilities The abilities to grant based on this race
+ * @property attributeModifiers The attribute modifiers to apply based on this gender
+ * @property skillModifiers The skill modifiers to apply based on this gender
+ * @property grantedAbilities The abilities to grant based on this gender
  */
 data class GenderData(
         val name: String,

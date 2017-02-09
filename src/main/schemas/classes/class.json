@@ -15,6 +15,36 @@
     "description": {
       "type": "string",
       "description": "A description of the Class"
+    },
+    "attributes": {
+      "type": "object",
+      "description": "The attribute modifiers from this Class",
+      "patternProperties": {
+        "^.+$": {
+          "type": "integer",
+          "description": "The modifier for this attribute"
+        }
+      }
+    },
+    "skills": {
+      "type": "object",
+      "description": "The skill modifiers from this Class",
+      "patternProperties": {
+        "^.+$": {
+          "type": "integer",
+          "description": "The modifier for this skill"
+        }
+      }
+    },
+    "abilities": {
+      "type": "array",
+      "description": "Abilities granted from this Class",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "description": "The ID of an Ability granted from this Class"
+      },
+      "uniqueItems": true
     }
   },
   "required": [

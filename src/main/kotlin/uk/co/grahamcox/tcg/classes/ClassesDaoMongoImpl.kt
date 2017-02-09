@@ -2,10 +2,13 @@ package uk.co.grahamcox.tcg.classes
 
 import com.mongodb.client.MongoDatabase
 import org.bson.Document
+import uk.co.grahamcox.tcg.abilities.AbilityId
+import uk.co.grahamcox.tcg.attributes.AttributeId
 import uk.co.grahamcox.tcg.dao.BaseMongoDao
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.model.NoFilter
+import uk.co.grahamcox.tcg.skills.SkillId
 import java.time.Clock
 
 /**
@@ -40,7 +43,17 @@ class ClassesDaoMongoImpl(
                 ),
                 data = ClassData(
                         name = result.getString("name"),
-                        description = result.getString("description")
+                        description = result.getString("description"),
+                        attributeModifiers = (result.get("attributes", Map::class.java) as Map<String, Long>?)
+                                ?.mapKeys { AttributeId(it.key) }
+                                ?: mapOf(),
+                        skillModifiers = (result.get("skills", Map::class.java) as Map<String, Long>?)
+                                ?.mapKeys { SkillId(it.key) }
+                                ?: mapOf(),
+                        grantedAbilities = (result.get("abilities", List::class.java) as List<String>?)
+                                ?.map { AbilityId(it) }
+                                ?.toSet()
+                                ?: setOf()
                 )
         )
     }
