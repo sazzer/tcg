@@ -6,7 +6,7 @@
     <import resource="development.xml" />
     <import resource="production.xml" />
 
-    <bean id="mongoClient" class="com.mongodb.MongoClient">
+    <bean id="mongoClient" class="uk.co.grahamcox.tcg.dao.KMongoFactory">
         <constructor-arg name="uri" ref="mongoUri" />
     </bean>
 

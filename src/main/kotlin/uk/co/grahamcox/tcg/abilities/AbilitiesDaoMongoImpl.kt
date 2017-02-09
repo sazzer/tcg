@@ -2,6 +2,7 @@ package uk.co.grahamcox.tcg.abilities
 
 import com.mongodb.client.MongoDatabase
 import org.bson.Document
+import uk.co.grahamcox.tcg.dao.BaseKMongoDao
 import uk.co.grahamcox.tcg.dao.BaseMongoDao
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.model.Model
@@ -16,7 +17,10 @@ import java.time.Clock
 class AbilitiesDaoMongoImpl(
         private val db: MongoDatabase,
         private val clock: Clock)
-    : AbilitiesDao, BaseMongoDao<AbilityId, AbilityData, NoFilter, AbilitySort>(db, "abilities", clock) {
+    : AbilitiesDao, BaseKMongoDao<AbilityId, AbilityData, AbilitiesMongoModel, NoFilter, AbilitySort>(db,
+        "abilities",
+        clock,
+        AbilitiesMongoModel::class.java) {
 
     /**
      * The mapping of sort fields to the actual database field
@@ -30,17 +34,17 @@ class AbilitiesDaoMongoImpl(
      * @param result the document to parse
      * @return the model parsed from the result
      */
-    override fun parseResult(result: Document): Model<AbilityId, AbilityData> {
+    override fun parseResult(result: AbilitiesMongoModel): Model<AbilityId, AbilityData> {
         return Model(
                 identity = Identity(
-                        id = AbilityId(result.getString("_id")),
-                        version = result.getString("version"),
-                        created = result.getDate("created").toInstant(),
-                        updated = result.getDate("updated").toInstant()
+                        id = AbilityId(result.id!!),
+                        version = result.version!!,
+                        created = result.created!!,
+                        updated = result.updated!!
                 ),
                 data = AbilityData(
-                        name = result.getString("name"),
-                        description = result.getString("description")
+                        name = result.name,
+                        description = result.description
                 )
         )
     }
