@@ -3,7 +3,6 @@ package uk.co.grahamcox.tcg.skills.dao
 import com.mongodb.client.MongoDatabase
 import org.bson.Document
 import uk.co.grahamcox.tcg.dao.BaseKMongoDao
-import uk.co.grahamcox.tcg.dao.BaseMongoDao
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.model.NoFilter

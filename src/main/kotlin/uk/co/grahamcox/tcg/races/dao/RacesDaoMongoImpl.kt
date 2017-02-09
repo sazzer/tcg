@@ -5,7 +5,6 @@ import org.bson.Document
 import uk.co.grahamcox.tcg.abilities.AbilityId
 import uk.co.grahamcox.tcg.attributes.AttributeId
 import uk.co.grahamcox.tcg.dao.BaseKMongoDao
-import uk.co.grahamcox.tcg.dao.BaseMongoDao
 import uk.co.grahamcox.tcg.model.Identity
 import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.model.NoFilter
