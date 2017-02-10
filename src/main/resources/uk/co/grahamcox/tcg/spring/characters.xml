@@ -3,6 +3,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean id="characterCreator" class="uk.co.grahamcox.tcg.characters.CharacterCreatorImpl">
-
+        <constructor-arg name="attributeRetriever" ref="attributesRetriever" />
+        <constructor-arg name="skillRetriever" ref="skillsRetriever" />
+        <constructor-arg name="racesRetriever" ref="racesRetriever" />
+        <constructor-arg name="gendersRetriever" ref="gendersRetriever" />
+        <constructor-arg name="classesRetriever" ref="classesRetriever" />
     </bean>
 </beans>

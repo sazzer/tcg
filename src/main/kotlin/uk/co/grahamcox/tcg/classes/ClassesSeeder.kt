@@ -14,7 +14,26 @@ class ClassesSeeder : Seeder {
             mapOf(
                     "_id" to "warrior",
                     "name" to "Warrior",
-                    "description" to "Hits things"
+                    "description" to "Hits things",
+                    "attributes" to mapOf(
+                            "str" to 5L
+                    ),
+                    "skills" to mapOf(
+                            "swords" to 5L,
+                            "axes" to 5L,
+                            "clubs" to 5L
+                    ),
+                    "abilities" to listOf("powerstrike")
+            ),
+            mapOf(
+                    "_id" to "mage",
+                    "name" to "Mage",
+                    "description" to "Casts Spells",
+                    "attributes" to mapOf(
+                            "str" to -5L,
+                            "wis" to 5L
+                    ),
+                    "abilities" to listOf("concentration")
             )
     )
 }

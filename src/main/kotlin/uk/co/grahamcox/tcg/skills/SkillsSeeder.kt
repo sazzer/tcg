@@ -22,6 +22,12 @@ class SkillsSeeder : Seeder {
                     "name" to "Clubs",
                     "description" to "Hitting things with blunt sticks",
                     "default" to 5L
+            ),
+            mapOf(
+                    "_id" to "axes",
+                    "name" to "Axes",
+                    "description" to "Hitting things with axes",
+                    "default" to 5L
             )
     )
 }

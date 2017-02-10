@@ -20,6 +20,11 @@ class AbilitiesSeeder : Seeder {
                     "_id" to "precisestrike",
                     "name" to "Precise Strike",
                     "description" to "Hit things much more accurately"
+            ),
+            mapOf(
+                    "_id" to "concentration",
+                    "name" to "Concentration",
+                    "description" to "Concentrate when being attacked"
             )
     )
 }

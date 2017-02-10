@@ -21,11 +21,10 @@ class RacesSeeder : Seeder {
                     "name" to "Dwarf",
                     "description" to "Short but good with an axe",
                     "attributes" to mapOf(
-                            "strength" to 5L,
-                            "wisdom" to -5L
+                            "str" to 5L,
+                            "wis" to -5L
                     ),
                     "skills" to mapOf(
-                            "swords" to 5L,
                             "axes" to 10L
                     ),
                     "abilities" to listOf("powerstrike")

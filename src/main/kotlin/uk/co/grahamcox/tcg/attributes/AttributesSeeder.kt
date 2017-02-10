@@ -16,6 +16,12 @@ class AttributesSeeder : Seeder {
                     "name" to "Strength",
                     "description" to "Makes you Strong",
                     "default" to 10L
+            ),
+            mapOf(
+                    "_id" to "wis",
+                    "name" to "Wisdom",
+                    "description" to "Makes you Wise",
+                    "default" to 10L
             )
     )
 }
