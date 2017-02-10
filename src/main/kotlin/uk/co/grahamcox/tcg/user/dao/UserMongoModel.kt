@@ -1,4 +1,4 @@
-package uk.co.grahamcox.tcg.users.dao
+package uk.co.grahamcox.tcg.user.dao
 
 import uk.co.grahamcox.tcg.dao.BaseMongoModel
 

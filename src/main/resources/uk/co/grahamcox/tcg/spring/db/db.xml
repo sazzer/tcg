@@ -19,4 +19,9 @@
     <bean id="mongoHealthcheck" class="uk.co.grahamcox.tcg.mongodb.MongoHealthcheck">
         <constructor-arg name="db" ref="mongoDb" />
     </bean>
+
+    <bean id="baseMongoDao" class="uk.co.grahamcox.tcg.dao.BaseKMongoDao" abstract="true">
+        <constructor-arg name="clock" ref="clock" />
+        <constructor-arg name="db" ref="mongoDb" />
+    </bean>
 </beans>

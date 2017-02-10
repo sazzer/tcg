@@ -9,7 +9,6 @@ import uk.co.grahamcox.tcg.model.NoFilter
 import uk.co.grahamcox.tcg.model.NoSort
 import uk.co.grahamcox.tcg.user.UserData
 import uk.co.grahamcox.tcg.user.UserId
-import uk.co.grahamcox.tcg.users.dao.UserMongoModel
 import java.time.Clock
 
 /**

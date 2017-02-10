@@ -4,12 +4,14 @@ import org.slf4j.LoggerFactory
 import uk.co.grahamcox.tcg.attributes.AttributeData
 import uk.co.grahamcox.tcg.attributes.AttributeId
 import uk.co.grahamcox.tcg.attributes.AttributeSort
+import uk.co.grahamcox.tcg.characters.dao.CharacterDao
 import uk.co.grahamcox.tcg.classes.ClassData
 import uk.co.grahamcox.tcg.classes.ClassId
 import uk.co.grahamcox.tcg.classes.ClassSort
 import uk.co.grahamcox.tcg.genders.GenderData
 import uk.co.grahamcox.tcg.genders.GenderId
 import uk.co.grahamcox.tcg.genders.GenderSort
+import uk.co.grahamcox.tcg.model.Model
 import uk.co.grahamcox.tcg.model.NoFilter
 import uk.co.grahamcox.tcg.model.Retriever
 import uk.co.grahamcox.tcg.model.UnknownResourceException
@@ -26,13 +28,15 @@ import uk.co.grahamcox.tcg.skills.SkillId
  * @property classesRetriever Means to retrieve the Class of the Character
  * @property attributeRetriever Means to retrieve the Attributes the Character can have
  * @property skillRetriever Means to retrieve the Skills the Character can have
+ * @property characterDao The DAO to save Characters with
  */
 class CharacterCreatorImpl(
         private val racesRetriever: Retriever<RaceId, RaceData, NoFilter, RaceSort>,
         private val gendersRetriever: Retriever<GenderId, GenderData, NoFilter, GenderSort>,
         private val classesRetriever: Retriever<ClassId, ClassData, NoFilter, ClassSort>,
         private val attributeRetriever: Retriever<AttributeId, AttributeData, NoFilter, AttributeSort>,
-        private val skillRetriever: Retriever<SkillId, SkillData, NoFilter, AttributeSort>
+        private val skillRetriever: Retriever<SkillId, SkillData, NoFilter, AttributeSort>,
+        private val characterDao: CharacterDao
 ) : CharacterCreator {
     companion object {
         /** The logger to use */
@@ -42,8 +46,9 @@ class CharacterCreatorImpl(
     /**
      * Create a new character matching the given template
      * @param template The template of the character
+     * @return the newly created character
      */
-    override fun createCharacter(template: CharacterTemplate) {
+    override fun createCharacter(template: CharacterTemplate): Model<CharacterId, CharacterData> {
         val race = try {
             racesRetriever.retrieveById(template.race)
         } catch (e: UnknownResourceException) {
@@ -96,6 +101,8 @@ class CharacterCreatorImpl(
         )
 
         LOG.debug("Creating character: {}", character)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val createdCharacter = characterDao.create(character)
+        LOG.debug("Created character: {}", createdCharacter)
+        return createdCharacter
     }
 }
