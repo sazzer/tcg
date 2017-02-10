@@ -13,9 +13,12 @@ import uk.co.grahamcox.tcg.model.Page
  * @param MID the ID of the Model
  * @param MDATA The Data of the Model
  * @param API The API object
+ * @property modelTranslator The model translator to use
+ * @property statusCode The status code to use in the output
  */
-class ResponseTranslator<in MID : Id, in MDATA, API>(
-        private val modelTranslator: ModelTranslator<MID, MDATA, API>
+class ResponseTranslator<in MID : Id, in MDATA, API> @JvmOverloads constructor(
+        private val modelTranslator: ModelTranslator<MID, MDATA, API>,
+        private val statusCode: HttpStatus = HttpStatus.OK
 ) {
     companion object {
         /** The logger to use */
@@ -32,7 +35,7 @@ class ResponseTranslator<in MID : Id, in MDATA, API>(
         headers.lastModified = input.identity.updated.toEpochMilli()
         headers.eTag = """"${input.identity.version}""""
 
-        val response = ResponseEntity(translated, headers, HttpStatus.OK)
+        val response = ResponseEntity(translated, headers, statusCode)
         LOG.debug("Translated model {} into response {}", input, response)
         return response
     }

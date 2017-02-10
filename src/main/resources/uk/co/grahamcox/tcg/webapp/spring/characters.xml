@@ -2,9 +2,15 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean id="attributeTranslator" class="uk.co.grahamcox.tcg.webapp.attributes.AttributeTranslator" />
+    <bean id="characterTranslator" class="uk.co.grahamcox.tcg.webapp.characters.CharacterTranslator" />
 
     <bean class="uk.co.grahamcox.tcg.webapp.characters.CharacterController">
         <constructor-arg name="characterCreator" ref="characterCreator" />
+        <constructor-arg name="modelTranslator">
+            <bean class="uk.co.grahamcox.tcg.webapp.ResponseTranslator">
+                <constructor-arg name="modelTranslator" ref="characterTranslator" />
+                <constructor-arg name="statusCode" value="CREATED" />
+            </bean>
+        </constructor-arg>
     </bean>
 </beans>

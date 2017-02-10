@@ -1,6 +1,7 @@
 package uk.co.grahamcox.tcg.webapp.characters
 
 import org.slf4j.LoggerFactory
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -11,6 +12,8 @@ import uk.co.grahamcox.tcg.genders.GenderId
 import uk.co.grahamcox.tcg.races.RaceId
 import uk.co.grahamcox.tcg.user.UserId
 import uk.co.grahamcox.tcg.webapp.InvalidRequestFieldException
+import uk.co.grahamcox.tcg.webapp.ResponseTranslator
+import uk.co.grahamcox.tcg.webapp.model.characters.CharacterModel
 import uk.co.grahamcox.tcg.webapp.model.characters.CreateCharacterModel
 
 /**
@@ -20,7 +23,8 @@ import uk.co.grahamcox.tcg.webapp.model.characters.CreateCharacterModel
 @RestController
 @RequestMapping("/api/characters")
 class CharacterController(
-        private val characterCreator: CharacterCreator
+        private val characterCreator: CharacterCreator,
+        private val modelTranslator: ResponseTranslator<CharacterId, CharacterData, CharacterModel>
 ) {
     companion object {
         /** The logger to use */
@@ -30,12 +34,13 @@ class CharacterController(
      * Create a new character for the current user
      * @param userId The User ID to create the character for
      * @param character The details of the character to create
+     * @return the created character details
      */
     @RequestMapping(method = arrayOf(RequestMethod.POST))
     fun createCharacter(userId: UserId,
-                        @RequestBody character: CreateCharacterModel) {
+                        @RequestBody character: CreateCharacterModel): ResponseEntity<CharacterModel> {
         LOG.debug("Creating character {} for user {}", character, userId)
-        try {
+        val created = try {
             characterCreator.createCharacter(CharacterTemplate(
                     owner = userId,
                     name = character.name,
@@ -56,6 +61,7 @@ class CharacterController(
                     "class" to character.class_
             ))
         }
-        TODO("Not implemented yet")
+
+        return modelTranslator.translate(created)
     }
 }

@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Character",
+  "description": "Character",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The ID of the Character"
+    },
+    "owner": {
+      "type": "string",
+      "description": "The ID of the user that owns the Character"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the Character"
+    },
+    "race": {
+      "type": "string",
+      "description": "The race of the Character"
+    },
+    "gender": {
+      "type": "string",
+      "description": "The gender of the Character. Must be applicable to the Race selected."
+    },
+    "class": {
+      "type": "string",
+      "description": "The class of the Character"
+    },
+    "attributes": {
+      "type": "object",
+      "description": "The attributes of this character",
+      "patternProperties": {
+        "^.+$": {
+          "type": "integer",
+          "description": "The value for this attribute"
+        }
+      }
+    },
+    "skills": {
+      "type": "object",
+      "description": "The skills of this character",
+      "patternProperties": {
+        "^.+$": {
+          "type": "integer",
+          "description": "The value for this skill"
+        }
+      }
+    },
+    "abilities": {
+      "type": "array",
+      "description": "Abilities of this character",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "description": "The ID of an Ability granted to this Character"
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "owner",
+    "name",
+    "race",
+    "gender",
+    "class",
+    "attributes",
+    "skills",
+    "abilities"
+  ],
+  "additionalProperties": false
+}
