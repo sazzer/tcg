@@ -52,19 +52,27 @@ class CharacterCreatorImpl(
         val race = try {
             racesRetriever.retrieveById(template.race)
         } catch (e: UnknownResourceException) {
+            LOG.warn("Tried to create character with invalid race {}", template.race)
             throw UnknownRaceException()
         }
         val gender = try {
             gendersRetriever.retrieveById(template.gender)
         } catch (e: UnknownResourceException) {
+            LOG.warn("Tried to create character with invalid gender {}", template.gender)
             throw UnknownGenderException()
         }
         val cls = try {
             classesRetriever.retrieveById(template.characterClass)
         } catch (e: UnknownResourceException) {
+            LOG.warn("Tried to create character with invalid class {}", template.characterClass)
             throw UnknownClassException()
         }
 
+        if (gender.data.race != race.identity.id) {
+            LOG.warn("Attempted to create character with gender {} and incorrect race {}", gender, race)
+            throw UnknownGenderException()
+        }
+        
         val attributes = attributeRetriever.list(0, Int.MAX_VALUE, mapOf(), listOf())
                 .contents
                 .map { Pair(it.identity.id, it.data.defaultValue) }
