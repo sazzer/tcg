@@ -76,13 +76,26 @@ class CharacterCreatorImpl(
                 .mapValues { it.value.plus(cls.data.skillModifiers[it.key] ?: 0) }
         val abilities = race.data.grantedAbilities + gender.data.grantedAbilities + cls.data.grantedAbilities
 
-        LOG.debug("Creating character {}", template)
-        LOG.debug("Race={}", race)
-        LOG.debug("Gender={}", gender)
-        LOG.debug("Class={}", cls)
-        LOG.debug("Attributes={}", attributes)
-        LOG.debug("Skills={}", skills)
-        LOG.debug("Abilities={}", abilities)
+        LOG.trace("Creating character {}", template)
+        LOG.trace("Race={}", race)
+        LOG.trace("Gender={}", gender)
+        LOG.trace("Class={}", cls)
+        LOG.trace("Attributes={}", attributes)
+        LOG.trace("Skills={}", skills)
+        LOG.trace("Abilities={}", abilities)
+
+        val character = CharacterData(
+                owner = template.owner,
+                name = template.name,
+                race = race.identity.id,
+                gender = gender.identity.id,
+                characterClass = cls.identity.id,
+                attributes = attributes,
+                skills = skills,
+                abilities = abilities
+        )
+
+        LOG.debug("Creating character: {}", character)
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
