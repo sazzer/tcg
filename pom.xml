@@ -450,7 +450,7 @@
                         <appName>boiling-sierra-78539</appName>
                         <jdkVersion>${version.jdk}</jdkVersion>
                         <processTypes>
-                            <web>java -javaagent:target/dependencies/newrelic/newrelic.jar $JAVA_OPTS -jar target/${project.artifactId}-${project.version}.war --server.port=$PORT --mongodb.url=$MONGODB_URI</web>
+                            <web>java -javaagent:target/dependencies/newrelic/newrelic.jar $JAVA_OPTS -jar target/${project.artifactId}-${project.version}.war --server.port=$PORT --mongodb.url=$MONGODB_URI --authentication.google.clientId=$GOOGLE_CLIENTID --authentication.google.clientSecret=$GOOGLE_CLIENTSECRET</web>
                         </processTypes>
                         <includeTarget>false</includeTarget>
                         <includes>
