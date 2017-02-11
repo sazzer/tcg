@@ -20,6 +20,7 @@ import uk.co.grahamcox.tcg.races.RaceId
 import uk.co.grahamcox.tcg.races.RaceSort
 import uk.co.grahamcox.tcg.skills.SkillData
 import uk.co.grahamcox.tcg.skills.SkillId
+import uk.co.grahamcox.tcg.skills.SkillSort
 
 /**
  * Implementation of the Character Creator
@@ -35,7 +36,7 @@ class CharacterCreatorImpl(
         private val gendersRetriever: Retriever<GenderId, GenderData, NoFilter, GenderSort>,
         private val classesRetriever: Retriever<ClassId, ClassData, NoFilter, ClassSort>,
         private val attributeRetriever: Retriever<AttributeId, AttributeData, NoFilter, AttributeSort>,
-        private val skillRetriever: Retriever<SkillId, SkillData, NoFilter, AttributeSort>,
+        private val skillRetriever: Retriever<SkillId, SkillData, NoFilter, SkillSort>,
         private val characterDao: CharacterDao
 ) : CharacterCreator {
     companion object {
@@ -72,7 +73,7 @@ class CharacterCreatorImpl(
             LOG.warn("Attempted to create character with gender {} and incorrect race {}", gender, race)
             throw UnknownGenderException()
         }
-        
+
         val attributes = attributeRetriever.list(0, Int.MAX_VALUE, mapOf(), listOf())
                 .contents
                 .map { Pair(it.identity.id, it.data.defaultValue) }
