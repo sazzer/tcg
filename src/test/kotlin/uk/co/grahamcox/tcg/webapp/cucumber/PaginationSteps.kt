@@ -4,6 +4,7 @@ import com.winterbe.expekt.should
 import cucumber.api.java.en.Then
 import org.apache.commons.jxpath.JXPathContext
 import org.springframework.beans.factory.annotation.Autowired
+import uk.co.grahamcox.tcg.webapp.cucumber.requests.Requester
 
 /**
  * Steps for checking pagination details

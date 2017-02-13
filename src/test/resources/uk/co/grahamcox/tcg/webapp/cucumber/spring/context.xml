@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean id="requester" class="uk.co.grahamcox.tcg.webapp.cucumber.RequesterFactoryBean" />
+    <bean id="requester" class="uk.co.grahamcox.tcg.webapp.cucumber.requests.RequesterFactoryBean" />
 
     <bean id="mockServer" class="org.springframework.test.web.client.MockRestServiceServer" factory-method="createServer">
         <constructor-arg name="restTemplate" ref="restTemplate" />
@@ -21,6 +21,24 @@
         <constructor-arg name="typeConverters"><map /></constructor-arg>
     </bean>
 
+    <bean id="errorResponseMatcher" parent="responseMatcherBase">
+        <constructor-arg name="fieldMapping">
+            <map>
+                <entry key="Error Code" value="error" />
+                <entry key="Fields" value="fields" />
+            </map>
+        </constructor-arg>
+        <constructor-arg name="typeConverters">
+            <map>
+                <entry key="Fields">
+                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.MapTypeConverter">
+                        <constructor-arg name="valueConverter"><null /></constructor-arg>
+                    </bean>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
     <import resource="users.xml" />
     <import resource="authentication.xml" />
     <import resource="attributes.xml" />
@@ -29,4 +47,5 @@
     <import resource="classes.xml" />
     <import resource="skills.xml" />
     <import resource="abilities.xml" />
+    <import resource="characters.xml" />
 </beans>

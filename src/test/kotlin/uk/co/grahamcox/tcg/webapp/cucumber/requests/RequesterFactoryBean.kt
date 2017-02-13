@@ -1,8 +1,9 @@
-package uk.co.grahamcox.tcg.webapp.cucumber
+package uk.co.grahamcox.tcg.webapp.cucumber.requests
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.AbstractFactoryBean
 import org.springframework.boot.test.web.client.TestRestTemplate
+import uk.co.grahamcox.tcg.webapp.cucumber.requests.Requester
 
 /**
  * The factory bean for the Requester.

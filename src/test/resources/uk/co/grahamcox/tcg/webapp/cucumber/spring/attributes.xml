@@ -59,7 +59,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="listAttributesUrlBuilder" class="uk.co.grahamcox.tcg.webapp.cucumber.UrlBuilder">
+    <bean id="listAttributesUrlBuilder" class="uk.co.grahamcox.tcg.webapp.cucumber.requests.UrlBuilder">
         <constructor-arg name="baseUrl" value="/api/attributes" />
         <constructor-arg name="queryStringMappings">
             <map>

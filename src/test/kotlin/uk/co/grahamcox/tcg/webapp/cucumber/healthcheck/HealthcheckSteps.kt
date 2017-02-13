@@ -5,7 +5,7 @@ import cucumber.api.java.en.Then
 import cucumber.api.java.en.When
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import uk.co.grahamcox.tcg.webapp.cucumber.Requester
+import uk.co.grahamcox.tcg.webapp.cucumber.requests.Requester
 
 /**
  * Cucumber steps for the healthchecks

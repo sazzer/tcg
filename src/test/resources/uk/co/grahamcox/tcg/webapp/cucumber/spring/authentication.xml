@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="authenticationCallbackUrlBuilder" class="uk.co.grahamcox.tcg.webapp.cucumber.UrlBuilder">
+    <bean id="authenticationCallbackUrlBuilder" class="uk.co.grahamcox.tcg.webapp.cucumber.requests.UrlBuilder">
         <constructor-arg name="baseUrl" value="/api/authentication/{provider}/redirect" />
         <constructor-arg name="queryStringMappings">
             <map>

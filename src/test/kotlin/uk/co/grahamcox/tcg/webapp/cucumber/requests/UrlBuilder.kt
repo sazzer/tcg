@@ -1,4 +1,4 @@
-package uk.co.grahamcox.tcg.webapp.cucumber
+package uk.co.grahamcox.tcg.webapp.cucumber.requests
 
 import org.slf4j.LoggerFactory
 import org.springframework.util.LinkedMultiValueMap
@@ -22,7 +22,7 @@ class UrlBuilder(private val baseUrl: String,
      * @param params the parameters to use
      * @return the URL
      */
-    fun build(params: Map<String, String>): String {
+    fun build(params: Map<String, String> = mapOf()): String {
         val queryString = params.filterKeys { queryStringMappings.containsKey(it)}
                 .mapKeys { queryStringMappings[it.key]!! }
                 .mapValues { listOf(it.value) }

@@ -7,7 +7,7 @@ import uk.co.grahamcox.tcg.authentication.token.AccessToken
 import uk.co.grahamcox.tcg.authentication.token.AccessTokenEncoder
 import uk.co.grahamcox.tcg.authentication.token.TokenId
 import uk.co.grahamcox.tcg.user.UserId
-import uk.co.grahamcox.tcg.webapp.cucumber.Requester
+import uk.co.grahamcox.tcg.webapp.cucumber.requests.Requester
 import java.util.*
 
 /**

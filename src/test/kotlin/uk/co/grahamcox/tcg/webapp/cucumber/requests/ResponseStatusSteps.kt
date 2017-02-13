@@ -1,11 +1,13 @@
-package uk.co.grahamcox.tcg.webapp.cucumber
+package uk.co.grahamcox.tcg.webapp.cucumber.requests
 
 import com.winterbe.expekt.should
 import cucumber.api.java.en.Then
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.context.embedded.LocalServerPort
 import org.springframework.http.HttpStatus
 import org.springframework.web.util.UriComponentsBuilder
+import uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher
 
 /**
  * Steps for checking the status of the last received response
@@ -18,6 +20,11 @@ class ResponseStatusSteps {
     /** The local server port */
     @LocalServerPort
     private lateinit var serverPort: Integer
+
+    /** The matcher to use for error responses */
+    @Autowired
+    @Qualifier("errorResponseMatcher")
+    private lateinit var errorResponseMatcher: ResponseMatcher
 
     @Then("""^I get an? "(.+)" response$""")
     fun checkResponseStatus(statusName: String) {
@@ -50,5 +57,10 @@ class ResponseStatusSteps {
             value.size.should.equal(1)
             value[0].should.equal(expected.replace("\${serverPort}", serverPort.toString()))
         }
+    }
+
+    @Then("""^I get an error response of:$""")
+    fun checkErrorResponse(expected: Map<String, String>) {
+        errorResponseMatcher.match(expected)
     }
 }

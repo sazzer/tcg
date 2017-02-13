@@ -2,6 +2,7 @@ package uk.co.grahamcox.tcg.webapp.cucumber
 
 import cucumber.api.java.Before
 import org.springframework.beans.factory.annotation.Autowired
+import uk.co.grahamcox.tcg.webapp.cucumber.requests.Requester
 
 /**
  * Steps to reset the access token on the requester

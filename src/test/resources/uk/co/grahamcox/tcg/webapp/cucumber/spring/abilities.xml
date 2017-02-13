@@ -38,7 +38,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="listAbilitiesUrlBuilder" class="uk.co.grahamcox.tcg.webapp.cucumber.UrlBuilder">
+    <bean id="listAbilitiesUrlBuilder" class="uk.co.grahamcox.tcg.webapp.cucumber.requests.UrlBuilder">
         <constructor-arg name="baseUrl" value="/api/abilities" />
         <constructor-arg name="queryStringMappings">
             <map>

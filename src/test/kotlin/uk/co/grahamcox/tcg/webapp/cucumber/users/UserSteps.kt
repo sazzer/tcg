@@ -5,7 +5,7 @@ import cucumber.api.java.en.Then
 import cucumber.api.java.en.When
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
-import uk.co.grahamcox.tcg.webapp.cucumber.Requester
+import uk.co.grahamcox.tcg.webapp.cucumber.requests.Requester
 import uk.co.grahamcox.tcg.webapp.cucumber.matcher.DatabaseMatcher
 import uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher
 import uk.co.grahamcox.tcg.webapp.cucumber.seeder.MongoSeeder

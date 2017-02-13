@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="charactersUrlBuilder" class="uk.co.grahamcox.tcg.webapp.cucumber.requests.UrlBuilder">
+        <constructor-arg name="baseUrl" value="/api/characters" />
+        <constructor-arg name="queryStringMappings"><map /></constructor-arg>
+        <constructor-arg name="pathMappings"><map /></constructor-arg>
+    </bean>
+
+    <bean id="createCharacterBodyBuilder" class="uk.co.grahamcox.tcg.webapp.cucumber.requests.RequestBodyBuilder">
+        <constructor-arg name="fieldMapping">
+            <map>
+                <entry key="Name" value="name" />
+                <entry key="Race" value="race" />
+                <entry key="Gender" value="gender" />
+                <entry key="Class" value="class" />
+            </map>
+        </constructor-arg>
+        <constructor-arg name="typeConverters"><map /></constructor-arg>
+    </bean>
+</beans>

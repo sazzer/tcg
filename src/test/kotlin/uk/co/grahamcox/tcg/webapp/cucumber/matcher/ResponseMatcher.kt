@@ -2,7 +2,7 @@ package uk.co.grahamcox.tcg.webapp.cucumber.matcher
 
 import com.winterbe.expekt.should
 import org.apache.commons.jxpath.JXPathContext
-import uk.co.grahamcox.tcg.webapp.cucumber.Requester
+import uk.co.grahamcox.tcg.webapp.cucumber.requests.Requester
 import uk.co.grahamcox.tcg.webapp.cucumber.converters.TypeConverter
 
 /**

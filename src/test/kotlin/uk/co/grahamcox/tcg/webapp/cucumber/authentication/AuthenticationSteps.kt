@@ -13,8 +13,8 @@ import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.test.web.client.match.MockRestRequestMatchers
 import org.springframework.test.web.client.response.MockRestResponseCreators
 import org.springframework.util.LinkedMultiValueMap
-import uk.co.grahamcox.tcg.webapp.cucumber.Requester
-import uk.co.grahamcox.tcg.webapp.cucumber.UrlBuilder
+import uk.co.grahamcox.tcg.webapp.cucumber.requests.Requester
+import uk.co.grahamcox.tcg.webapp.cucumber.requests.UrlBuilder
 
 /**
  * Cucumber steps for authentication workflows
