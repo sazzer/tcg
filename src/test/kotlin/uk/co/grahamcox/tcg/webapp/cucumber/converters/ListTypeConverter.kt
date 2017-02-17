@@ -19,6 +19,7 @@ class ListTypeConverter : TypeConverter {
     override fun convert(input: String): Any {
         return input.split(",")
                 .map(String::trim)
+                .filter(String::isNotBlank)
                 .onEach { LOG.debug("Current values: {}", it) }
                 .toList()
     }
