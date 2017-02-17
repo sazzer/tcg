@@ -658,6 +658,16 @@
                             <goal>yarn</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>build</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>grunt</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>build</arguments>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
