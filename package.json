@@ -1,0 +1,14 @@
+{
+  "name": "tcg",
+  "version": "1.0.0",
+  "description": "TCG Javascript",
+  "repository": "git@github.com:sazzer/tcg.git",
+  "author": "Graham Cox <graham@grahamcox.co.uk>",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-cli": "^1.2.0",
+    "jit-grunt": "^0.10.0",
+    "time-grunt": "^1.4.0"
+  }
+}
