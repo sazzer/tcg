@@ -1,0 +1,13 @@
+{
+  "stats": {
+    "colors": true,
+    "modules": true,
+    "reasons": true
+  },
+  "progress": true,
+  "failOnError": true,
+  "watch": false,
+  "keepalive": false,
+  "inline": false,
+  "devtool": "source-map"
+}

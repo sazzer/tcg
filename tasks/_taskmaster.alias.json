@@ -1,7 +1,8 @@
 {
     "build": [
         "eslint:webapp",
-        "babel:webapp"
+        "babel:webapp",
+        "webpack:webapp"
     ],
     "test": [
         "eslint:tests",

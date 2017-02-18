@@ -20,11 +20,13 @@
     "grunt-babel": "^6.0.0",
     "grunt-cli": "^1.2.0",
     "grunt-eslint": "^19.0.0",
+    "grunt-webpack": "^2.0.1",
     "jit-grunt": "^0.10.0",
     "power-assert": "^1.4.2",
     "task-master": "^2.3.0",
     "testdouble": "^1.11.1",
-    "time-grunt": "^1.4.0"
+    "time-grunt": "^1.4.0",
+    "webpack": "^2.2.1"
   },
   "dependencies": {
     "babel-runtime": "^6.23.0"

@@ -1,0 +1,8 @@
+{
+  "entry": "./target/javascript/index.js",
+  "output": {
+    "path": "target/classes/resources/javascript",
+    "filename": "[name].js",
+    "sourceMapFilename": "[name].js.map"
+  }
+}
