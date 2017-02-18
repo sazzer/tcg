@@ -4,6 +4,9 @@
     "latest"
   ],
   "plugins": [
+    "babel-plugin-empower-assert",
+    "babel-plugin-espower",
+    "rewire",
     "transform-runtime"
   ]
 }

@@ -1,5 +1,9 @@
 {
     "build": [
         "babel:webapp"
+    ],
+    "test": [
+        "babel:tests",
+        "ava:webapp"
     ]
 }
