@@ -1,8 +1,10 @@
 {
     "build": [
+        "eslint:webapp",
         "babel:webapp"
     ],
     "test": [
+        "eslint:tests",
         "babel:tests",
         "ava:webapp"
     ]
