@@ -1,0 +1,9 @@
+{
+  "sourceMap": true,
+  "presets": [
+    "latest"
+  ],
+  "plugins": [
+    "transform-runtime"
+  ]
+}
