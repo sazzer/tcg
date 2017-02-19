@@ -4,6 +4,12 @@
     "modules": true,
     "reasons": true
   },
+  "resolve": {
+      "extensions": [
+          ".js",
+          ".jsx"
+      ]
+  },
   "progress": true,
   "failOnError": true,
   "watch": false,
