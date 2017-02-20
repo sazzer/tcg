@@ -1,0 +1,12 @@
+{
+    "files": [
+        {
+            "expand": true,
+            "cwd": "node_modules/bulma/css",
+            "src": [
+                "**/*"
+            ],
+            "dest": "target/classes/resources/dependencies/bulma"
+        }
+    ]
+}

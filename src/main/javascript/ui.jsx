@@ -23,8 +23,8 @@ class Page1 extends React.Component {
         return <p className={ classes.container }>
             <span className={ classes.text }>
                 <ul>
-                    <li><Link to="/page2">Page 2</Link></li>
-                    <li><Link to="/page3">Page 3</Link></li>
+                    <li className="button is-primary"><Link to="/page2">Page 2</Link></li>
+                    <li className="button"><Link to="/page3">Page 3</Link></li>
                 </ul>
             </span>
         </p>;

@@ -2,7 +2,8 @@
     "build": [
         "eslint:webapp",
         "babel:webapp",
-        "webpack:webapp"
+        "webpack:webapp",
+        "copy:bulma"
     ],
     "test": [
         "eslint:tests",
