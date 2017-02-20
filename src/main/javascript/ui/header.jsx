@@ -1,10 +1,15 @@
 import React from 'react';
 import { translate } from 'react-i18next';
+import { connect } from 'react-redux';
+import Immutable from 'immutable';
 
 /**
  * Component representing the header of the application
  */
 @translate()
+@connect(state => ({
+    menu: state.get('menu', Immutable.List()).toJS(),
+}))
 export default class Header extends React.Component {
     /**
      * Construct the header
@@ -30,13 +35,17 @@ export default class Header extends React.Component {
      * @returns {React.Component} the header bar
      */
     render() {
-        const { t } = this.props;
+        const { t, menu } = this.props;
 
         const rightMenuClasses = [
             "nav-right",
             "nav-menu",
             this.state.open ? "is-active" : ""
         ].join(" ");
+
+        const menuItems = menu.map((i) =>
+            <a className="nav-item">{i}</a>
+        );
 
         return <nav className="nav">
             <div className="nav-left">
@@ -53,9 +62,7 @@ export default class Header extends React.Component {
             </div>
 
             <div className={ rightMenuClasses }>
-                <a className="nav-item">Item 1</a>
-                <a className="nav-item">Item 2</a>
-                <a className="nav-item">Item 3</a>
+                { menuItems }
             </div>
         </nav>;
     }
