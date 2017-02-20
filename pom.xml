@@ -43,7 +43,7 @@
         <version.kotlin>1.1.0-rc-91</version.kotlin>
         <version.maven>3.2.2</version.maven>
         <version.slf4j>1.7.23</version.slf4j>
-        <version.springBoot>1.4.4.RELEASE</version.springBoot>
+        <version.springBoot>1.5.1.RELEASE</version.springBoot>
         <version.springBootAdmin>1.4.6</version.springBootAdmin>
     </properties>
     <dependencyManagement>
