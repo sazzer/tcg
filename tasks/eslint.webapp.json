@@ -1,0 +1,6 @@
+{
+  "files": [{
+    "expand": true,
+    "src": ["src/main/javascript"]
+  }]
+}

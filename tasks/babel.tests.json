@@ -1,0 +1,8 @@
+{
+  "files": [{
+    "expand": true,
+    "cwd": "src/test/javascript",
+    "src": ["**/*.js"],
+    "dest": "target/javascript"
+  }]
+}

@@ -1,0 +1,13 @@
+{
+    "build": [
+        "eslint:webapp",
+        "babel:webapp",
+        "webpack:webapp",
+        "copy:bulma"
+    ],
+    "test": [
+        "eslint:tests",
+        "babel:tests",
+        "ava:webapp"
+    ]
+}

@@ -23,6 +23,10 @@
         </mvc:argument-resolvers>
     </mvc:annotation-driven>
 
+    <mvc:redirect-view-controller path="/" redirect-url="/game" />
+    <mvc:view-controller path="/game" view-name="index" />
+    <mvc:view-controller path="/game/**/*" view-name="index" />
+
     <bean class="uk.co.grahamcox.tcg.webapp.UnknownResourceHandler" />
     <bean class="uk.co.grahamcox.tcg.webapp.BadSortHandler" />
     <bean class="uk.co.grahamcox.tcg.webapp.InvalidRequestFieldHandler" />

@@ -1,2 +1,5 @@
 target
 pom.xml.bak
+/node
+/node_modules
+/yarn.lock

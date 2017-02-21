@@ -1,0 +1,14 @@
+{
+  "sourceMap": true,
+  "presets": [
+    "latest",
+    "react"
+  ],
+  "plugins": [
+    "transform-decorators-legacy",
+    "babel-plugin-empower-assert",
+    "babel-plugin-espower",
+    "rewire",
+    "transform-runtime"
+  ]
+}
