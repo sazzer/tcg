@@ -1,9 +1,6 @@
 import Immutable from 'immutable';
 import { createAction, handleActions } from 'redux-actions';
 
-/** Timeout for loading menu items */
-const LOAD_TIMEOUT = 3000;
-
 /**
  * Reducers for the Menu state
  */
@@ -15,8 +12,15 @@ export const reducer = handleActions({
  * Action Creator for loading the menu state
  */
 export const loadMenu = createAction('LOAD_MENU', () => ({
-        promise: new Promise((resolve) => {
-            setTimeout(() => resolve(['Item 1', 'Item 2', 'Item 3']), LOAD_TIMEOUT);
-        })
+        promise: fetch('/health')
+            .then((response) => {
+                /* eslint-disable no-console */
+                console.log(response);
+                return [
+                    'Item 1',
+                    'Item 3',
+                    'Item 5'
+                ];
+            })
     })
 );
