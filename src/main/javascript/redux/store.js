@@ -5,7 +5,7 @@ import { combineReducers } from 'redux-immutable';
 import Immutable from 'immutable';
 import reducers from './reducers';
 
-import { loadMenu } from './menu';
+import initialisers from './initialise';
 
 /**
  * Compose Enhancers together. This added in Redux Devtools if it's available
@@ -30,6 +30,7 @@ const store = createStore(
     )
 );
 
-store.dispatch(loadMenu());
+// Dispatch all of the initialisers to the store straight away
+initialisers.forEach((i) => store.dispatch(i()));
 
 export default store;
