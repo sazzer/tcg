@@ -2,11 +2,11 @@
     "files": [
         {
             "expand": true,
-            "cwd": "node_modules/bulma/css",
+            "cwd": "node_modules/bootstrap/dist/css",
             "src": [
                 "**/*"
             ],
-            "dest": "target/classes/resources/dependencies/bulma"
+            "dest": "target/classes/resources/dependencies/bootstrap"
         }
     ]
 }

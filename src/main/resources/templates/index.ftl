@@ -3,7 +3,7 @@
 <head>
     <title>TCG</title>
     <link type="text/css" rel="stylesheet" href="/css/main.css" />
-    <link type="text/css" rel="stylesheet" href="/dependencies/bulma/bulma.css" />
+    <link type="text/css" rel="stylesheet" href="/dependencies/bootstrap/bootstrap.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
