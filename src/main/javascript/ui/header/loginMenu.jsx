@@ -3,14 +3,35 @@ import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 import Immutable from 'immutable';
 import LoginMenuItem from './loginMenuItem';
+import { authenticated } from '../../authentication';
+
+/**
+ * React Redux function to take the Redux state and produce an object of Props that this Component needs
+ * @param {Immutable.Map} state The state to consume
+ * @returns {Object} The props to pass into the component
+ */
+function mapStateToProps(state) {
+    return {
+        menu: state.get('authentication', Immutable.List()).toJS()
+    };
+}
+
+/**
+ * React Redux function to produce Props that represent Action Creators to use
+ * @param {any} The Redux Dispatch mechanism
+ * @returns {Object} The props to pass into the component
+ */
+function mapDispatchToProps(dispatch) {
+    return {
+        authenticated: (accessToken, expiry) => dispatch(authenticated(accessToken, expiry))
+    };
+}
 
 /**
  * Component representing the login menu
  */
 @translate()
-@connect((state) => ({
-    menu: state.get('authentication', Immutable.List()).toJS(),
-}))
+@connect(mapStateToProps, mapDispatchToProps)
 export default class LoginMenu extends React.Component {
     /**
      * Actually render the Login menu
@@ -33,7 +54,7 @@ export default class LoginMenu extends React.Component {
 
     handleClick(provider) {
         window.handleAuthentication = (accessToken, expiry) => {
-            alert(accessToken + ' = ' + expiry);
+            this.props.authenticated(accessToken, expiry);
         };
 
         window.open(provider.url, null, 'menubar=no,toolbar=no,location=no,resizable=yes,scrollbars=yes,status=yes');
