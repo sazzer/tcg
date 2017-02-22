@@ -1,5 +1,4 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import createLogger from 'redux-logger';
 import promiseMiddleware from 'redux-simple-promise';
 import { combineReducers } from 'redux-immutable';
 import Immutable from 'immutable';
@@ -22,9 +21,6 @@ const store = createStore(
     Immutable.Map(), // Initial state
     composeEnhancers(
         applyMiddleware(
-            createLogger({
-                duration: true
-            }),
             promiseMiddleware()
         )
     )
