@@ -12,7 +12,7 @@ import { authenticated } from '../../authentication';
  */
 function mapStateToProps(state) {
     return {
-        menu: state.get('authentication', Immutable.List()).toJS()
+        menu: state.getIn(['authentication', 'providers'], Immutable.List()).toJS()
     };
 }
 
