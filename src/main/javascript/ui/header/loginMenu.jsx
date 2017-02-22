@@ -2,6 +2,7 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 import Immutable from 'immutable';
+import LoginMenuItem from './loginMenuItem';
 
 /**
  * Component representing the login menu
@@ -18,11 +19,11 @@ export default class LoginMenu extends React.Component {
     render() {
         const { t, menu } = this.props;
 
-        const menuItems = menu.map((i) => <a className="dropdown-item">{ t(`authentication.${i.provider}`) }</a>);
+        const menuItems = menu.map((i) => <LoginMenuItem provider={i.provider} />);
 
         return <li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" id="headerLoginMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Login
+                { t('authentication.menu') }
             </a>
             <div className="dropdown-menu dropdown-menu-right" aria-labelledBy="headerLoginMenu">
                 { menuItems }

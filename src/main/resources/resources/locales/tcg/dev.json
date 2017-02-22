@@ -4,6 +4,7 @@
     "footer": "TCG MUD by Graham Cox"
   },
   "authentication": {
+    "menu": "Login",
     "google": "Log in with Google+"
   }
 }
