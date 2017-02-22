@@ -6,6 +6,7 @@
   ],
   "plugins": [
     "transform-decorators-legacy",
+    "transform-object-rest-spread",
     "babel-plugin-empower-assert",
     "babel-plugin-espower",
     "rewire",
