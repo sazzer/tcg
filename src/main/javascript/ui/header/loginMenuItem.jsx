@@ -11,7 +11,7 @@ export default class LoginMenuItem extends React.Component {
      * @returns {React.Component} the Login menu Item
      */
     render() {
-        const { t, provider } = this.props;
+        const { t, provider, onClick } = this.props;
 
         return <a className="dropdown-item" onClick={this.handleClick.bind(this)}>
             { t(`authentication.${provider}`) }
@@ -19,7 +19,12 @@ export default class LoginMenuItem extends React.Component {
     }
 
     handleClick() {
-        const { provider } = this.props;
-        alert(provider);
+        const { provider, onClick } = this.props;
+        onClick(provider);
     }
 };
+
+LoginMenuItem.propTypes = {
+    provider: React.PropTypes.string.isRequired,
+    onClick: React.PropTypes.func.isRequired
+}
