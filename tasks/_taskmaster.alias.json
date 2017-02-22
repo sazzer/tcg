@@ -3,6 +3,7 @@
         "eslint:webapp",
         "babel:webapp",
         "webpack:webapp",
+        "copy:bootstrap",
         "copy:bulma"
     ],
     "test": [
