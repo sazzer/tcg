@@ -32,6 +32,10 @@ export default class LoginMenu extends React.Component {
     }
 
     handleClick(provider) {
+        window.handleAuthentication = (accessToken, expiry) => {
+            alert(accessToken + ' = ' + expiry);
+        };
+
         window.open(provider.url, null, 'menubar=no,toolbar=no,location=no,resizable=yes,scrollbars=yes,status=yes');
     }
 };
