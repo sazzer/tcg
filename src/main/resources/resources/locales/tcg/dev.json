@@ -2,5 +2,8 @@
   "page": {
     "title": "TCG MUD",
     "footer": "TCG MUD by Graham Cox"
+  },
+  "authentication": {
+    "google": "Log in with Google+"
   }
 }

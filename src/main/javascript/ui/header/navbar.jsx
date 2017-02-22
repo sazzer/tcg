@@ -2,15 +2,16 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 import Immutable from 'immutable';
+import LoginMenu from './loginMenu';
 
 /**
- * Component representing the header of the application
+ * Component representing the navigation bar that is the header of the application
  */
 @translate()
 @connect((state) => ({
     menu: state.get('menu', Immutable.List()).toJS(),
 }))
-export default class Header extends React.Component {
+export default class NavigationBar extends React.Component {
     /**
      * Actually render the header bar
      * @returns {React.Component} the header bar
@@ -33,6 +34,7 @@ export default class Header extends React.Component {
                 </ul>
                 <ul className="navbar-nav">
                     { menuItems }
+                    <LoginMenu />
                 </ul>
             </div>
         </nav>;
