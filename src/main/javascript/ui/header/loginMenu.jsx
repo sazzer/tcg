@@ -3,7 +3,7 @@ import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 import Immutable from 'immutable';
 import LoginMenuItem from './loginMenuItem';
-import { authenticated } from '../../authentication';
+import { authenticated, selectProviders } from '../../authentication';
 
 /**
  * React Redux function to take the Redux state and produce an object of Props that this Component needs
@@ -12,7 +12,7 @@ import { authenticated } from '../../authentication';
  */
 function mapStateToProps(state) {
     return {
-        menu: state.getIn(['authentication', 'providers'], Immutable.List()).toJS()
+        menu: selectProviders(state)
     };
 }
 

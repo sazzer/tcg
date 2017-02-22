@@ -4,9 +4,11 @@ import { createAction, handleActions } from 'redux-actions';
 /**
  * Reducers for the Menu state
  */
-export const reducer = handleActions({
-        'LOAD_MENU_RESOLVED': (state, action) => Immutable.List(action.payload)
-}, Immutable.List());
+export const reducer = {
+    menu: handleActions({
+            'LOAD_MENU_RESOLVED': (state, action) => Immutable.List(action.payload)
+    }, Immutable.List())
+};
 
 /**
  * Action Creator for loading the menu state
