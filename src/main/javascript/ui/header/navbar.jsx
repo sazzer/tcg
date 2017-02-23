@@ -1,7 +1,7 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
-import LoginMenu from './loginMenu';
+import SelectUserMenu from './selectUserMenu';
 
 /**
  * Component representing the navigation bar that is the header of the application
@@ -25,7 +25,7 @@ export default class NavigationBar extends React.Component {
                 <ul className="navbar-nav mr-auto">
                 </ul>
                 <ul className="navbar-nav">
-                    <LoginMenu />
+                    <SelectUserMenu />
                 </ul>
             </div>
         </nav>;
