@@ -5,6 +5,10 @@
   },
   "authentication": {
     "menu": "Login",
+    "logout": "Log out",
     "google": "Log in with Google+"
+  },
+  "user": {
+    "menu": "User"
   }
 }

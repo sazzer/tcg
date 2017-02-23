@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import LoginMenu from './loginMenu';
+import UserMenu from './userMenu';
 import { selectAuthenticated } from '../../authentication';
 /**
  * Component to selectively render the Login Menu or the User Menu depending on whether we are currently logged in
@@ -9,7 +10,7 @@ import { selectAuthenticated } from '../../authentication';
  */
 function SelectUserMenu({ loggedIn }) {
     if (loggedIn) {
-        return <div>Hello</div>;
+        return <UserMenu />;
     } else {
         return <LoginMenu/>;
     }
