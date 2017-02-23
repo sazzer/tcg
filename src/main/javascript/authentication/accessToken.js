@@ -5,6 +5,9 @@ import { createSelector } from 'reselect';
 /** Action key for recording the fact that we've just authenticated */
 const AUTHENTICATED = 'AUTHENTICATED';
 
+/** Action key for recording the fact that we've just logged out */
+const LOGOUT = 'LOGOUT';
+
 /** The default entry for the Access Token  */
 const DEFAULT_ACCESS_TOKEN = Immutable.Map({ authenticated: false });
 
@@ -16,6 +19,10 @@ export const authenticated = createAction(AUTHENTICATED, (accessToken, expiry) =
     expiry
 }));
 
+/**
+ * Redux Action to store the fact that we've just logged out
+ */
+export const logout = createAction(LOGOUT);
 
 /** The actual reducers */
 export const reducers = {};
@@ -25,6 +32,8 @@ reducers[AUTHENTICATED] = (state, action) =>
         expiry: action.payload.expiry,
         authenticated: true
     }));
+
+reducers[LOGOUT] = (state) => state.delete('accessToken');
 
 /**
  * Selector to get the Access Token out of the store
