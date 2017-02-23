@@ -42,14 +42,18 @@ export default class LoginMenu extends React.Component {
 
         const menuItems = menu.map((provider) => <LoginMenuItem key={ provider.provider } provider={ provider } onClick={ this.handleClick.bind(this) }/>);
 
-        return <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" id="headerLoginMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                { t('authentication.menu') }
-            </a>
-            <div className="dropdown-menu dropdown-menu-right" aria-labelledby="headerLoginMenu">
-                { menuItems }
-            </div>
-        </li>;
+        if (menuItems.length === 1) {
+            return menuItems[0];
+        } else {
+            return <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" id="headerLoginMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    { t('authentication.menu') }
+                </a>
+                <div className="dropdown-menu dropdown-menu-right" aria-labelledby="headerLoginMenu">
+                    { menuItems }
+                </div>
+            </li>;
+        }
     }
 
     handleClick(provider) {
