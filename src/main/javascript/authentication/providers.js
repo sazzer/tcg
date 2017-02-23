@@ -26,7 +26,7 @@ reducers[INITIALISE_AUTHENTICATION_PROVIDERS_RESOLVED] = (state, action) =>
 
 /**
  * Selector to get the Authentication Providers from the store
- * @param {Immutable.Map} The Redux state to get the values from
+ * @param {Immutable.Map} state The Redux state to get the values from
  * @return {Array} The list of providers
  */
 export const selectProviders = (state) => state.getIn(['authentication', 'providers'], Immutable.List()).toJS();

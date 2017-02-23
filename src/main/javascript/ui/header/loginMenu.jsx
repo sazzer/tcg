@@ -40,7 +40,7 @@ export default class LoginMenu extends React.Component {
     render() {
         const { t, menu } = this.props;
 
-        const menuItems = menu.map((provider) => <LoginMenuItem provider={ provider } onClick={ this.handleClick.bind(this) }/>);
+        const menuItems = menu.map((provider) => <LoginMenuItem key={ provider.provider } provider={ provider } onClick={ this.handleClick.bind(this) }/>);
 
         return <li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" id="headerLoginMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
