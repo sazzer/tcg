@@ -43,7 +43,7 @@
         <version.junit>4.12</version.junit>
         <version.kotlin>1.1.0-rc-91</version.kotlin>
         <version.maven>3.2.2</version.maven>
-        <version.selenium>3.0.1</version.selenium>
+        <version.selenium>3.2.0</version.selenium>
         <version.slf4j>1.7.23</version.slf4j>
         <version.springBoot>1.5.1.RELEASE</version.springBoot>
         <version.springBootAdmin>1.4.6</version.springBootAdmin>
@@ -89,6 +89,11 @@
                 <groupId>com.fasterxml.jackson.module</groupId>
                 <artifactId>jackson-module-kotlin</artifactId>
                 <version>${version.jackson}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>21.0</version>
             </dependency>
             <dependency>
                 <groupId>com.newrelic.agent.java</groupId>
@@ -323,6 +328,11 @@
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-kotlin</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
