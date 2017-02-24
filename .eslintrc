@@ -203,7 +203,8 @@
         }
     },
     "plugins": [
-        "ava"
+        "ava",
+        "react"
     ],
     "settings": {
     }

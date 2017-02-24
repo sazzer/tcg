@@ -1,5 +1,7 @@
+/*eslint-disable no-unused-vars*/
 import React from 'react';
 import injectSheet from 'react-jss';
+/*eslint-enable no-unused-vars*/
 
 /**
  * Styles to use for this component
@@ -13,12 +15,12 @@ const styles = {
         bottom: 0,
         top: '3.5rem'
     }
-}
+};
 
+@injectSheet(styles)
 /**
  * Component representing the body of the application
  */
-@injectSheet(styles)
 export default class Body extends React.Component {
     /**
      * Actually render the body
@@ -31,4 +33,4 @@ export default class Body extends React.Component {
             Hello there
         </div>;
     }
-};
+}

@@ -1,12 +1,14 @@
+/*eslint-disable no-unused-vars*/
 import React from 'react';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 import SelectUserMenu from './selectUserMenu';
+/*eslint-enable no-unused-vars*/
 
+@translate()
 /**
  * Component representing the navigation bar that is the header of the application
  */
-@translate()
 export default class NavigationBar extends React.Component {
     /**
      * Actually render the header bar
@@ -30,4 +32,4 @@ export default class NavigationBar extends React.Component {
             </div>
         </nav>;
     }
-};
+}

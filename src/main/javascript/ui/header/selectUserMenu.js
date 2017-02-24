@@ -1,8 +1,11 @@
+/*eslint-disable no-unused-vars*/
 import React from 'react';
 import { connect } from 'react-redux';
 import LoginMenu from './loginMenu';
 import UserMenu from './userMenu';
 import { selectAuthenticated } from '../../authentication';
+/*eslint-enable no-unused-vars*/
+
 /**
  * Component to selectively render the Login Menu or the User Menu depending on whether we are currently logged in
  * @param {boolean} loggedIn whether we are currently logged in
@@ -11,9 +14,8 @@ import { selectAuthenticated } from '../../authentication';
 function SelectUserMenu({ loggedIn }) {
     if (loggedIn) {
         return <UserMenu />;
-    } else {
-        return <LoginMenu/>;
     }
+    return <LoginMenu/>;
 }
 
 /**

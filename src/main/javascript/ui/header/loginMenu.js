@@ -1,9 +1,10 @@
+/*eslint-disable no-unused-vars*/
 import React from 'react';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
-import Immutable from 'immutable';
 import LoginMenuItem from './loginMenuItem';
 import { authenticated, selectProviders } from '../../authentication';
+/*eslint-enable no-unused-vars*/
 
 /**
  * React Redux function to take the Redux state and produce an object of Props that this Component needs
@@ -18,7 +19,7 @@ function mapStateToProps(state) {
 
 /**
  * React Redux function to produce Props that represent Action Creators to use
- * @param {any} The Redux Dispatch mechanism
+ * @param {any} dispatch The Redux Dispatch mechanism
  * @returns {Object} The props to pass into the component
  */
 function mapDispatchToProps(dispatch) {
@@ -27,11 +28,11 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
+@translate()
+@connect(mapStateToProps, mapDispatchToProps)
 /**
  * Component representing the login menu
  */
-@translate()
-@connect(mapStateToProps, mapDispatchToProps)
 export default class LoginMenu extends React.Component {
     /**
      * Actually render the Login menu
@@ -44,18 +45,21 @@ export default class LoginMenu extends React.Component {
 
         if (menuItems.length === 1) {
             return menuItems[0];
-        } else {
-            return <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" id="headerLoginMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    { t('authentication.menu') }
-                </a>
-                <div className="dropdown-menu dropdown-menu-right" aria-labelledby="headerLoginMenu">
-                    { menuItems }
-                </div>
-            </li>;
         }
+        return <li className="nav-item dropdown">
+            <a className="nav-link dropdown-toggle" id="headerLoginMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                { t('authentication.menu') }
+            </a>
+            <div className="dropdown-menu dropdown-menu-right" aria-labelledby="headerLoginMenu">
+                { menuItems }
+            </div>
+        </li>;
     }
 
+    /**
+     * Handler for when one of the providers is clicked
+     * @param {Object} provider the provider that was clicked
+     */
     handleClick(provider) {
         window.handleAuthentication = (accessToken, expiry) => {
             this.props.authenticated(accessToken, expiry);
@@ -63,4 +67,4 @@ export default class LoginMenu extends React.Component {
 
         window.open(provider.url, null, 'menubar=no,toolbar=no,location=no,resizable=yes,scrollbars=yes,status=yes');
     }
-};
+}
