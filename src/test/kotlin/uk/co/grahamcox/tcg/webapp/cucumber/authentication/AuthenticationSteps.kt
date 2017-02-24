@@ -51,7 +51,7 @@ class AuthenticationSteps {
         )
 
         val accessTokenResponse = """{"access_token": "$accessToken","token_type": "Bearer","expires_in": 3600}"""
-        mockServer.expect(MockRestRequestMatchers.requestTo("https://www.googleapis.com/oauth2/v4/token"))
+        mockServer.expect(MockRestRequestMatchers.requestTo("http://localhost:0/api/authentication/fake/google/token"))
                 .andExpect(MockRestRequestMatchers.method(HttpMethod.POST))
                 .andExpect(MockRestRequestMatchers.content().contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(MockRestRequestMatchers.content().formData(expectedAccessTokenRequest))
@@ -71,7 +71,7 @@ class AuthenticationSteps {
  "displayName": "${userProfile["Name"]}",
  "verified": false
 }"""
-        mockServer.expect(MockRestRequestMatchers.requestTo("https://www.googleapis.com/plus/v1/people/me"))
+        mockServer.expect(MockRestRequestMatchers.requestTo("http://localhost:0/api/authentication/fake/google/user"))
                 .andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
                 .andExpect(MockRestRequestMatchers.header("Authorization", "Bearer $accessToken"))
                 .andRespond(MockRestResponseCreators.withSuccess(response, MediaType.APPLICATION_JSON))
