@@ -32,6 +32,7 @@
         <url>https://travis-ci.org/sazzer/tcg</url>
     </ciManagement>
     <properties>
+        <cucumber.includes>**/*IT.java</cucumber.includes>
         <!-- Other stuff -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -541,6 +542,11 @@
                             </goals>
                         </execution>
                     </executions>
+					<configuration>
+					  <includes>
+						<include>${tests.cucumber.include}</include>
+					  </includes>
+					</configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -636,11 +642,6 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${version.springBoot}</version>
-                    <configuration>
-                        <profiles>
-                            <profile>dev</profile>
-                        </profiles>
-                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -767,6 +768,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                  <includes>
+                      <include>**/*IT.java</include>
+                      <include>${cucumber.includes}</include>
+                  </includes>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -824,4 +831,12 @@
             </plugin>
         </plugins>
     </reporting>
+    <profiles>
+        <profile>
+            <id>ui-tests</id>
+            <properties>
+                <cucumber.includes>**/*ITUI.java</cucumber.includes>
+            </properties>
+        </profile>
+    </profiles>
 </project>
