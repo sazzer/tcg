@@ -43,6 +43,7 @@
         <version.junit>4.12</version.junit>
         <version.kotlin>1.1.0-rc-91</version.kotlin>
         <version.maven>3.2.2</version.maven>
+        <version.selenium>3.0.1</version.selenium>
         <version.slf4j>1.7.23</version.slf4j>
         <version.springBoot>1.5.1.RELEASE</version.springBoot>
         <version.springBootAdmin>1.4.6</version.springBootAdmin>
@@ -179,6 +180,11 @@
                 <groupId>org.litote.kmongo</groupId>
                 <artifactId>kmongo</artifactId>
                 <version>3.3.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-java</artifactId>
+                <version>${version.selenium}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -380,6 +386,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -542,11 +553,11 @@
                             </goals>
                         </execution>
                     </executions>
-					<configuration>
-					  <includes>
-						<include>${tests.cucumber.include}</include>
-					  </includes>
-					</configuration>
+                    <configuration>
+                        <includes>
+                            <include>${tests.cucumber.include}</include>
+                        </includes>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -769,10 +780,10 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
-                  <includes>
-                      <include>**/*IT.java</include>
-                      <include>${cucumber.includes}</include>
-                  </includes>
+                    <includes>
+                        <include>**/*IT.java</include>
+                        <include>${cucumber.includes}</include>
+                    </includes>
                 </configuration>
             </plugin>
             <plugin>
