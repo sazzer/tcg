@@ -14,4 +14,9 @@ class LoginMenuItem(private val element: WebElement) {
     /** The label */
     val label
         get() = element.text
+
+    /**
+     * Click on the menu item
+     */
+    fun click() = element.click()
 }

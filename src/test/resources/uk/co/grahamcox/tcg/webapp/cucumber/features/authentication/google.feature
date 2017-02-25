@@ -46,4 +46,14 @@ Feature: Authentication against Google
       | Email              | test@example.com |
       | Google Provider ID | 1234567890       |
 
-
+  @UI
+  Scenario: Log in via Google
+    Given I expect a request to Google to exchange Authorization Code "thisIsMyAuthorizationCode" for Access Token "thisIsMyAccessToken"
+    And I expect a request to Google for the current user of Access Token "thisIsMyAccessToken":
+      | User ID | 1234567890             |
+      | Name    | Graham Cox             |
+      | Email   | graham@grahamcox.co.uk |
+    And I have loaded the home page
+    When I log in using Google
+    Then the Login menu is not present
+    And the User menu is present
