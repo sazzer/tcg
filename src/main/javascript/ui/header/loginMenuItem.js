@@ -15,7 +15,7 @@ export default class LoginMenuItem extends React.Component {
     render() {
         const { t, provider } = this.props;
 
-        return <a className="dropdown-item" onClick={ this.handleClick.bind(this) }>
+        return <a className="dropdown-item tcg-test-loginMenuItem" data-provider={ provider.provider } onClick={ this.handleClick.bind(this) }>
             { t(`authentication.${provider.provider}`) }
         </a>;
     }

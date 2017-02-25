@@ -6,23 +6,32 @@
     <bean id="userDatabaseMatcher" class="uk.co.grahamcox.tcg.webapp.cucumber.matcher.DatabaseMatcher">
         <constructor-arg name="db" ref="mongoDb" />
         <constructor-arg name="collectionName" value="users" />
-        <constructor-arg name="userFieldMapping">
-            <map>
-                <entry key="User ID" value="_id" />
-                <entry key="Name" value="name" />
-                <entry key="Email" value="email" />
-                <entry key="Google Provider ID" value="providers/google" />
-            </map>
+        <constructor-arg name="matcher">
+            <bean class="uk.co.grahamcox.tcg.webapp.cucumber.matcher.BeanMatcher">
+                <constructor-arg name="fieldMapping">
+                    <map>
+                        <entry key="User ID" value="_id" />
+                        <entry key="Name" value="name" />
+                        <entry key="Email" value="email" />
+                        <entry key="Google Provider ID" value="providers/google" />
+                    </map>
+                </constructor-arg>
+                <constructor-arg name="typeConverters"><map /></constructor-arg>
+            </bean>
         </constructor-arg>
     </bean>
 
     <bean id="userResponseMatcher" parent="responseMatcherBase">
-        <constructor-arg name="fieldMapping">
-            <map>
-                <entry key="User ID" value="id" />
-                <entry key="Name" value="name" />
-                <entry key="Email" value="email" />
-            </map>
+        <constructor-arg name="matcher">
+            <bean parent="beanMatcherBase">
+                <constructor-arg name="fieldMapping">
+                    <map>
+                        <entry key="User ID" value="id" />
+                        <entry key="Name" value="name" />
+                        <entry key="Email" value="email" />
+                    </map>
+                </constructor-arg>
+            </bean>
         </constructor-arg>
     </bean>
 

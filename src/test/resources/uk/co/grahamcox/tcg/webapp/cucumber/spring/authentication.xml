@@ -17,4 +17,13 @@
             </map>
         </constructor-arg>
     </bean>
+
+    <bean id="loginButtonMatcher" parent="beanMatcherBase">
+        <constructor-arg name="fieldMapping">
+            <map>
+                <entry key="Label" value="label" />
+                <entry key="Provider" value="provider" />
+            </map>
+        </constructor-arg>
+    </bean>
 </beans>

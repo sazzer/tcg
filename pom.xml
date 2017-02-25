@@ -32,6 +32,7 @@
         <url>https://travis-ci.org/sazzer/tcg</url>
     </ciManagement>
     <properties>
+        <cucumber.includes>**/*IT.java</cucumber.includes>
         <!-- Other stuff -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -42,6 +43,7 @@
         <version.junit>4.12</version.junit>
         <version.kotlin>1.1.0-rc-91</version.kotlin>
         <version.maven>3.2.2</version.maven>
+        <version.selenium>3.2.0</version.selenium>
         <version.slf4j>1.7.23</version.slf4j>
         <version.springBoot>1.5.1.RELEASE</version.springBoot>
         <version.springBootAdmin>1.4.6</version.springBootAdmin>
@@ -87,6 +89,11 @@
                 <groupId>com.fasterxml.jackson.module</groupId>
                 <artifactId>jackson-module-kotlin</artifactId>
                 <version>${version.jackson}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>21.0</version>
             </dependency>
             <dependency>
                 <groupId>com.newrelic.agent.java</groupId>
@@ -178,6 +185,11 @@
                 <groupId>org.litote.kmongo</groupId>
                 <artifactId>kmongo</artifactId>
                 <version>3.3.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-java</artifactId>
+                <version>${version.selenium}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -319,6 +331,11 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>org.jolokia</groupId>
             <artifactId>jolokia-core</artifactId>
             <scope>runtime</scope>
@@ -376,6 +393,11 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -541,6 +563,11 @@
                             </goals>
                         </execution>
                     </executions>
+                    <configuration>
+                        <includes>
+                            <include>${tests.cucumber.include}</include>
+                        </includes>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -767,6 +794,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*IT.java</include>
+                        <include>${cucumber.includes}</include>
+                    </includes>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -824,4 +857,12 @@
             </plugin>
         </plugins>
     </reporting>
+    <profiles>
+        <profile>
+            <id>ui-tests</id>
+            <properties>
+                <cucumber.includes>**/*ITUI.java</cucumber.includes>
+            </properties>
+        </profile>
+    </profiles>
 </project>

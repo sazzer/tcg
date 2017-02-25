@@ -4,12 +4,16 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="abilityResponseMatcher" parent="responseMatcherBase">
-        <constructor-arg name="fieldMapping">
-            <map>
-                <entry key="ID" value="id" />
-                <entry key="Name" value="name" />
-                <entry key="Description" value="description" />
-            </map>
+        <constructor-arg name="matcher">
+            <bean parent="beanMatcherBase">
+                <constructor-arg name="fieldMapping">
+                    <map>
+                        <entry key="ID" value="id" />
+                        <entry key="Name" value="name" />
+                        <entry key="Description" value="description" />
+                    </map>
+                </constructor-arg>
+            </bean>
         </constructor-arg>
     </bean>
 
