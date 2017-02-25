@@ -26,7 +26,7 @@ class FakeGoogleController {
                           @RequestParam(value = "state", required = false) state: String?) : View {
         val redirectTo = UriComponentsBuilder.fromUriString(redirectUri)
                 .queryParam("state", state)
-                .queryParam("code", UUID.randomUUID().toString())
+                .queryParam("code", "thisIsMyAuthorizationCode")
                 .queryParam("prompt", "consent")
                 .build()
                 .toUri()

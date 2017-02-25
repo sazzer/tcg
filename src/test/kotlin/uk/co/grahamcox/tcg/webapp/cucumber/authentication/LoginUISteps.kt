@@ -2,6 +2,7 @@ package uk.co.grahamcox.tcg.webapp.cucumber.authentication
 
 import com.winterbe.expekt.should
 import cucumber.api.java.en.Then
+import cucumber.api.java.en.When
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import uk.co.grahamcox.tcg.webapp.cucumber.matcher.BeanMatcher
@@ -20,9 +21,24 @@ class LoginUISteps {
     @Qualifier("loginButtonMatcher")
     private lateinit var loginButtonMatcher: BeanMatcher
 
+    @When("""^I log in using Google$""")
+    fun logInWithGoogle() {
+        pageModelFactory.page.header.logInWithProvider("google")
+    }
+
     @Then("""^the Login menu is not present$""")
     fun checkLoginMenuNotPresent() {
         pageModelFactory.page.header.isLoginMenuVisible().should.equal(false)
+    }
+
+    @Then("""^the User menu is not present$""")
+    fun checkUserMenuNotPresent() {
+        pageModelFactory.page.header.isUserMenuVisible().should.equal(false)
+    }
+
+    @Then("""^the User menu is present$""")
+    fun checkUserMenuPresent() {
+        pageModelFactory.page.header.isUserMenuVisible().should.equal(true)
     }
 
     @Then("""^a single Login button is present:$""")

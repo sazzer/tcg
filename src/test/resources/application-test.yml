@@ -11,7 +11,7 @@ spring:
         enabled: false
 authentication:
     google:
-        authUrlBase: http://localhost:${server.port}/api/authentication/fake/google/auth
+        authUrlBase: /api/authentication/fake/google/auth
         tokenUrl: http://localhost:${server.port}/api/authentication/fake/google/token
         userProfileUrl: http://localhost:${server.port}/api/authentication/fake/google/user
         clientId: myGoogleClientId

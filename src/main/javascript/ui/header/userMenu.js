@@ -37,7 +37,7 @@ export default class UserMenu extends React.Component {
     render() {
         const { t } = this.props;
 
-        return <li className="nav-item dropdown">
+        return <li className="nav-item dropdown tcg-test-userMenu">
             <a className="nav-link dropdown-toggle" id="headerUserMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 { t('user.menu') }
             </a>
