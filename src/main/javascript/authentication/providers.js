@@ -10,7 +10,7 @@ export const initialiseAuthenticationProviders = createAction('AUTHENTICATION_PR
 
 /** The reducers relevant to the Authentication Providers */
 export const reducers = {
-    'AUTHENTICATION_PROVIDERS:INITIALISE_RESOLVED': (state, action) => state.set('providers',
+    'AUTHENTICATION_PROVIDERS:INITIALISE_FULFILLED': (state, action) => state.set('providers',
         Immutable.List(action.payload.map((provider) => ({
                 provider: provider.provider,
                 url: `/api/authentication/${provider.provider}/start`
