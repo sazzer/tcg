@@ -663,6 +663,11 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${version.springBoot}</version>
+                    <configuration>
+                        <profiles>
+                            <profile>dev</profile>
+                        </profiles>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
