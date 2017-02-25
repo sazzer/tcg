@@ -46,7 +46,7 @@ export default class LoginMenu extends React.Component {
         if (menuItems.length === 1) {
             return menuItems[0];
         }
-        return <li className="nav-item dropdown">
+        return <li className="nav-item dropdown tcg-test-loginMenu">
             <a className="nav-link dropdown-toggle" id="headerLoginMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 { t('authentication.menu') }
             </a>

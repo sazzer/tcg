@@ -5,6 +5,9 @@
     <bean id="requester" class="uk.co.grahamcox.tcg.webapp.cucumber.requests.RequesterFactoryBean" />
 
     <bean id="browserHolder" class="uk.co.grahamcox.tcg.webapp.cucumber.browser.BrowserHolder" destroy-method="close" />
+    <bean id="pageModelFactory" class="uk.co.grahamcox.tcg.webapp.cucumber.ui.PageModelFactory">
+        <constructor-arg name="browserHolder" ref="browserHolder" />
+    </bean>
 
     <bean id="mockServer" class="org.springframework.test.web.client.MockRestServiceServer" factory-method="createServer">
         <constructor-arg name="restTemplate" ref="restTemplate" />

@@ -18,7 +18,7 @@ export default class NavigationBar extends React.Component {
         const { t } = this.props;
 
         return <nav className="navbar navbar-toggleable-md navbar-light bg-faded fixed-top">
-            <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button className="tcg-test-header navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
             <a className="navbar-brand">{ t('page.title') }</a>

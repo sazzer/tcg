@@ -15,7 +15,6 @@ class BrowserHolder {
         private val LOG = LoggerFactory.getLogger(BrowserHolder::class.java)
     }
 
-
     /** The actual web driver */
     private var browser: WebDriver? = null
 
