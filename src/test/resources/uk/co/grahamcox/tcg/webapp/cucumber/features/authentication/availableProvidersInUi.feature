@@ -1,5 +1,4 @@
 @UI
-@wip
 Feature: The correct authentication providers appear in the UI
   Scenario: Check the correct authentication providers appear in the UI
     Given I have loaded the home page
