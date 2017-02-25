@@ -4,20 +4,24 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="skillResponseMatcher" parent="responseMatcherBase">
-        <constructor-arg name="fieldMapping">
-            <map>
-                <entry key="ID" value="id" />
-                <entry key="Name" value="name" />
-                <entry key="Description" value="description" />
-                <entry key="Default Value" value="default" />
-            </map>
-        </constructor-arg>
-        <constructor-arg name="typeConverters">
-            <map>
-                <entry key="Default Value">
-                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.IntegerTypeConverter" />
-                </entry>
-            </map>
+        <constructor-arg name="matcher">
+            <bean parent="beanMatcherBase">
+                <constructor-arg name="fieldMapping">
+                    <map>
+                        <entry key="ID" value="id" />
+                        <entry key="Name" value="name" />
+                        <entry key="Description" value="description" />
+                        <entry key="Default Value" value="default" />
+                    </map>
+                </constructor-arg>
+                <constructor-arg name="typeConverters">
+                    <map>
+                        <entry key="Default Value">
+                            <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.IntegerTypeConverter" />
+                        </entry>
+                    </map>
+                </constructor-arg>
+            </bean>
         </constructor-arg>
     </bean>
 

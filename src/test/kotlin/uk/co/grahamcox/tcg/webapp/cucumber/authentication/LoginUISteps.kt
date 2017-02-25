@@ -17,4 +17,11 @@ class LoginUISteps {
     fun checkLoginMenuNotPresent() {
         pageModelFactory.page.header.isLoginMenuVisible().should.equal(false)
     }
+
+    @Then("""^a single Login button is present:$""")
+    fun checkSingleLoginButton(details: Map<String, String>) {
+        pageModelFactory.page.header.isLoginMenuItemVisible().should.equal(true)
+        val singleLoginButton = pageModelFactory.page.header.singleLoginMenuItem
+
+    }
 }

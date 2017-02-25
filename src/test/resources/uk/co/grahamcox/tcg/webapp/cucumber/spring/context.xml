@@ -23,24 +23,31 @@
 
     <bean id="responseMatcherBase" abstract="true" class="uk.co.grahamcox.tcg.webapp.cucumber.matcher.ResponseMatcher">
         <constructor-arg name="requester" ref="requester" />
+    </bean>
+
+    <bean id="beanMatcherBase" abstract="true" class="uk.co.grahamcox.tcg.webapp.cucumber.matcher.BeanMatcher">
         <constructor-arg name="typeConverters"><map /></constructor-arg>
     </bean>
 
     <bean id="errorResponseMatcher" parent="responseMatcherBase">
-        <constructor-arg name="fieldMapping">
-            <map>
-                <entry key="Error Code" value="error" />
-                <entry key="Fields" value="fields" />
-            </map>
-        </constructor-arg>
-        <constructor-arg name="typeConverters">
-            <map>
-                <entry key="Fields">
-                    <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.MapTypeConverter">
-                        <constructor-arg name="valueConverter"><null /></constructor-arg>
-                    </bean>
-                </entry>
-            </map>
+        <constructor-arg name="matcher">
+            <bean parent="beanMatcherBase">
+                <constructor-arg name="fieldMapping">
+                    <map>
+                        <entry key="Error Code" value="error" />
+                        <entry key="Fields" value="fields" />
+                    </map>
+                </constructor-arg>
+                <constructor-arg name="typeConverters">
+                    <map>
+                        <entry key="Fields">
+                            <bean class="uk.co.grahamcox.tcg.webapp.cucumber.converters.MapTypeConverter">
+                                <constructor-arg name="valueConverter"><null /></constructor-arg>
+                            </bean>
+                        </entry>
+                    </map>
+                </constructor-arg>
+            </bean>
         </constructor-arg>
     </bean>
 

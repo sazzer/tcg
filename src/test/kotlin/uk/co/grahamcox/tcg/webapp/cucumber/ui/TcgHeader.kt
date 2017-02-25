@@ -19,9 +19,22 @@ class TcgHeader(element: WebElement) {
     @FindBy(css = ".tcg-test-loginMenu")
     private lateinit var loginMenu: WebElement
 
+    /** The web element for the login menu item */
+    @FindBy(css = ".tcg-test-loginMenuItem")
+    private lateinit var loginMenuItem: WebElement
+
+    /** Get the single Login Menu Item, if there is one */
+    val singleLoginMenuItem
+        get() = LoginMenuItem(loginMenuItem)
     /**
      * Determine if the Login Menu is visible on the screen
      * @return True if the Login Menu is visible. False if not.
      */
     fun isLoginMenuVisible() = loginMenu.isOnScreen()
+
+    /**
+     * Determine if the Login Menu Item is visible on the screen
+     * @return True if the Login Menu Item is visible. False if not.
+     */
+    fun isLoginMenuItemVisible() = loginMenuItem.isOnScreen()
 }
