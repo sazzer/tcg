@@ -3,7 +3,7 @@ Feature: Authentication against Google
   Scenario: Start authentication with Google
     When I start authentication with provider "google"
     Then I get a "Found" response
-    And I get a redirect to URL "http://localhost:0/api/authentication/fake/google/auth" with parameters:
+    And I get a redirect to URL "http://localhost/api/authentication/fake/google/auth" with parameters:
       | client_id     | myGoogleClientId                                                  |
       | response_type | code                                                              |
       | scope         | openid%20email                                                    |

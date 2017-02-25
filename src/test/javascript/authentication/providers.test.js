@@ -3,10 +3,10 @@ import Immutable from 'immutable';
 import { testReducer } from '../redux/reducer.testHelper';
 import * as testSubject from './providers';
 
-test('AUTHENTICATION_PROVIDERS:INITIALISE_RESOLVED reducer produces the correct state', (t) => {
+test('AUTHENTICATION_PROVIDERS:INITIALISE_FULFILLED reducer produces the correct state', (t) => {
     const output = testReducer({
         action: {
-            type: 'AUTHENTICATION_PROVIDERS:INITIALISE_RESOLVED',
+            type: 'AUTHENTICATION_PROVIDERS:INITIALISE_FULFILLED',
             payload: [{
                 provider: 'google'
             }]

@@ -41,6 +41,7 @@ class ResponseStatusSteps {
         location.should.not.be.`null`
 
         UriComponentsBuilder.fromUri(location)
+                .port(null) // We can't predict the port
                 .replaceQuery(null)
                 .fragment(null)
                 .build()
