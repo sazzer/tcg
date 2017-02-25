@@ -8,10 +8,15 @@ const DEFAULT_ACCESS_TOKEN = Immutable.Map({ authenticated: false });
 /**
  * Redux Action to store the fact that we've just authenticated
  */
-export const authenticated = createAction('AUTHENTICATED', (accessToken, expiry) => ({
+const storeAccessTokenAction = createAction('AUTHENTICATED', (accessToken, expiry) => ({
     accessToken,
     expiry
 }));
+
+/**
+ * Redux Action to store the fact that we've just authenticated
+ */
+export const authenticated = (accessToken, expiry) => ((dispatch) => dispatch(storeAccessTokenAction(accessToken, expiry)));
 
 /**
  * Redux Action to store the fact that we've just logged out

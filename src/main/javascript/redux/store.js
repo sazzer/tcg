@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
+import thunk from 'redux-thunk';
 import { combineReducers } from 'redux-immutable';
 import Immutable from 'immutable';
 import reducers from './reducers';
@@ -21,6 +22,7 @@ const store = createStore(
     Immutable.Map(), // Initial state
     composeEnhancers(
         applyMiddleware(
+            thunk,
             promiseMiddleware()
         )
     )
