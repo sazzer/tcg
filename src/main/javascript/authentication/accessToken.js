@@ -1,6 +1,7 @@
 import Immutable from 'immutable';
 import { createAction } from 'redux-actions';
 import { createSelector } from 'reselect';
+import { fetchUserProfile } from '../users';
 
 /** The default entry for the Access Token  */
 const DEFAULT_ACCESS_TOKEN = Immutable.Map({ authenticated: false });
@@ -16,7 +17,10 @@ const storeAccessTokenAction = createAction('AUTHENTICATED', (accessToken, expir
 /**
  * Redux Action to store the fact that we've just authenticated
  */
-export const authenticated = (accessToken, expiry) => ((dispatch) => dispatch(storeAccessTokenAction(accessToken, expiry)));
+export const authenticated = (accessToken, expiry) => ((dispatch) => {
+    dispatch(storeAccessTokenAction(accessToken, expiry));
+    dispatch(fetchUserProfile());
+});
 
 /**
  * Redux Action to store the fact that we've just logged out
