@@ -1,2 +1,2 @@
-export { fetchUserProfile } from './userProfile';
+export { fetchUserProfile, selectCurrentUser } from './userProfile';
 export { reducer } from './reducer';
