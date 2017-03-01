@@ -13,15 +13,13 @@ test('AUTHENTICATION_PROVIDERS:INITIALISE_FULFILLED reducer produces the correct
         }
     });
 
-    t.deepEqual(output.toJSON(), {
-        authentication: {
-            providers: [
-                {
-                    provider: 'google',
-                    url: '/api/authentication/google/start'
-                }
-            ]
-        }
+    t.deepEqual(output.toJSON().authentication, {
+        providers: [
+            {
+                provider: 'google',
+                url: '/api/authentication/google/start'
+            }
+        ]
     });
 });
 

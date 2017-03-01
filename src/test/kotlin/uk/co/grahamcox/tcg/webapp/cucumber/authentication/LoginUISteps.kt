@@ -46,6 +46,10 @@ class LoginUISteps {
         pageModelFactory.page.header.isLoginMenuItemVisible().should.equal(true)
         val singleLoginButton = pageModelFactory.page.header.singleLoginMenuItem
         loginButtonMatcher.match(singleLoginButton, details)
+    }
 
+    @Then("""^the current user is "(.+)"$""")
+    fun checkLoggedInUserName(username: String) {
+        pageModelFactory.page.header.userMenu.username.should.equal(username)
     }
 }

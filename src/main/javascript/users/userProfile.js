@@ -1,22 +1,13 @@
 import Immutable from 'immutable';
 import { createAction } from 'redux-actions';
-
-/** Timeout for the promise */
-const PROMISE_TIMEOUT = 3000;
+import request from '../request';
 
 /**
  * Action Creator for fetching the current user profile
  */
 export const fetchUserProfile = createAction('FETCH_USER', () => ({
-    promise: new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({
-                id: '123',
-                name: 'Graham',
-                email: 'graham@grahamcox.co.uk'
-            });
-        }, PROMISE_TIMEOUT);
-    })
+    promise: request('/api/users/me')
+        .then((response) => response.body)
 }));
 
 /** The reducers relevant to the Authentication Providers */

@@ -57,3 +57,4 @@ Feature: Authentication against Google
     When I log in using Google
     Then the Login menu is not present
     And the User menu is present
+    And the current user is "Graham Cox"

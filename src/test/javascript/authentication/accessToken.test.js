@@ -14,13 +14,11 @@ test('AUTHENTICATED reducer produces the correct state', (t) => {
         }
     });
 
-    t.deepEqual(output.toJSON(), {
-        authentication: {
-            accessToken: {
-                accessToken: 'thisIsMyAccessToken',
-                expiry: '2017-02-24T13:07:00',
-                authenticated: true
-            }
+    t.deepEqual(output.toJSON().authentication, {
+        accessToken: {
+            accessToken: 'thisIsMyAccessToken',
+            expiry: '2017-02-24T13:07:00',
+            authenticated: true
         }
     });
 });
@@ -39,9 +37,7 @@ test('LOGOUT reducer produces the correct state', (t) => {
         action: { type: 'LOGOUT' }
     });
 
-    t.deepEqual(output.toJSON(), {
-        authentication: {}
-    });
+    t.deepEqual(output.toJSON().authentication, {});
 });
 
 test('selectAccessToken selector works when access token is present', (t) => {
