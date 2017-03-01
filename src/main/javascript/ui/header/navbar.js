@@ -3,6 +3,7 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 import SelectUserMenu from './selectUserMenu';
+import EncyclopaediaMenu from './encyclopaediaMenu';
 /*eslint-enable no-unused-vars*/
 
 @translate()
@@ -25,6 +26,7 @@ export default class NavigationBar extends React.Component {
 
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto">
+                    <EncyclopaediaMenu />
                 </ul>
                 <ul className="navbar-nav">
                     <SelectUserMenu />

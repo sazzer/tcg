@@ -10,5 +10,15 @@
   },
   "user": {
     "menu": "User"
+  },
+  "encyclopaedia": {
+    "menu": {
+      "label": "Encyclopaedia",
+      "races": "Races",
+      "classes": "Classes",
+      "attributes": "Attributes",
+      "skills": "Skills",
+      "abilities": "Abilities"
+    }
   }
 }
