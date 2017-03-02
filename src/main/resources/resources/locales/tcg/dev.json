@@ -1,7 +1,8 @@
 {
   "page": {
     "title": "TCG MUD",
-    "footer": "TCG MUD by Graham Cox"
+    "footer": "TCG MUD by Graham Cox",
+    "notFound": "Page not found"
   },
   "authentication": {
     "menu": "Login",

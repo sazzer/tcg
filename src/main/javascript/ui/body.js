@@ -1,6 +1,9 @@
 /*eslint-disable no-unused-vars*/
 import React from 'react';
 import injectSheet from 'react-jss';
+import { Route, Switch } from 'react-router-dom';
+import Encyclopaedia from './encyclopaedia';
+import NotFound from './notFound';
 /*eslint-enable no-unused-vars*/
 
 /**
@@ -30,7 +33,10 @@ export default class Body extends React.Component {
         const { classes } = this.props;
 
         return <div className={ classes.body }>
-            Hello there
+            <Switch>
+                <Route path="/encyclopaedia" component={Encyclopaedia} />
+                <Route component={NotFound} />
+            </Switch>
         </div>;
     }
 }
