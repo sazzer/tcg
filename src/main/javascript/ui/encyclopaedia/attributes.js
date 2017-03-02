@@ -1,5 +1,6 @@
 /*eslint-disable no-unused-vars*/
 import React from 'react';
+import Sidebar from './sidebar';
 /*eslint-enable no-unused-vars*/
 
 /**
@@ -12,7 +13,7 @@ export default class Attributes extends React.Component {
      */
     render() {
         return <div className="tcg-test-encyclopaedia-attributes">
-            This is the Encyclopaedia for Attributes
+            <Sidebar openSection="attributes"/>
         </div>;
     }
 }
