@@ -1,6 +1,7 @@
 /*eslint-disable no-unused-vars*/
 import 'bootstrap';
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Header from './header';
 import Body from './body';
 /*eslint-enable no-unused-vars*/
@@ -10,10 +11,13 @@ import Body from './body';
  * @return {React.Component} the React Component
  */
 function UI() {
-    return <div>
-        <Header />
-        <Body />
-    </div>;
+    return (
+    <Router basename="/game">
+        <div>
+            <Header />
+            <Body />
+        </div>
+    </Router>);
 }
 
 export default UI;

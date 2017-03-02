@@ -2,7 +2,7 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
-import LoginMenuItem from './loginMenuItem';
+import { Link } from 'react-router-dom';
 import { authenticated, selectProviders } from '../../authentication';
 /*eslint-enable no-unused-vars*/
 
@@ -23,11 +23,11 @@ export default class EncyclopaediaMenu extends React.Component {
                 { t('encyclopaedia.menu.label') }
             </a>
             <div className="dropdown-menu dropdown-menu-right" aria-labelledby="headerEncyclopaediaMenu">
-                <a className="dropdown-item">{ t('encyclopaedia.menu.races') }</a>
-                <a className="dropdown-item">{ t('encyclopaedia.menu.classes') }</a>
-                <a className="dropdown-item">{ t('encyclopaedia.menu.attributes') }</a>
-                <a className="dropdown-item">{ t('encyclopaedia.menu.skills') }</a>
-                <a className="dropdown-item">{ t('encyclopaedia.menu.abilities') }</a>
+                <Link to="/encyclopaedia/races" className="dropdown-item">{ t('encyclopaedia.menu.races') }</Link>
+                <Link to="/encyclopaedia/classes" className="dropdown-item">{ t('encyclopaedia.menu.classes') }</Link>
+                <Link to="/encyclopaedia/attributes" className="dropdown-item">{ t('encyclopaedia.menu.attributes') }</Link>
+                <Link to="/encyclopaedia/skills" className="dropdown-item">{ t('encyclopaedia.menu.skills') }</Link>
+                <Link to="/encyclopaedia/abilities" className="dropdown-item">{ t('encyclopaedia.menu.abilities') }</Link>
             </div>
         </li>;
     }
