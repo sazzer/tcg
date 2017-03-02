@@ -1,18 +1,18 @@
 /*eslint-disable no-unused-vars*/
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import NotFound from '../notFound';
+import Races from './races';
 /*eslint-enable no-unused-vars*/
 
 /**
  * Component representing the encyclopaedia
  */
-export default class Encyclopaedia extends React.Component {
-    /**
-     * Actually render the body
-     * @returns {React.Component} the body
-     */
-    render() {
-        return <div className="tcg-test-encyclopaedia">
-            This is the Encyclopaedia
-        </div>;
-    }
-}
+const Encyclopaedia = ({match}) => <div className="tcg-test-encyclopaedia">
+    <Switch>
+        <Route path={`${match.url}/races`} component={Races} />
+        <Route component={NotFound} />
+    </Switch>
+</div>;
+
+export default Encyclopaedia;
