@@ -1,8 +1,10 @@
 /*eslint-disable no-unused-vars*/
 import React from 'react';
 import injectSheet from 'react-jss';
+import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { translate } from 'react-i18next';
+import { selectRaces } from '../../rules';
 /*eslint-enable no-unused-vars*/
 
 /**
@@ -15,8 +17,20 @@ const styles = {
     }
 };
 
+/**
+ * React Redux function to take the Redux state and produce an object of Props that this Component needs
+ * @param {Immutable.Map} state The state to consume
+ * @returns {Object} The props to pass into the component
+ */
+function mapStateToProps(state, ownProps) {
+    return {
+        menuEntries: ownProps.menuSelector(state)
+    };
+}
+
 @translate()
 @injectSheet(styles)
+@connect(mapStateToProps)
 /**
  * Component representing a single section of the sidebar
  */
@@ -26,20 +40,18 @@ class SidebarSection extends React.Component {
      * @returns {React.Component} the sidebar section
      */
     render() {
-        const { t, classes, section, openSection } = this.props;
+        const { t, classes, section, openSection, menuEntries } = this.props;
 
         let nestedMenu = '';
         if (section === openSection) {
+            const menuItems = menuEntries.map((entry) => (
+                <li className="nav-item">
+                    <NavLink to={`/encyclopaedia/${section}/${entry.id}`} exact className="nav-link" activeClassName="active">{entry.name}</NavLink>
+                </li>
+            ));
+
             nestedMenu = <ul className={ [classes.nestedNav, 'nav', 'nav-pills', 'flex-column'].join(' ') }>
-                <li className="nav-item">
-                    <NavLink to={`/encyclopaedia/${section}/human`} exact className="nav-link" activeClassName="active">Human</NavLink>
-                </li>
-                <li className="nav-item">
-                    <NavLink to={`/encyclopaedia/${section}/dwarf`} exact className="nav-link" activeClassName="active">Dwarf</NavLink>
-                </li>
-                <li className="nav-item">
-                    <NavLink to={`/encyclopaedia/${section}/elf`} exact className="nav-link" activeClassName="active">Elf</NavLink>
-                </li>
+                { menuItems }
             </ul>;
         }
 
@@ -63,11 +75,11 @@ export default class Sidebar extends React.Component {
 
         return <nav className="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
             <ul className="nav nav-pills flex-column">
-                <SidebarSection section="races" openSection={openSection} />
-                <SidebarSection section="classes" openSection={openSection} />
-                <SidebarSection section="attributes" openSection={openSection} />
-                <SidebarSection section="skills" openSection={openSection} />
-                <SidebarSection section="abilities" openSection={openSection} />
+                <SidebarSection section="races" openSection={openSection} menuSelector={selectRaces} />
+                <SidebarSection section="classes" openSection={openSection} menuSelector={selectRaces} />
+                <SidebarSection section="attributes" openSection={openSection} menuSelector={selectRaces} />
+                <SidebarSection section="skills" openSection={openSection} menuSelector={selectRaces} />
+                <SidebarSection section="abilities" openSection={openSection} menuSelector={selectRaces} />
             </ul>
         </nav>;
     }

@@ -1,6 +1,7 @@
 import Immutable from 'immutable';
 import { handleActions } from 'redux-actions';
 import { initialiseRaces, reducers as racesReducer } from './races';
+export { selectRaces } from './races';
 
 /** The overall reducer to use */
 export const reducer = {
